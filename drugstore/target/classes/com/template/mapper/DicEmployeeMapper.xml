@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicEmployeeMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DictEmployee">
+		<id column="jobNumber" property="jobNumber"  />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="sex" property="sex" />
+		<result column="office" property="office" />
+		<result column="role" property="role" />
+		<result column="roleInfo" property="roleInfo" />
+		<result column="password" property="password" />
+		<result column="highLevel" property="highLevel" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select *
+		from dic_employee
+		where jobNumber = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_employee
+		<where>
+			<if test="name != null and name != ''">
+				and name = #{name} 
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="com.template.domain.DictEmployee">
+		insert into dic_employee
+		( jobNumber, name, age, sex, office, role, roleInfo, password, highLevel )
+		values
+		( #{jobNumber}, #{name}, #{age}, #{sex}, #{office}, #{role}, #{roleInfo}, #{password}, #{highLevel} )
+	</insert>
+</mapper>
