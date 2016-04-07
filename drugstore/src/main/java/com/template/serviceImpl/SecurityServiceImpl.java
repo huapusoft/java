@@ -18,8 +18,11 @@ public class SecurityServiceImpl implements SecurityService {
 
 	static {
 		publicUris.add("/login"); // 登录页面
+		publicUris.add("/validate"); // 登录检查
+		publicUris.add("/fail"); // 错误页面
+		publicUris.add("/getAllDicDrugStore"); // 登录页面获取药库
 		publicUris.add("/staticPublic"); // 公用图片 样式 脚本
-		publicUris.add("/add"); // test
+		publicUris.add("/test/login"); // test
 	}
 
 	@Override
