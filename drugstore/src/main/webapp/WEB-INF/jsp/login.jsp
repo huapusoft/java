@@ -42,10 +42,10 @@
 	border-image: none; 
 	width: 400px; 
 	height:450px; 
-	filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=5);/*ie*/
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,strength=15);/*ie*/
     -moz-box-shadow: 3px 3px 10px #909090;/*firefox*/
     -webkit-box-shadow: 3px 3px 10px #909090;/*safari或chrome*/
-    box-shadow:3px 3px 10px #909090;/*opera或ie9*/	
+    box-shadow:0px 0px 30px #909090;/*opera或ie9*/	
    }
    .fonttitle{
     float: left;
@@ -133,7 +133,7 @@ $(document).ready(function() {
 				for(i=0;i<data.data.length;i++){					
 					 var tname=data.data[i].storeName;
 					var tid=data.data[i].id;
-					$("#storeName").append("<option value='"+tid+"'>"+tname+"</option>");  
+					$("#storeName").append("<option value='"+tname+"'>"+tname+"</option>");  
 					}
 				
 			}else{
@@ -148,6 +148,10 @@ $(document).ready(function() {
 	              }).mouseup(function(){
 	               $(this).css('background', 'url(/staticPublic/img/buttonlog.png) no-repeat');
 	              });
+	$("#password").keydown(function(event){
+		if(event.which == "13")    
+			login();
+	});
 });
 
 
