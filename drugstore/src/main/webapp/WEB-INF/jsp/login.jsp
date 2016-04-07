@@ -23,11 +23,12 @@
    *{padding: 0px;margin: 0px;}
    .maincenter{	
 	margin: 130px auto auto; 
-	background: #00EEEE;
+	background: #33CCCC;
 	border-image: none; 
 	width: 600px; 
 	height:650px; 	
 	text-align:center;
+	
    }
    .mainlogn{	
 	margin: 50px auto auto; 
@@ -40,7 +41,11 @@
 	background: #fff;
 	border-image: none; 
 	width: 400px; 
-	height:450px; 	
+	height:450px; 
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=5);/*ie*/
+    -moz-box-shadow: 3px 3px 10px #909090;/*firefox*/
+    -webkit-box-shadow: 3px 3px 10px #909090;/*safari或chrome*/
+    box-shadow:3px 3px 10px #909090;/*opera或ie9*/	
    }
    .fonttitle{
     float: left;
@@ -77,10 +82,16 @@
 	border: 2px solid #d3d3d3;
 }
 .buttonmenue{	
-	width: 55px;
-	height:36px;	
-	background: #ebebeb;
+	width: 180px;
+	height:60px;
+	border:none;	
+	background: url(/staticPublic/img/buttonlog.png);
 }
+.menuetitle{ 
+	font-family: "黑体";  	
+	color: #fff;
+	font-size: 34px;
+   }
 		</style>
 	</head>
 	<body>
@@ -100,9 +111,8 @@
      <br />
      <br />
      <hr width="99%" color="#d3d3d3" size=3/>
-       <br />	
-     <span class="buttonmenue" onclick="login()">登录</span>
-			
+       <br />	   
+		<button type="button" onclick="login();" class="buttonmenue" id="lognbutton"><span class="menuetitle">登录</span></button>	
 			
 	</div>
 	</div>
@@ -131,10 +141,18 @@ $(document).ready(function() {
 			}
 		}
 	})
+	
+	 $('#lognbutton').mousedown(function(){
+	     	$(this).css('background', 'url(/staticPublic/img/buttonlogs.png) no-repeat');
+	                //alert('mousedown function is running !');
+	              }).mouseup(function(){
+	               $(this).css('background', 'url(/staticPublic/img/buttonlog.png) no-repeat');
+	              });
 });
 
 
 function login(){
+	
 	$.ajax({
 		type:'POST',
 		url:"validate",
