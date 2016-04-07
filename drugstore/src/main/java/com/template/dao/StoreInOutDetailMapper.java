@@ -1,5 +1,9 @@
 package com.template.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 
 /**
@@ -10,6 +14,13 @@ import com.template.domain.StoreInOutDetail;
 public interface StoreInOutDetailMapper {
 
 	public void insert(StoreInOutDetail bean)  throws Exception;
+	
 	public void delete(int billNo)  throws Exception;
+	
 	public void getByBillNo(int billNo)  throws Exception;
+	
+	public List<StoreInOut> getByConditions(Map<String, Object> params) throws Exception;
+
+	public StoreInOutDetail getDrugLatestPrice(Map<String, Object> params) throws Exception;
+	
 }

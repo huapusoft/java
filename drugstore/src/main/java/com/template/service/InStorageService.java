@@ -51,6 +51,6 @@ public interface InStorageService {
 	  * @throws
 	  */
 	public Map<String, Object> getDrugLatestPrice(String storeName, String id,
-			String batchNo);
+			String batchNo)throws Exception;
 	
 }

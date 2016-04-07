@@ -118,4 +118,22 @@
 		delete from store
 		where id = #{id}
 	</delete>
+	
+	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select top(1) inPrice,price
+		from store
+		<where>
+			<if test="storeName != null and storeName != ''">
+				and storeName = #{storeName}
+			</if>
+			<if test="drugId != null and drugId != ''">
+				and id = #{drugId}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batchNo = #{batchNo}
+			</if>
+		</where>
+		order by inTime desc
+	</select>
+	
 </mapper>

@@ -1,5 +1,6 @@
 package com.template.serviceImpl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
+import com.template.dao.StoreMapper;
+import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
@@ -26,6 +29,9 @@ public class InStorageServiceImpl implements InStorageService{
 	
 	@Resource
 	private StoreInOutMapper storeInOutMapper;
+	
+	@Resource
+	private StoreMapper storeMapper;
 	
 	@Resource
 	private StoreInOutDetailMapper storeInOutDetailMapper;
@@ -56,9 +62,32 @@ public class InStorageServiceImpl implements InStorageService{
 
 	@Override
 	public Map<String, Object> getDrugLatestPrice(String storeName, String id,
-			String batchNo) {
-		// TODO Auto-generated method stub
-		return null;
+			String batchNo) throws Exception {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("price1", null);
+		result.put("price2", null);
+		
+		//1.查询出入库表
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeName", storeName);
+		params.put("drugId", id);
+		params.put("batchNo", batchNo);
+		StoreInOutDetail detail = storeInOutDetailMapper.getDrugLatestPrice(params);
+		if( null != detail ){
+			result.put("price1", detail.getPrice1());
+			result.put("price2", detail.getPrice2());
+			
+		}else{
+			//2.从库存表中获取
+			Store store = storeMapper.getDrugLatestPrice(params);
+			if( null != store ){
+				result.put("price1", store.getInPrice());
+				result.put("price2", store.getPrice());
+			}
+			
+		}
+		
+		return result;
 	}
 	
 }
