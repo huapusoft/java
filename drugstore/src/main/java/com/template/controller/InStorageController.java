@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDrug;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.util.CommonUtil;
@@ -38,6 +40,9 @@ public class InStorageController {
 	
 	@Resource  
 	private DicProviderService dicProviderService;
+	
+	@Resource  
+	private DicDrugService dicDrugService;
 	
 	/**
 	 * 入库登记页面
@@ -99,7 +104,7 @@ public class InStorageController {
 	public Map<String, Object> getDicProviderList(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestParam("drugName") String drugShortName
+			@RequestParam("itemName") String itemName
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -107,8 +112,9 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-//			List<DicDrug> dicDrug = dicDrugService.getEnabledDrugList(drugShortName);
+			List<DicDrug> dicDrug = dicDrugService.getEnabledDrugList(itemName);
 			result.put("code", "200");
+			result.put("data", dicDrug);
 			
 		}catch(Exception e){
 			e.printStackTrace();
