@@ -57,6 +57,7 @@ public class DicDrugServiceImpl implements DicDrugService {
 	public List<DicDrug> getEnabledDrugList(String itemName) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("itemName", itemName);
+		params.put("enabled", 1);
 		return dicDrugMapper.getByConditions(params);
 	}
 

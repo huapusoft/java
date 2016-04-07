@@ -364,5 +364,19 @@ public class CommonServiceImpl implements CommonService {
 		}
 		return result;
 	}
+
+	@Override
+	public List<Store> getDrugListForOutStorage(String itemName) throws Exception {
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("itemName", itemName);
+			return storeMapper.getDrugListForOutStorage(params);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 }

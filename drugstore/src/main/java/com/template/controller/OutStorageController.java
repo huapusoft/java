@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDepartment;
+import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.CommonService;
+import com.template.service.DicDepartmentService;
 import com.template.service.OutStorageService;
 import com.template.util.CommonUtil;
 
@@ -35,6 +39,12 @@ public class OutStorageController {
 	@Resource 
 	private OutStorageService outStoreageService;
 	
+	@Resource 
+	private DicDepartmentService dicDepartmentService;
+	
+	@Resource 
+	private CommonService commonService;
+	
 	/**
 	 * 出库登记页面
 	 * @Description: 出库登记页面
@@ -49,6 +59,73 @@ public class OutStorageController {
 		
 		return mv;
 		
+	}
+	
+	/**
+	  * 获取部门数据
+	  * @Description: 从部门表中，获取所有部门数据
+	  * @author army.liu
+	  * @param  
+	  * @return
+	  * @throws
+	  */
+	@RequestMapping(value = "/getAllDicDepartmentList",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getAllDicDepartmentList(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			List<DicDepartment> list = dicDepartmentService.getAllDicDepartmentList();
+			result.put("data", list);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 获取药品下拉框中数据
+	 * @Description: 从药品库存表中，读取药品数据
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getDrugListFromStore",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugListFromStore(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("itemName") String itemName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			List<Store> list = commonService.getDrugListForOutStorage(itemName);
+			result.put("data", list);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
 	}
 	
 	/**

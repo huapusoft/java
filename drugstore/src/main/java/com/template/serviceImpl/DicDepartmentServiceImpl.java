@@ -1,5 +1,6 @@
 package com.template.serviceImpl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,12 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 			throws Exception {
 		return dicDepartmentMapper.getByConditions(params);
 		
+	}
+
+	@Override
+	public List<DicDepartment> getAllDicDepartmentList() throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		return dicDepartmentMapper.getByConditions(params);
 	}
 
 }

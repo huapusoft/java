@@ -51,6 +51,9 @@
 			<if test="itemName != null and itemName != ''">
 				( itemName like CONCAT('%',#{itemName},'%') ) OR ( wb like CONCAT('%',#{itemName},'%') ) OR ( py like CONCAT('%',#{itemName},'%') )
 			</if>
+			<if test="enabled != null and enabled != ''">
+				enabled = #{enabled}
+			</if>
 		</where>
 	</select>
 	

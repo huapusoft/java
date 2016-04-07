@@ -128,7 +128,6 @@ public interface CommonService {
 	public void deleteStoreInOut(int billNo) throws Exception;
 
 	/**
-	 * @param storeName 
 	 * 获取药库的用户数据
 	 * @Description: 读取用户表，获取当前药库下的用户名称
 	 * @author army.liu
@@ -137,4 +136,14 @@ public interface CommonService {
 	 * @throws
 	 */
 	public List<String> getDicEmployeeBySotreName(String storeName) throws Exception;
+
+	/**
+	 * 获取出库时的药品下拉选择列表
+	 * @Description: 读取库存表，关联药品基础信息表（已启用）
+	 * @author army.liu
+	 * @param  itemName-药品搜索名称
+	 * @return void
+	 * @throws
+	 */
+	public List<Store> getDrugListForOutStorage(String itemName) throws Exception;
 }

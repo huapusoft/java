@@ -120,7 +120,7 @@
 	</delete>
 	
 	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-		select top(1) inPrice,price
+		select *
 		from store
 		<where>
 			<if test="storeName != null and storeName != ''">
@@ -134,6 +134,30 @@
 			</if>
 		</where>
 		order by inTime desc
+	</select>
+	
+	<resultMap id="BaseResultMap2" type="com.template.domain.DrugAndStore">
+		<result column="id" property="id"  />
+		<result column="itemName" property="itemName"  />
+		<result column="spc" property="spc"  />
+		<result column="unit" property="unit"  />
+		<result column="vendor" property="vendor"  />
+		<result column="batchNo" property="batchNo" />
+		<result column="inPrice" property="inPrice" />
+		<result column="price" property="price" />
+		<result column="validDate" property="validDate" />
+	</resultMap>
+	<select id="getDrugListForOutStorage" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+		select d.id,d.itemName,d.spc,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate
+		from store s
+		inner join dic_drug d
+		on d.id = s.id
+		where
+			d.enabled = 1
+			<if test="itemName != null and itemName != ''">
+				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
+			</if>
+		order by d.itemName asc
 	</select>
 	
 </mapper>

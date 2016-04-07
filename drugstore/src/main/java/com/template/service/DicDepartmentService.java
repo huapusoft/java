@@ -41,6 +41,16 @@ public interface DicDepartmentService {
 	 * @throws
 	 */
 	public List<DicDepartment> getByConditions(Map<String, Object> params) throws Exception;
+
+	/**
+	 * 获取所有部门数据
+	 * @Description: 获取所有部门数据
+	 * @author army.liu
+	 * @param  
+	 * @return List<DicDepartment>
+	 * @throws
+	 */
+	public List<DicDepartment> getAllDicDepartmentList() throws Exception;
 	
 	
 }

@@ -23,5 +23,7 @@ public interface StoreMapper {
 	public void delete(int id)  throws Exception;
 
 	public Store getDrugLatestPrice(Map<String, Object> params);
+
+	public List<Store> getDrugListForOutStorage(Map<String, Object> params) throws Exception;
 	
 }
