@@ -92,6 +92,45 @@ public class LoginController {
 		return result;
 	}
 	
+	/**
+	 * 获取药库的用户数据
+	 * @Description: 读取用户表，获取当前药库下的用户名称
+	 * @author army.liu
+	 * @param  
+	 * @return {
+	 * 			code : 200 --成功
+	 * 				   300 --失败
+	 * 			data --成功时的数据，List<String>
+	 * 			msg  --失败时的原因
+	 * 		}
+	 * @throws
+	 */
+	@RequestMapping(value = "/getDicEmployeeBySotreName",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDicEmployeeBySotreName(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("storeName")String storeName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			List<String> list = commonService.getDicEmployeeBySotreName(storeName);
+			result.put("data", list);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
 //	/**
 //	  * 获取最近一次登录的用户名称
 //	  * @Description: 获取最近一次登录的用户名称，回显在页面

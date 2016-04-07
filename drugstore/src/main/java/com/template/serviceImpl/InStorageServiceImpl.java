@@ -1,6 +1,7 @@
 package com.template.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -51,6 +52,13 @@ public class InStorageServiceImpl implements InStorageService{
 	public void delete(int billNo) throws Exception {
 		commonService.deleteStoreInOut(billNo);
 		
+	}
+
+	@Override
+	public Map<String, Object> getDrugLatestPrice(String storeName, String id,
+			String batchNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

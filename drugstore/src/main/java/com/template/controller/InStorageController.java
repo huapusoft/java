@@ -113,9 +113,45 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<DicDrug> dicDrug = dicDrugService.getEnabledDrugList(itemName);
+			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
+			result.put("data", list);
 			result.put("code", "200");
-			result.put("data", dicDrug);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 获取选中药品的最近一次进价，零售价
+	 * @Description: 获取选中药品的最近一次进价，零售价，用于添加某个药品后，自动回显进价和零售价
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("id") String id,
+			@RequestParam("batchNo") String batchNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id, batchNo);
+			result.put("data", data);
+			result.put("code", "200");
 			
 		}catch(Exception e){
 			e.printStackTrace();

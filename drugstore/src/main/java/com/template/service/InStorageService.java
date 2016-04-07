@@ -1,6 +1,7 @@
 package com.template.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -38,5 +39,18 @@ public interface InStorageService {
 	* @return void
 	 */
 	public void delete(int billNo) throws Exception;
+
+	/**
+	  * 获取药品最近入库时的进价，零售价
+	  * @Description: 先查询出入库明细表，如果没有查询库存表
+	  * @author army.liu
+	  * @param  storeName-药库名称
+	  * 		id-药品编号
+	  * 		batchNo-药品批号
+	  * @return void
+	  * @throws
+	  */
+	public Map<String, Object> getDrugLatestPrice(String storeName, String id,
+			String batchNo);
 	
 }

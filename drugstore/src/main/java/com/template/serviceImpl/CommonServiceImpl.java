@@ -1,5 +1,6 @@
 package com.template.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +11,14 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.template.dao.DicDrugStoreMapper;
+import com.template.dao.DicEmployeeMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
+import com.template.domain.DictEmployee;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreInOut;
@@ -51,6 +54,9 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private StoreInOutDetailMapper storeInOutDetailMapper;
+	
+	@Resource
+	private DicEmployeeMapper dicEmployeeMapper;
 	
 	@Override
 	public void test() {
@@ -342,6 +348,21 @@ public class CommonServiceImpl implements CommonService {
 		//删除出入库详细表
 		storeInOutDetailMapper.delete(billNo);
 		
+	}
+
+	@Override
+	public List<String> getDicEmployeeBySotreName(String storeName)  throws Exception{
+		List<String> result = new ArrayList<String>();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("roleInfo", storeName);
+		List<DictEmployee> list = dicEmployeeMapper.getByConditions(params);
+		if( null != list && list.size() > 0 ){
+			for(int i=0; i<list.size(); i++){
+				String name = list.get(i).getName();
+				result.add(name);
+			}
+		}
+		return result;
 	}
 	
 }
