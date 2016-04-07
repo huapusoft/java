@@ -50,7 +50,7 @@ public interface DicDrugService {
 	 * @return List<DicDrug>
 	 * @throws
 	 */
-	public List<DicDrug> getEnabledDrugList(String itemName);
+	public List<DicDrug> getEnabledDrugList(String itemName)  throws Exception;
 	
 	
 }

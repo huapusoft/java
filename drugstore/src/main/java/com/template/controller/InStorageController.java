@@ -71,7 +71,8 @@ public class InStorageController {
 	@ResponseBody
 	public Map<String, Object> getEnabledDicProviderList(HttpServletRequest request, 
 			HttpServletResponse response,
-			HttpSession session
+			HttpSession session,
+			@RequestParam("providerName") String providerName
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -79,7 +80,7 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			dicProviderService.getEnabledDicProviderList();
+			dicProviderService.getEnabledDicProviderList(providerName);
 			result.put("code", "200");
 			
 		}catch(Exception e){
