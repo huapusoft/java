@@ -13,58 +13,140 @@
 <html>
 	<head>
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
+		<style type="text/css">
+		body{
+	background: #ebebeb;
+	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
+	color: #222;
+	font-size: 15px;
+   }
+   *{padding: 0px;margin: 0px;}
+   .maincenter{	
+	margin: 130px auto auto; 
+	background: #00EEEE;
+	border-image: none; 
+	width: 600px; 
+	height:650px; 	
+	text-align:center;
+   }
+   .mainlogn{	
+	margin: 50px auto auto; 
+	border-image: none; 
+	width: 400px; 
+	height:50px; 	
+   }
+   .mainlogncenter{	
+	margin: 10px auto auto; 
+	background: #fff;
+	border-image: none; 
+	width: 400px; 
+	height:450px; 	
+   }
+   .fonttitle{
+    float: left;
+   	padding-left: 35px;
+   	padding-top: 35px;
+	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
+	color: #000;
+	font-size: 24px;
+   }
+   .fonttitles{
+    float: left;
+   	padding-left: 35px;
+   	padding-top: 25px;
+	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
+	color: #000;
+	font-size: 24px;
+   }
+   .ipt{
+	border: 2px solid #d3d3d3;
+	padding: 10px 10px;
+	width: 300px;
+	/* border-radius: 4px; */
+	/* padding-left: 35px; */
+	/* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s */
+}
+.selecttype{	
+	width: 325px;
+	height:36px;
+	
+	border: 2px solid #d3d3d3;
+}
+.buttonmenue{	
+	width: 55px;
+	height:36px;	
+	background: #ebebeb;
+}
+		</style>
 	</head>
 	<body>
-		<h2>登录</h2>
-		<br />
-			用户名：<input type="text" id="name" name="name" />
-			密码：<input type="password" id="password" name="password" />
-			<button onclick="login()">提交</button>
+	<div class="maincenter">
+	<div class="mainlogn"></div>
+	<div class="mainlogncenter">
+    <span class="fonttitle" > 药&nbsp;&nbsp;&nbsp;库</span>
+     <p style="position: relative;">
+	  <select name="storeName" class="selecttype" id="storeName">
+        <option selected="selected">---请选择---</option>
+      </select>
+	</p>		
+		 <span class="fonttitles"> 用户名</span>
+     <p style="position: relative;"><input class="ipt"  type="text" id="name" name="name" /></p>
+      <span class="fonttitles"> 密&nbsp;&nbsp;&nbsp;码</span>
+     <p style="position: relative;"><input class="ipt" type="password" id="password" name="password" /></p>	
+     <br />
+     <br />
+     <hr width="99%" color="#d3d3d3" size=3/>
+       <br />	
+     <span class="buttonmenue" onclick="login()">登录</span>
 			
 			
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		用户1：<input type="text" id="name1" name="name1" />
-		用户2：<input type="text" id="name2" name="name2" />
-			<button onclick="add()">新增</button>
+	</div>
+	</div>
 		
 	</body>
 </html>
 
 <script type="text/javascript">
+$(document).ready(function() {	
+	$.ajax({		
+		type:'POST',
+		url:"getAllDicDrugStore",
+		data:{},
+		dataType:'JSON',		
+		success:function(data){			
+			if(data && data.code == 200 ){
+				
+				for(i=0;i<data.data.length;i++){					
+					 var tname=data.data[i].storeName;
+					var tid=data.data[i].id;
+					$("#storeName").append("<option value='"+tid+"'>"+tname+"</option>");  
+					}
+				
+			}else{
+				alert(data.msg);
+			}
+		}
+	})
+});
+
+
 function login(){
 	$.ajax({
 		type:'POST',
-		url:"login",
+		url:"validate",
 		data:{
 			name : $('#name').val(),
+			storeName : $('#storeName').val(),
 			password : $('#password').val()
 		},
 		dataType:'JSON',
 		success:function(data){
 			if(data && data.code == 200 ){
 				location.href='/index';
-			}else{
-				alert(data.msg);
-			}
-		}
-	})
-}
-
-function add(){
-	$.ajax({
-		type:'POST',
-		url:"add",
-		data:{
-			name1 : $('#name1').val(),
-			name2 : $('#name2').val()
-		},
-		dataType:'JSON',
-		success:function(data){
-			if(data && data.code == 200 ){
-				alert('新增成功');
 			}else{
 				alert(data.msg);
 			}
