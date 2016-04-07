@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.StoreInOutMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.StoreInOut">
+		<id column="billNo" property="billNo"  />
+		<result column="storeName" property="storeName" />
+		<result column="billType" property="billType" />
+		<result column="typeData" property="typeData" />
+		<result column="billTime" property="billTime" />
+		<result column="sum1" property="sum1" />
+		<result column="sum2" property="sum2" />
+		<result column="billOper" property="billOper" />
+		<result column="status" property="status" />
+		<result column="submitTime" property="submitTime" />
+		<result column="verifyOper" property="verifyOper" />
+		<result column="verifyTime" property="verifyTime" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from storeInOut
+		where billNo = #{billNo}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from storeInOut
+		<where>
+			<if test="storeName != null and storeName != ''">
+				storeName = #{storeName} 
+			</if>
+			<if test="billType != null and billType != ''">
+				and billType = #{billType}
+			</if>
+			<if test="typeData != null and typeData != ''">
+				and typeData = #{typeData}
+			</if>
+			<if test="status != null and status != ''">
+				and status = #{status}
+			</if>
+			<if test="currYearMonth != null and currYearMonth != ''">
+				and billNo like CONCAT('',#{currYearMonth},'%')  
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.StoreInOut">
+		insert into storeInOut
+		( billNo, storeName, billType, typeData, billTime, sum1, sum2, billOper, status, submitTime, verifyOper, verifyTime )
+		values
+		( #{billNo}, #{storeName}, #{billType}, #{typeData}, #{billTime}, #{sum1}, #{sum2}, #{billOper}, #{status}, #{submitTime}, #{verifyOper}, #{verifyTime} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.StoreInOut">
+		update storeInOut
+		<set>
+			<if test="storeName != null and storeName != ''">
+				storeName = #{storeName},
+			</if>
+			<if test="billType != null and billType != ''">
+				billType = #{billType},
+			</if>
+			<if test="typeData != null and typeData != ''">
+				typeData = #{typeData},
+			</if>
+			<if test="sum1 != null and sum1 != ''">
+				sum1 = #{sum1},
+			</if>
+			<if test="sum2 != null and sum2 != ''">
+				sum2 = #{sum2},
+			</if>
+			<if test="billOper != null and billOper != ''">
+				billOper = #{billOper},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status},
+			</if>
+			<if test="submitTime != null ">
+				submitTime = #{submitTime},
+			</if>
+			<if test="verifyOper != null and verifyOper != ''">
+				verifyOper = #{verifyOper},
+			</if>
+			<if test="verifyTime != null ">
+				verifyTime = #{verifyTime},
+			</if>
+		</set>
+		where billNo = #{billNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from storeInOut
+		where billNo = #{billNo}
+	</delete>
+	
+	<resultMap id="BaseResultMapForCount" type="com.template.domain.StoreInOutForCount">
+		<result column="billType" property="billType" />
+		<result column="sum0" property="sum0" />
+		<result column="sum1" property="sum1" />
+		<result column="sum2" property="sum2" />
+		<result column="sum3" property="sum3" />
+	</resultMap>
+	<select id="getWaitingDataCount" resultMap="BaseResultMapForCount" parameterType="java.util.HashMap">
+		select  
+			billType, 
+			SUM( CASE WHEN status = '0' THEN 1 ELSE 0 END) AS sum0,
+			SUM( CASE WHEN status = '1' THEN 1 ELSE 0 END) AS sum1,
+			SUM( CASE WHEN status = '2' THEN 1 ELSE 0 END) AS sum2,
+			SUM( CASE WHEN status = '3' THEN 1 ELSE 0 END) AS sum3
+		from 
+			storeInOut 
+		<where>
+			<if test="billOper != null and billOper != ''">
+				billOper = #{billOper} 
+			</if>
+		</where>
+		group by 
+			billType
+	</select>
+</mapper>

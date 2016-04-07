@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.StoreMapper">
+	
+	<resultMap id="BaseResultMap" type="com.template.domain.Store">
+		<result column="storeName" property="storeName" />
+		<result column="id" property="id"  />
+		<result column="batchNo" property="batchNo" />
+		<result column="inPrice" property="inPrice" />
+		<result column="price" property="price" />
+		<result column="amount" property="amount" />
+		<result column="amountLowLimit" property="amountLowLimit" />
+		<result column="validDate" property="validDate" />
+		<result column="validDateWarnDays" property="validDateWarnDays" />
+		<result column="special" property="special" />
+		<result column="customOrderCode" property="customOrderCode" />
+		<result column="inTime" property="inTime" />
+		<result column="place1" property="place1" />
+		<result column="place2" property="place2" />
+		<result column="place3" property="place3" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from store
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from store
+		<where>
+			<if test="storeName != null and storeName != ''">
+				and storeName = #{storeName}
+			</if>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and batchNo = #{batchNo}
+			</if>
+			<if test="inPrice != null and inPrice != ''">
+				and inPrice = #{inPrice}
+			</if>
+			<if test="price != null and price != ''">
+				and price = #{price}
+			</if>
+			<if test="stockOutFlag != null and stockOutFlag != ''">
+				and amount &lt; amountLowLimit
+			</if>
+			<if test="deadlineFlag != null and deadlineFlag != ''">
+				and datediff( day, GetDate(), validDate ) &lt;= validDateWarnDays
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.Store">
+		insert into store
+		( storeName, id, batchNo, inPrice, price, amount, amountLowLimit, 
+			validDate, validDateWarnDays, special, customOrderCode, 
+			inTime, place1, place2, place3 )
+		values
+		( #{storeName}, #{id}, #{batchNo}, #{inPrice}, #{price}, #{amount}, #{amountLowLimit}, 
+			#{validDate}, #{validDateWarnDays}, #{special}, #{customOrderCode}, 
+			#{inTime}, #{place1}, #{place2}, #{place3} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.Store">
+		update store
+		<set>
+			<if test="storeName != null and storeName != ''">
+				storeName = #{storeName},
+			</if>
+			<if test="batchNo != null and batchNo != ''">
+				batchNo = #{batchNo},
+			</if>
+			<if test="inPrice != null and inPrice != ''">
+				inPrice = #{inPrice},
+			</if>
+			<if test="price != null and price != ''">
+				price = #{price},
+			</if>
+			<if test="amount != null and amount != ''">
+				amount = #{amount},
+			</if>
+			<if test="amountLowLimit != null and amountLowLimit != ''">
+				amountLowLimit = #{amountLowLimit},
+			</if>
+			<if test="validDate != null and validDate != ''">
+				validDate = #{validDate},
+			</if>
+			<if test="validDateWarnDays != null and validDateWarnDays != ''">
+				validDateWarnDays = #{validDateWarnDays},
+			</if>
+			<if test="special != null and special != ''">
+				special = #{special},
+			</if>
+			<if test="customOrderCode != null and customOrderCode != ''">
+				customOrderCode = #{customOrderCode},
+			</if>
+			<if test="inTime != null and inTime != ''">
+				inTime = #{inTime},
+			</if>
+			<if test="place1 != null and place1 != ''">
+				place1 = #{place1},
+			</if>
+			<if test="place2 != null and place2 != ''">
+				place2 = #{place2},
+			</if>
+			<if test="place3 != null and place3 != ''">
+				place3 = #{place3},
+			</if>
+		</set>
+		where checkNo = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from store
+		where id = #{id}
+	</delete>
+</mapper>

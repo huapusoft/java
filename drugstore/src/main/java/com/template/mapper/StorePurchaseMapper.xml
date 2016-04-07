@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.StorePurchasePlanMapper">
+	
+	<resultMap id="BaseResultMap" type="com.template.domain.StorePurchasePlan">
+		<id column="purchaseNo" property="purchaseNo"  />
+		<result column="storeName" property="storeName" />
+		<result column="purchaseTime" property="purchaseTime" />
+		<result column="remark" property="remark" />
+		<result column="inSum" property="inSum" />
+		<result column="retailSum" property="retailSum" />
+		<result column="status" property="status" />
+		<result column="oper" property="oper" />
+		<result column="submitTime" property="submitTime" />
+		<result column="financeOper" property="financeOper" />
+		<result column="financeTime" property="financeTime" />
+		<result column="leader" property="leader" />
+		<result column="leaderTime" property="leaderTime" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from storePurchasePlan
+		where purchaseNo = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from storePurchasePlan
+		<where>
+			<if test="storeName != null and storeName != ''">
+				and storeName = #{storeName}
+			</if>
+			<if test="oper != null and oper != ''">
+				and oper = #{oper}
+			</if>
+			<if test="status != null and status != ''">
+				and status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.StorePurchasePlan">
+		insert into storePurchasePlan
+		( purchaseNo, storeName, purchaseTime, remark, inSum, retailSum, status, oper, submitTime, financeOper, financeTime, leader, leaderTime)
+		values
+		( #{purchaseNo}, #{storeName}, #{purchaseTime}, #{remark}, #{inSum}, #{retailSum}, #{status}, #{oper}, #{submitTime}, #{financeOper}, #{financeTime}, #{leader}, #{leaderTime} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.StorePurchasePlan">
+		update storePurchasePlan
+		<set>
+			<if test="storeName != null and storeName != ''">
+				storeName = #{storeName},
+			</if>
+			<if test="purchaseTime != null and purchaseTime != ''">
+				purchaseTime = #{purchaseTime},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark},
+			</if>
+			<if test="inSum != null and inSum != ''">
+				inSum = #{inSum},
+			</if>
+			<if test="retailSum != null and retailSum != ''">
+				retailSum = #{retailSum},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status},
+			</if>
+			<if test="oper != null and oper != ''">
+				oper = #{oper},
+			</if>
+			<if test="financeOper != null and financeOper != ''">
+				financeOper = #{financeOper},
+			</if>
+			<if test="financeTime != null and financeTime != ''">
+				financeTime = #{financeTime},
+			</if>
+			<if test="leader != null and leader != ''">
+				leader = #{leader},
+			</if>
+			<if test="leaderTime != null and leaderTime != ''">
+				leaderTime = #{leaderTime},
+			</if>
+		</set>
+		where purchaseNo = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from storePurchasePlan
+		where purchaseNo = #{id}
+	</delete>
+	
+	<resultMap id="BaseResultMapForCount" type="com.template.domain.StorePurchasePlanForCount">
+		<result column="status" property="status" />
+		<result column="total" property="total" />
+	</resultMap>
+	<select id="getWaitingDataCount" resultMap="BaseResultMapForCount" parameterType="java.util.HashMap">
+		select  
+			status,count(*) AS total
+		from 
+			storePurchasePlan 
+		<where>
+			<if test="oper != null and oper != ''">
+				oper = #{oper} 
+			</if>
+		</where>
+		group by 
+			status
+	</select>
+	
+</mapper>
