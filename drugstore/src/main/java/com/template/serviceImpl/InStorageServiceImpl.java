@@ -24,7 +24,7 @@ import com.template.service.InStorageService;
 * @author  fengql 
 * @date 2016年4月5日 上午10:59:41
  */
-@Service("InStorageService")
+@Service("inStorageService")
 public class InStorageServiceImpl implements InStorageService{
 	
 	@Resource
@@ -61,7 +61,7 @@ public class InStorageServiceImpl implements InStorageService{
 	}
 
 	@Override
-	public Map<String, Object> getDrugLatestPrice(String storeName, String id,
+	public Map<String, Object> getDrugLatestPrice(String storeName, int id,
 			String batchNo) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("price1", null);

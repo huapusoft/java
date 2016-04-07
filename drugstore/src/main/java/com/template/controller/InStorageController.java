@@ -139,7 +139,7 @@ public class InStorageController {
 	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestParam("id") String id,
+			@RequestParam("id") int id,
 			@RequestParam("batchNo") String batchNo
 			) throws Exception {
 		

@@ -1,6 +1,7 @@
 package com.template.test.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -10,10 +11,10 @@ import com.template.domain.DicDrug;
 import com.template.domain.DicProvider;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
-//import com.template.service.InStorageService;
+import com.template.service.InStorageService;
 
 /**
- * commonservice测试类
+ * InStorageService测试类
  * @Description: 测试
  * @author army.liu
  */
@@ -45,6 +46,15 @@ public class InStorageServiceTest {
 		list = dicDrugService.getEnabledDrugList("a");
 		System.out.println( list.size());
 		
+	}
+	
+	@Test
+	public void testgetDrugLatestPrice() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
+		
+		Map<String, Object> data = inStorageService.getDrugLatestPrice( "一号仓库", 1000, "PCdsfsdfsd111");
+		System.out.println(data);
 	}
 	
 }

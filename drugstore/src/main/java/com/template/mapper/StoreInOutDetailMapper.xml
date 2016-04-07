@@ -46,7 +46,7 @@
 		select top(1) siod.price1,siod.price2
 		from storeInOutDetail siod
 		inner join storeInOut sio
-		on sio.billNo = siod.billNo
+		on sio.billNo = siod.billNo and sio.billType = '入库'
 		<where>
 			<if test="storeName != null and storeName != ''">
 				and sio.storeName = #{storeName}
