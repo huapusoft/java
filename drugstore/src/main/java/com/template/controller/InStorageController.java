@@ -163,4 +163,66 @@ public class InStorageController {
 		return result;
 	}
 	
+	/**
+	 * 提交入库草稿
+	 * @Description: 提交入库草稿
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/submit",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@RequestParam("billNo")int billNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "提交失败");
+		
+		try{
+			inStorageService.submit(billNo);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "提交失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 作废入库草稿
+	 * @Description: 作废入库草稿
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/delete",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> delete(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@RequestParam("billNo")int billNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "作废失败");
+		
+		try{
+			inStorageService.delete(billNo);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "作废失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
 }
