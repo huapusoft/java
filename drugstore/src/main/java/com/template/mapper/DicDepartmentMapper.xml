@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDepartmentMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicDepartment">
+		<id column="departmentId" property="departmentId"  />
+		<result column="departmentCode" property="departmentCode" />
+		<result column="departmentName" property="departmentName" />
+		<result column="parentId" property="parentId" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_department
+		where departmentId = #{departmentId}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_department
+		<where>
+			<if test="departmentCode != null and departmentCode != ''">
+				departmentCode = #{departmentCode} 
+			</if>
+			<if test="departmentName != null and departmentName != ''">
+				and departmentName like CONCAT('%',#{departmentName},'%')
+			</if>
+			<if test="parentId != null and parentId != ''">
+				parentId = #{parentId} 
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicDepartment">
+		insert into dic_department
+		( departmentId, departmentCode, departmentName, parentId )
+		values
+		( #{departmentId}, #{departmentCode}, #{departmentName}, #{parentId} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicDepartment">
+		update dic_department
+		<set>
+			<if test="departmentCode != null and departmentCode != ''">
+				departmentCode = #{departmentCode},
+			</if>
+			<if test="departmentName != null and departmentName != ''">
+				departmentName = #{departmentName},
+			</if>
+			<if test="parentId != null and parentId != ''">
+				parentId = #{parentId},
+			</if>
+		</set>
+		where departmentId = #{departmentId}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_department
+		where departmentId = #{departmentId}
+	</delete>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.NoticesMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.Notices">
+		<id column="id" property="id"  />
+		<result column="title" property="title" />
+		<result column="message" property="message" />
+		<result column="deadline" property="deadline" />
+		<result column="releaseMan" property="releaseMan" />
+		<result column="releaseTime" property="releaseTime" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from notice
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from notice
+		<where>
+			<if test="title != null and title != ''">
+				title like CONCAT('%',#{title},'%')  
+			</if>
+			<if test="message != null and message != ''">
+				and message like CONCAT('%',#{message},'%')  
+			</if>
+			<if test="deadline != null ">
+				and deadline &gt;= #{deadline}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.Notices">
+		insert into notice
+		( id, title, message, deadline, releaseMan, releaseTime )
+		values
+		( #{id}, #{title}, #{message}, #{deadline}, #{releaseMan}, #{releaseTime} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.Notices">
+		update notice
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="message != null and message != ''">
+				message = #{message},
+			</if>
+			<if test="deadline != null and deadline != ''">
+				deadline = #{deadline},
+			</if>
+			<if test="releaseMan != null and releaseMan != ''">
+				releaseMan = #{releaseMan},
+			</if>
+			<if test="releaseTime != null and releaseTime != ''">
+				releaseTime = #{releaseTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from notice
+		where id = #{id}
+	</delete>
+</mapper>

@@ -1,6 +1,8 @@
 package com.template.util;
 
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,5 +66,54 @@ public abstract  class CommonUtil {
 		request.getSession().removeAttribute("user");
 	}
 	
+	/**
+	  * 获取session中用户名称
+	  * 
+	  * @Description: 在用户登录时，将用户以user存入session
+	  * @author army.liu
+	  * @date 2016年4月5日 上午11:05:19
+	 */
+	public static String getUserNameFromSession(HttpServletRequest request) {
+		if( null != request.getSession().getAttribute("user") ){
+			DictEmployee user = (DictEmployee)request.getSession().getAttribute("user");
+			if( null != user ){
+				return user.getName();
+			}
+			
+		}
+		return null;
+	}
 	
+	/**
+	  * 获取session中药库名称
+	  * 
+	  * @Description: 在用户登录时，将选择的药库名称，存入用户的roleInfo字段，并将用户以user存入session
+	  * @author army.liu
+	  * @date 2016年4月5日 上午11:05:19
+	 */
+	public static String getStoreNameFromSession(HttpServletRequest request) {
+		if( null != request.getSession().getAttribute("user") ){
+			DictEmployee user = (DictEmployee)request.getSession().getAttribute("user");
+			if( null != user ){
+				return user.getRoleInfo();
+			}
+			
+		}
+		return null;
+	}
+	
+
+	/**
+	  * 获取当前系统时间的年月
+	  * 
+	  * @Description: 获取当前系统时间的年月，格式yyyyMM
+	  * @author army.liu
+	  * @date 2016年4月5日 上午11:05:19
+	 */
+	public static String getCurrYearMonth() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		return sdf.format(new Date());
+		
+	}
+
 }

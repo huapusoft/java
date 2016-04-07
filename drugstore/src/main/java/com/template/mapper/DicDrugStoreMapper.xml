@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDrugStoreMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicDrugStore">
+		<id column="id" property="id"  />
+		<result column="storeName" property="storeName" />
+		<result column="tableName" property="tableName" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_drugStore
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_drugStore
+		<where>
+			<if test="storeName != null and storeName != ''">
+				storeName = #{storeName} 
+			</if>
+			<if test="tableName != null and tableName != ''">
+				and tableName = #{tableName}
+			</if>
+		</where>
+	</select>
+	
+</mapper>
