@@ -3,7 +3,7 @@ package com.template.dao;
 import com.template.domain.StoreInOutDetail;
 
 /**
- * 入库Mapper
+ * 出入库明细表Mapper
 * @author  fengql 
 * @date 2016年4月5日 上午10:46:50
  */
