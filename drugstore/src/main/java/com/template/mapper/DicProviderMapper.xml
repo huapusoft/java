@@ -25,14 +25,8 @@
 		select *
 		from dic_provider
 		<where>
-			<if test="departmentCode != null and departmentCode != ''">
-				departmentCode = #{departmentCode} 
-			</if>
-			<if test="departmentName != null and departmentName != ''">
-				and departmentName like CONCAT('%',#{departmentName},'%')
-			</if>
-			<if test="parentId != null and parentId != ''">
-				parentId = #{parentId} 
+			<if test="providerName != null and providerName != ''">
+				and  ( providerName like CONCAT('%',#{providerName},'%') ) OR ( wb like CONCAT('%',#{providerName},'%') ) OR ( py like CONCAT('%',#{providerName},'%') )
 			</if>
 		</where>
 	</select>

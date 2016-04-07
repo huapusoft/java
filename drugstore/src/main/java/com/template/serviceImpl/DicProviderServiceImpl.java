@@ -54,8 +54,9 @@ public class DicProviderServiceImpl implements DicProviderService {
 	}
 
 	@Override
-	public List<DicProvider> getEnabledDicProviderList() throws Exception {
+	public List<DicProvider> getEnabledDicProviderList(String providerName) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("providerName", providerName);//模糊查询
 		params.put("enabled", 1);//启用
 		return dicProviderMapper.getByConditions(params);
 	}

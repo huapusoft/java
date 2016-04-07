@@ -1,34 +1,11 @@
 package com.template.domain;
 
-import java.math.BigDecimal;
-
 /**
  * 药品基础信息实体
  * @Description: 药品基础信息实体
  * @author army.liu
  */
 public class DicDrug {
-
-//	adviceUnitValueUnit	char:16	医嘱单位数值单位
-//	adviceUnitClinicRatio	int	医嘱单位门诊比率
-//	adviceUnitInhosRatio	int	医嘱单位住院比率
-//	wb	char:64	五笔码
-//	py	char:64	拼音码
-//	drugFunction	char:16	药品功能代码
-//	drugClass	char:16	药品类别
-//	drugForm	char:16	药品剂型
-//	compositeItem	int	是否为复合项目
-//	subItemSelect	int	是否有自选子项目
-//	partSelect	int	是否自选部位（专指检查项目）
-//	changePrice	int	是否可以更改价格
-//	showInAdvice	int	是否在医嘱中显示
-//	enabled	int	是否启用
-//	hzylCode	char:32	合作医疗对应码
-//	hzylVerify	int	合作医疗审批标志
-//	hzylReimburse	int	合作医疗是否报销
-//	ybCode	char:32	医疗保险对应码
-//	ybClinicSelfRatio	numeric:(8,2)	医疗保险门诊自理比例
-//	ybInhosSelfRatio	numeric:(8,2)	医疗保险住院自理比例
 
 	private int id;//标识（唯一）
 
@@ -66,41 +43,41 @@ public class DicDrug {
 
     private String py;//拼音码
 
-    private String drugfunction;//
+    private String drugfunction;//药品功能代码
 
-    private String drugclass;//
+    private String drugclass;//药品类别
 
-    private String drugfrom;//
+    private String drugfrom;//药品剂型
 
-    private Integer compositeitem;//
+    private int compositeitem;//是否为复合项目
 
-    private Integer subitemselect;//
+    private int subitemselect;//是否有自选子项目
 
-    private Integer partselect;//
+    private int partselect;//是否自选部位（专指检查项目）
 
-    private Integer changeprice;//
+    private int changeprice;//是否可以更改价格
 
-    private Integer showinadvice;//
+    private int showinadvice;//是否在医嘱中显示
 
-    private Integer enabled;//
+    private int enabled;//是否启用
 
-    private String hzylcode;//
+    private String hzylcode;//合作医疗对应码
 
-    private Integer hzylverify;//
+    private int hzylverify;//合作医疗审批标志
 
-    private Integer hzylreimburse;//
+    private int hzylreimburse;//合作医疗是否报销
 
-    private String ybcode;//
+    private String ybcode;//医疗保险对应码
 
-    private double ybclinicselfratio;//
+    private double ybclinicselfratio;//医疗保险门诊自理比例
 
-    private double ybinhosselfratio;//
+    private double ybinhosselfratio;//医疗保险住院自理比例
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -160,11 +137,11 @@ public class DicDrug {
         this.clinicunit = clinicunit;
     }
 
-    public Integer getClinicunitratio() {
+    public int getClinicunitratio() {
         return clinicunitratio;
     }
 
-    public void setClinicunitratio(Integer clinicunitratio) {
+    public void setClinicunitratio(int clinicunitratio) {
         this.clinicunitratio = clinicunitratio;
     }
 
@@ -176,11 +153,11 @@ public class DicDrug {
         this.inhosunit = inhosunit;
     }
 
-    public Integer getInhosunitratio() {
+    public int getInhosunitratio() {
         return inhosunitratio;
     }
 
-    public void setInhosunitratio(Integer inhosunitratio) {
+    public void setInhosunitratio(int inhosunitratio) {
         this.inhosunitratio = inhosunitratio;
     }
 
@@ -208,19 +185,19 @@ public class DicDrug {
         this.adviceunitvalueunit = adviceunitvalueunit;
     }
 
-    public Integer getAdviceunitclinicratio() {
+    public int getAdviceunitclinicratio() {
         return adviceunitclinicratio;
     }
 
-    public void setAdviceunitclinicratio(Integer adviceunitclinicratio) {
+    public void setAdviceunitclinicratio(int adviceunitclinicratio) {
         this.adviceunitclinicratio = adviceunitclinicratio;
     }
 
-    public Integer getAdviceunitinhosratio() {
+    public int getAdviceunitinhosratio() {
         return adviceunitinhosratio;
     }
 
-    public void setAdviceunitinhosratio(Integer adviceunitinhosratio) {
+    public void setAdviceunitinhosratio(int adviceunitinhosratio) {
         this.adviceunitinhosratio = adviceunitinhosratio;
     }
 
@@ -264,51 +241,51 @@ public class DicDrug {
         this.drugfrom = drugfrom;
     }
 
-    public Integer getCompositeitem() {
+    public int getCompositeitem() {
         return compositeitem;
     }
 
-    public void setCompositeitem(Integer compositeitem) {
+    public void setCompositeitem(int compositeitem) {
         this.compositeitem = compositeitem;
     }
 
-    public Integer getSubitemselect() {
+    public int getSubitemselect() {
         return subitemselect;
     }
 
-    public void setSubitemselect(Integer subitemselect) {
+    public void setSubitemselect(int subitemselect) {
         this.subitemselect = subitemselect;
     }
 
-    public Integer getPartselect() {
+    public int getPartselect() {
         return partselect;
     }
 
-    public void setPartselect(Integer partselect) {
+    public void setPartselect(int partselect) {
         this.partselect = partselect;
     }
 
-    public Integer getChangeprice() {
+    public int getChangeprice() {
         return changeprice;
     }
 
-    public void setChangeprice(Integer changeprice) {
+    public void setChangeprice(int changeprice) {
         this.changeprice = changeprice;
     }
 
-    public Integer getShowinadvice() {
+    public int getShowinadvice() {
         return showinadvice;
     }
 
-    public void setShowinadvice(Integer showinadvice) {
+    public void setShowinadvice(int showinadvice) {
         this.showinadvice = showinadvice;
     }
 
-    public Integer getEnabled() {
+    public int getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
 
@@ -320,19 +297,19 @@ public class DicDrug {
         this.hzylcode = hzylcode;
     }
 
-    public Integer getHzylverify() {
+    public int getHzylverify() {
         return hzylverify;
     }
 
-    public void setHzylverify(Integer hzylverify) {
+    public void setHzylverify(int hzylverify) {
         this.hzylverify = hzylverify;
     }
 
-    public Integer getHzylreimburse() {
+    public int getHzylreimburse() {
         return hzylreimburse;
     }
 
-    public void setHzylreimburse(Integer hzylreimburse) {
+    public void setHzylreimburse(int hzylreimburse) {
         this.hzylreimburse = hzylreimburse;
     }
 

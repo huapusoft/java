@@ -28,7 +28,7 @@ public interface InStorageService {
 	* @parameter  billNo-票据号
 	* @return void
 	 */
-	public void submit(Integer billNo) throws Exception;
+	public void submit(int billNo) throws Exception;
 	
 	/**
 	 * 作废
@@ -37,6 +37,6 @@ public interface InStorageService {
 	* @parameter  billNo-票据号
 	* @return void
 	 */
-	public void delete(Integer billNo) throws Exception;
+	public void delete(int billNo) throws Exception;
 	
 }

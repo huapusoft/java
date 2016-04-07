@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDrug;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.util.CommonUtil;
@@ -38,6 +40,9 @@ public class InStorageController {
 	
 	@Resource  
 	private DicProviderService dicProviderService;
+	
+	@Resource  
+	private DicDrugService dicDrugService;
 	
 	/**
 	 * 入库登记页面
@@ -66,7 +71,8 @@ public class InStorageController {
 	@ResponseBody
 	public Map<String, Object> getEnabledDicProviderList(HttpServletRequest request, 
 			HttpServletResponse response,
-			HttpSession session
+			HttpSession session,
+			@RequestParam("providerName") String providerName
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -74,7 +80,7 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			dicProviderService.getEnabledDicProviderList();
+			dicProviderService.getEnabledDicProviderList(providerName);
 			result.put("code", "200");
 			
 		}catch(Exception e){
@@ -99,7 +105,7 @@ public class InStorageController {
 	public Map<String, Object> getDicProviderList(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestParam("drugName") String drugShortName
+			@RequestParam("itemName") String itemName
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -107,8 +113,9 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-//			List<DicDrug> dicDrug = dicDrugService.getEnabledDrugList(drugShortName);
+			List<DicDrug> dicDrug = dicDrugService.getEnabledDrugList(itemName);
 			result.put("code", "200");
+			result.put("data", dicDrug);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -154,6 +161,68 @@ public class InStorageController {
 			
 		}
 		 
+		return result;
+	}
+	
+	/**
+	 * 提交入库草稿
+	 * @Description: 提交入库草稿
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/submit",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@RequestParam("billNo")int billNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "提交失败");
+		
+		try{
+			inStorageService.submit(billNo);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "提交失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 作废入库草稿
+	 * @Description: 作废入库草稿
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/delete",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> delete(HttpServletRequest request, HttpServletResponse response,HttpSession session,
+			@RequestParam("billNo")int billNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "作废失败");
+		
+		try{
+			inStorageService.delete(billNo);
+			result.put("code", "200");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "作废失败："+e.getMessage());
+			
+		}
+		
 		return result;
 	}
 	

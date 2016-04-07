@@ -53,14 +53,15 @@ public interface DicProviderService {
 	public List<DicProvider> getByConditions(Map<String, Object> params) throws Exception;
 
 	/**
+	 * @param providerName 
 	 * 获取已启用的供应商列表
 	 * @Description: 查询供应商表，已启用的数据
 	 * @author army.liu
-	 * @param  
+	 * @param  providerName - 名称模糊查询
 	 * @return List<DicProvider>
 	 * @throws
 	 */
-	public List<DicProvider> getEnabledDicProviderList() throws Exception;
+	public List<DicProvider> getEnabledDicProviderList(String providerName) throws Exception;
 	
 	
 }

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDrugMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicDrug">
+		<id column="id" property="id"  />
+	    <result column="expenseClass" property="expenseclass"  />
+	    <result column="storeClass" property="storeclass"  />
+	    <result column="itemName" property="itemname"  />
+	    <result column="spec" property="spec"  />
+	    <result column="vendor" property="vendor"  />
+	    <result column="unit" property="unit"  />
+	    <result column="clinicUnit" property="clinicunit"  />
+	    <result column="clinicUnitRatio" property="clinicunitratio"  />
+	    <result column="inhosUnit" property="inhosunit" />
+	    <result column="inhosUnitRatio" property="inhosunitratio"  />
+	    <result column="adviceUnit" property="adviceunit" />
+	    <result column="adviceUnitValue" property="adviceunitvalue"  />
+	    <result column="adviceUnitValueUnit" property="adviceunitvalueunit"  />
+	    <result column="adviceUnitClinicRatio" property="adviceunitclinicratio"  />
+	    <result column="adviceUnitInhosRatio" property="adviceunitinhosratio"  />
+	    <result column="wb" property="wb"  />
+	    <result column="py" property="py"  />
+	    <result column="drugFunction" property="drugfunction"  />
+	    <result column="drugClass" property="drugclass"  />
+	    <result column="drugFrom" property="drugfrom"  />
+	    <result column="compositeItem" property="compositeitem"  />
+	    <result column="subItemSelect" property="subitemselect"  />
+	    <result column="partSelect" property="partselect"  />
+	    <result column="changePrice" property="changeprice"  />
+	    <result column="showInAdvice" property="showinadvice"  />
+	    <result column="enabled" property="enabled"  />
+	    <result column="hzylCode" property="hzylcode"  />
+	    <result column="hzylVerify" property="hzylverify"  />
+	    <result column="hzylReimburse" property="hzylreimburse"  />
+	    <result column="ybCode" property="ybcode"  />
+	    <result column="ybClinicSelfRatio" property="ybclinicselfratio"  />
+	    <result column="ybInhosSelfRatio" property="ybinhosselfratio"  />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_drug
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_drug
+		<where>
+			<if test="itemName != null and itemName != ''">
+				( itemName like CONCAT('%',#{itemName},'%') ) OR ( wb like CONCAT('%',#{itemName},'%') ) OR ( py like CONCAT('%',#{itemName},'%') )
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicDrug">
+		insert into dic_drug (
+		  id, expenseClass, storeClass, 
+	      itemName, spec, vendor, unit, 
+	      clinicUnit, clinicUnitRatio, inhosUnit, 
+	      inhosUnitRatio, adviceUnit, adviceUnitValue, 
+	      adviceUnitValueUnit, adviceUnitClinicRatio, 
+	      adviceUnitInhosRatio, wb, py, 
+	      drugFunction, drugClass, drugFrom, 
+	      compositeItem, subItemSelect, partSelect, 
+	      changePrice, showInAdvice, enabled, 
+	      hzylCode, hzylVerify, hzylReimburse, 
+	      ybCode, ybClinicSelfRatio, ybInhosSelfRatio
+	    )
+	    values (
+	      #{id}, #{expenseclass}, #{storeclass}, 
+	      #{itemname}, #{spec}, #{vendor}, #{unit}, 
+	      #{clinicunit}, #{clinicunitratio}, #{inhosunit}, 
+	      #{inhosunitratio}, #{adviceunit}, #{adviceunitvalue}, 
+	      #{adviceunitvalueunit}, #{adviceunitclinicratio}, 
+	      #{adviceunitinhosratio}, #{wb}, #{py}, 
+	      #{drugfunction}, #{drugclass}, #{drugfrom}, 
+	      #{compositeitem}, #{subitemselect}, #{partselect}, 
+	      #{changeprice}, #{showinadvice}, #{enabled}, 
+	      #{hzylcode}, #{hzylverify}, #{hzylreimburse}, 
+	      #{ybcode}, #{ybclinicselfratio}, #{ybinhosselfratio} 
+	    )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicDrug">
+		update dic_drug
+		<set >
+	      <if test="expenseclass != null" >
+	        expenseClass = #{expenseclass},
+	      </if>
+	      <if test="storeclass != null" >
+	        storeClass = #{storeclass},
+	      </if>
+	      <if test="itemname != null" >
+	        itemName = #{itemname},
+	      </if>
+	      <if test="spec != null" >
+	        spec = #{spec},
+	      </if>
+	      <if test="vendor != null" >
+	        vendor = #{vendor},
+	      </if>
+	      <if test="unit != null" >
+	        unit = #{unit},
+	      </if>
+	      <if test="clinicunit != null" >
+	        clinicUnit = #{clinicunit},
+	      </if>
+	      <if test="clinicunitratio != null" >
+	        clinicUnitRatio = #{clinicunitratio},
+	      </if>
+	      <if test="inhosunit != null" >
+	        inhosUnit = #{inhosunit},
+	      </if>
+	      <if test="inhosunitratio != null" >
+	        inhosUnitRatio = #{inhosunitratio},
+	      </if>
+	      <if test="adviceunit != null" >
+	        adviceUnit = #{adviceunit},
+	      </if>
+	      <if test="adviceunitvalue != null" >
+	        adviceUnitValue = #{adviceunitvalue},
+	      </if>
+	      <if test="adviceunitvalueunit != null" >
+	        adviceUnitValueUnit = #{adviceunitvalueunit},
+	      </if>
+	      <if test="adviceunitclinicratio != null" >
+	        adviceUnitClinicRatio = #{adviceunitclinicratio},
+	      </if>
+	      <if test="adviceunitinhosratio != null" >
+	        adviceUnitInhosRatio = #{adviceunitinhosratio},
+	      </if>
+	      <if test="wb != null" >
+	        wb = #{wb},
+	      </if>
+	      <if test="py != null" >
+	        py = #{py},
+	      </if>
+	      <if test="drugfunction != null" >
+	        drugFunction = #{drugfunction},
+	      </if>
+	      <if test="drugclass != null" >
+	        drugClass = #{drugclass},
+	      </if>
+	      <if test="drugfrom != null" >
+	        drugFrom = #{drugfrom},
+	      </if>
+	      <if test="compositeitem != null" >
+	        compositeItem = #{compositeitem},
+	      </if>
+	      <if test="subitemselect != null" >
+	        subItemSelect = #{subitemselect},
+	      </if>
+	      <if test="partselect != null" >
+	        partSelect = #{partselect},
+	      </if>
+	      <if test="changeprice != null" >
+	        changePrice = #{changeprice},
+	      </if>
+	      <if test="showinadvice != null" >
+	        showInAdvice = #{showinadvice},
+	      </if>
+	      <if test="enabled != null" >
+	        enabled = #{enabled},
+	      </if>
+	      <if test="hzylcode != null" >
+	        hzylCode = #{hzylcode},
+	      </if>
+	      <if test="hzylverify != null" >
+	        hzylVerify = #{hzylverify},
+	      </if>
+	      <if test="hzylreimburse != null" >
+	        hzylReimburse = #{hzylreimburse},
+	      </if>
+	      <if test="ybcode != null" >
+	        ybCode = #{ybcode},
+	      </if>
+	      <if test="ybclinicselfratio != null" >
+	        ybClinicSelfRatio = #{ybclinicselfratio},
+	      </if>
+	      <if test="ybinhosselfratio != null" >
+	        ybInhosSelfRatio = #{ybinhosselfratio},
+	      </if>
+	    </set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_drug
+		where id = #{id}
+	</delete>
+</mapper>

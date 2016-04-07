@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.template.domain.DicDrugStore;
 import com.template.domain.Store;
+import com.template.domain.StoreInOut;
+import com.template.domain.StoreInOutDetail;
 
 /**
  * 公共service
@@ -93,4 +95,35 @@ public interface CommonService {
 	  */
 	public boolean validateStoreName(String storeName);
 	
+	/**
+	  * 保存出入库草稿
+	  * @Description: 保存出入库草稿
+	  * @author army.liu
+	  * @param  inOut-药库出入库主表数据
+	  * 		detail-药库出入库详细表数据
+	  * 		billOper-操作员
+	  * @return void
+	  * @throws
+	  */
+	public void saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName)  throws Exception;
+	
+	/**
+	  * 提交出入库草稿
+	  * @Description: 提交出入库草稿
+	  * @author army.liu
+	  * @param  billNo-票据号
+	  * @return void
+	  * @throws
+	  */
+	public void submitStoreInOut(int billNo) throws Exception;
+	
+	/**
+	 * 作废出入库草稿
+	 * @Description: 作废出入库草稿
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * @return void
+	 * @throws
+	 */
+	public void deleteStoreInOut(int billNo) throws Exception;
 }

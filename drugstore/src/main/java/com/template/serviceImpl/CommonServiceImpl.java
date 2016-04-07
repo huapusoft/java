@@ -1,5 +1,6 @@
 package com.template.serviceImpl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.template.dao.DicDrugStoreMapper;
 import com.template.dao.StoreCheckMapper;
+import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
@@ -17,6 +19,7 @@ import com.template.domain.DicDrugStore;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreInOut;
+import com.template.domain.StoreInOutDetail;
 import com.template.domain.StoreInOutForCount;
 import com.template.domain.StorePurchasePlanForCount;
 import com.template.service.CommonService;
@@ -45,6 +48,9 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private StoreMapper storeMapper;
+	
+	@Resource
+	private StoreInOutDetailMapper storeInOutDetailMapper;
 	
 	@Override
 	public void test() {
@@ -225,4 +231,117 @@ public class CommonServiceImpl implements CommonService {
 		return true;
 	}
 
+	@Override
+	public void saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
+		if( null == inOut ){
+			throw new RuntimeException("出入库信息为空");
+		}
+		
+		int billNo = inOut.getBillNo();
+		if( 0 == billNo ){
+			//1.插入出入库主表，生成票据号
+			billNo = this.createBillNo();
+			inOut.setBillNo(billNo);//票据号
+			inOut.setStoreName(storeName);//药库名：从session获取
+			inOut.setBillTime(new Date());//创建时间
+			inOut.setBillOper(billOper);//操作员
+			inOut.setStatus( Constants.BusinessStatus.NEW );//草稿
+			storeInOutMapper.insert(inOut);
+			
+			//2.获取票据号，插入出入库明细表
+			if( null == detailList ){
+				throw new RuntimeException("出入库明细信息为空");
+			}
+			for(int i=0; i<detailList.size(); i++){
+				StoreInOutDetail detail = detailList.get(i);
+				detail.setBillNo(billNo);
+				storeInOutDetailMapper.insert(detail);
+				
+			}
+			
+		}else{
+			//1.更新出入库主表
+			StoreInOut oldInOut = storeInOutMapper.getById(billNo);
+			if( null == oldInOut ){
+				throw new RuntimeException("出入库信息不存在");
+			}
+			//检查状态
+			if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
+					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
+					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+				){
+				throw new RuntimeException("不是草稿状态，不可更新");
+				
+			}
+			
+			oldInOut.setTypeData( inOut.getTypeData() );
+			oldInOut.setSum1( inOut.getSum1() );
+			oldInOut.setSum2( inOut.getSum2() );
+			oldInOut.setStatus(Constants.BusinessStatus.NEW);
+			oldInOut.setStoreName(storeName);
+			oldInOut.setBillOper(billOper);
+			storeInOutMapper.update(oldInOut);
+			
+			//2.删除原来的入库明细信息，重新插入出入库明细表
+			if( null == detailList ){
+				throw new RuntimeException("出入库明细信息为空");
+			}
+			
+			//2.1删除出入库明细表
+			storeInOutDetailMapper.delete(billNo);
+			
+			//2.2重新插出入库明细表
+			for(int i=0; i<detailList.size(); i++){
+				StoreInOutDetail detail = detailList.get(i);
+				detail.setBillNo(billNo);
+				storeInOutDetailMapper.insert(detail);
+				
+			}
+			
+			
+		}
+		
+	}
+	
+	@Override
+	public void submitStoreInOut(int billNo) throws Exception {
+		if( 0 == billNo ){
+			throw new RuntimeException("票据号为空");
+		}
+		StoreInOut inOut = storeInOutMapper.getById(billNo);
+		if( null == inOut ){
+			throw new RuntimeException("票据号对应的数据为空");
+		}
+		//更新出入库主表
+		inOut.setStatus( Constants.BusinessStatus.SUBMIT);//已提交
+		inOut.setSubmitTime(new Date());//提交时间
+		storeInOutMapper.update(inOut);
+		
+	}
+
+	@Override
+	public void deleteStoreInOut(int billNo) throws Exception {
+		if( 0 == billNo ){
+			throw new RuntimeException("票据号为空");
+		}
+		
+		StoreInOut inOut = storeInOutMapper.getById(billNo);
+		if( null != inOut ){
+			if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
+					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
+					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+				){
+				throw new RuntimeException("不是草稿状态，不可删除");
+				
+			}
+		}
+		
+		//删除出入库主表
+		storeInOutMapper.delete(billNo);
+		
+		//删除出入库详细表
+		storeInOutDetailMapper.delete(billNo);
+		
+	}
+	
 }
