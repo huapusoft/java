@@ -3,6 +3,7 @@ package com.template.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 
 /**
@@ -26,4 +27,7 @@ public interface StoreMapper {
 
 	public List<Store> getDrugListForOutStorage(Map<String, Object> params) throws Exception;
 	
+	public List<DrugAndStore> getGroupByItemName(String itemName)  throws Exception;
+	
+	public List<DrugAndStore> getCheckDataList()  throws Exception;
 }

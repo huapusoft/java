@@ -1,6 +1,7 @@
 package com.template.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 药库盘点信息表
@@ -23,6 +24,15 @@ public class StoreCheck {
 	private String sealOper;//封存操作员
 	private Date sealTime;//封存时间
 	
+	//临时
+	private List<StoreCheckDetail> detailList;//盘点明细
+		
+	public List<StoreCheckDetail> getDetailList() {
+		return detailList;
+	}
+	public void setDetailList(List<StoreCheckDetail> detailList) {
+		this.detailList = detailList;
+	}
 	public int getCheckNo() {
 		return checkNo;
 	}

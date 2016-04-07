@@ -160,4 +160,12 @@
 		order by d.itemName asc
 	</select>
 	
+	<select id="getGroupByItemName" resultMap="BaseResultMap2" parameterType="java.lang.String">
+		select a.itemName,a.spec,a.vendor,sum(b.amount) num,a.unit,b.price
+		from dic_drug a,store b
+		where a.id=b.id and 
+		( a.itemName like CONCAT('%',#{itemName},'%') ) OR ( a.wb like CONCAT('%',#{itemName},'%') ) OR ( a.py like CONCAT('%',#{itemName},'%') )
+		group by  a.itemName,a.spec,a.vendor,a.unit,b.price
+	</select>
+	
 </mapper>
