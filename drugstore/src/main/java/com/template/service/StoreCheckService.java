@@ -45,10 +45,10 @@ public interface StoreCheckService {
 	 * 封存盘点数据
 	* @author  fengql 
 	* @date 2016年4月7日 下午4:30:48 
-	* @parameter  checkNo-盘点号
+	* @parameter   checkData-盘点主表数据，detailList-盘点明细表数据，checkOper-操作员，storeName-库房名称
 	* @return
 	 */
-	public void submit(int checkNo) throws Exception;
+	public void submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
 
 	/**
 	 * 作废盘点单

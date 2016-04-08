@@ -4,25 +4,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.template.dao.StoreCheckDetailMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
+import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
-import com.template.domain.StoreInOut;
 import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
-import com.template.util.Constants;
-
 /**
  * 盘点serviceimpl
 * @author  fengql 
@@ -135,9 +130,31 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void submit(int checkNo) throws Exception {
+	public void submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
 		
+		//先将页面中的内容进行保存
+		this.save(checkData, detailList, checkOper, storeName);
 		
+		//根据明细表中的内容更新库存表中的数量
+		for(int i=0; i<detailList.size(); i++){
+			StoreCheckDetail detail = detailList.get(i);
+			int drugId=detail.getDrugId();
+			String batchNo=detail.getBatchNo();
+			double realAmount=detail.getRealAmount();
+			double inPrice=detail.getInPrice();
+			double price=detail.getPrice();
+			
+			Store store =new Store();
+			
+			store.setStoreName(storeName);//药库名称
+			store.setDrugId(drugId);//药品id
+			store.setBatchNo(batchNo);//批号
+			store.setInPrice(inPrice);//进价
+			store.setPrice(price);//零售价
+			store.setAmount(realAmount);//实际数量
+
+			storeMapper.updateCheck(store);		
+		}
 	}
 
 	@Override

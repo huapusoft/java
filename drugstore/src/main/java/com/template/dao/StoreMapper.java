@@ -28,5 +28,7 @@ public interface StoreMapper {
 	public List<DrugAndStore> getDrugAndStoreDataList(Map<String, Object> params) throws Exception;
 	
 	public List<DrugAndStore> getGroupByItemName(String itemName)  throws Exception;
+	
+	public void updateCheck(Store bean)  throws Exception;
 
 }

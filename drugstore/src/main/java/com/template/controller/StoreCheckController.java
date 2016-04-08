@@ -215,22 +215,27 @@ public class StoreCheckController {
 	 */
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("checkNo") int checkNo ) throws Exception {
+	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			@RequestBody StoreCheck checkData ) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "封存失败");
 		
 		try{
-			storeCheckService.submit(checkNo);
+			//详细信息
+			List<StoreCheckDetail> detailList = checkData.getDetailList();
+			
+			String checkOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			storeCheckService.submit(checkData, detailList, checkOper, storeName);
 			result.put("code", "200");
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			result.put("msg", "封存失败："+e.getMessage());	
 		}
-		
+		 
 		return result;
 	}
 	

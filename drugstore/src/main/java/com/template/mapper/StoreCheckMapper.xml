@@ -37,6 +37,9 @@
 				and checkNo like CONCAT('',#{currYearMonth},'%')  
 			</if>
 		</where>
+		<if test="orderBycheckNo != null">
+			order by checkNo desc
+		</if>
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.StoreCheck">

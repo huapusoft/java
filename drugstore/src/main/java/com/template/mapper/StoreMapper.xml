@@ -131,7 +131,7 @@
 				and storeName = #{storeName}
 			</if>
 			<if test="drugId != null and drugId != ''">
-				and id = #{drugId}
+				and drugId = #{drugId}
 			</if>
 			<if test="batchNo != null and batchNo != ''">
 				and batchNo = #{batchNo}
@@ -139,6 +139,11 @@
 		</where>
 		order by inTime desc
 	</select>
+
+	<update id="updateCheck" parameterType="com.template.domain.Store">
+		update store set amount = #{amount} 
+		where storeName = #{storeName} and drugId = #{drugId} and batchNo = #{batchNo} and inPrice = #{inPrice} and price = #{price}
+	</update>
 	
 	<resultMap id="BaseResultMap2" type="com.template.domain.DrugAndStore">
 		<result column="id" property="id"  />
@@ -162,7 +167,7 @@
 				s.amount,s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
 		from store s
 		inner join dic_drug d
-		on d.id = s.id
+		on d.id = s.drugId
 		where
 			d.enabled = 1
 			<if test="itemName != null and itemName != ''">
@@ -174,7 +179,7 @@
 	<select id="getGroupByItemName" resultMap="BaseResultMap2" parameterType="java.lang.String">
 		select a.itemName,a.spec,a.vendor,sum(b.amount) num,a.unit,b.price
 		from dic_drug a,store b
-		where a.id=b.id and a.enabled = 1 and
+		where a.id=b.drugId and a.enabled = 1 and
 		( a.itemName like CONCAT('%',#{itemName},'%') ) OR ( a.wb like CONCAT('%',#{itemName},'%') ) OR ( a.py like CONCAT('%',#{itemName},'%') )
 		group by  a.itemName,a.spec,a.vendor,a.unit,b.price
 	</select>
