@@ -71,6 +71,7 @@ public class CommonServiceImpl implements CommonService {
 		String currYearMonth = CommonUtil.getCurrYearMonth();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("currYearMonth", currYearMonth);
+		params.put("orderBybillNo", "Y");
 		List<StoreInOut> list = storeInOutMapper.getByConditions(params);
 		if( null != list && list.size() > 0 ){
 			int oldBillNo = list.get(0).getBillNo();
@@ -350,6 +351,59 @@ public class CommonServiceImpl implements CommonService {
 		storeInOutDetailMapper.delete(billNo);
 		
 	}
+	
+	@Override
+	public void verifySuccess(int billNo, String verifyOper) throws Exception {
+		if( 0 == billNo ){
+			throw new RuntimeException("票据号为空");
+		}
+		
+		StoreInOut inOut = storeInOutMapper.getById(billNo);
+		if( null != inOut ){
+			if( !Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus()  )
+				){
+				throw new RuntimeException("不是已提交状态，不可复核");
+				
+			}
+		}
+		
+		//更新出入库主表
+		inOut.setStatus( Constants.BusinessStatus.VERIFY_SUCCESS);//复核驳回
+		inOut.setVerifyOper(verifyOper);
+		inOut.setVerifyTime(new Date());//复核时间
+		storeInOutMapper.update(inOut);
+		
+		//保存数据到库存表：根据不同业务，做不同的操作：
+		//入库：插入or更新+
+		//出库：更新-
+		//调价：更新price
+//		storeService.
+		
+		
+	}
+
+	@Override
+	public void verifyFail(int billNo, String verifyOper) throws Exception {
+		if( 0 == billNo ){
+			throw new RuntimeException("票据号为空");
+		}
+		StoreInOut inOut = storeInOutMapper.getById(billNo);
+		if( null == inOut ){
+			throw new RuntimeException("票据号对应的数据为空");
+		}
+		if( null != inOut ){
+			if( !Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus()  )
+				){
+				throw new RuntimeException("不是已提交状态，不可复核");
+				
+			}
+		}
+		//更新出入库主表
+		inOut.setStatus( Constants.BusinessStatus.VERIFY_FAIL);//复核驳回
+		inOut.setVerifyOper(verifyOper);
+		inOut.setVerifyTime(new Date());//复核时间
+		storeInOutMapper.update(inOut);
+	}
 
 	@Override
 	public List<String> getDicEmployeeBySotreName(String storeName)  throws Exception{
@@ -379,5 +433,5 @@ public class CommonServiceImpl implements CommonService {
 		
 		return null;
 	}
-	
+
 }

@@ -10,7 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.OutStorageService;
-import com.template.util.Constants;
 
 /**
  * 出库controller测试类
@@ -36,7 +35,6 @@ public class OutStorageControllerTest {
 		inOut.setTypeData("领药部门1");
 		inOut.setSum1(123.32);
 		inOut.setSum2(2123.32);
-		inOut.setStatus(Constants.BusinessStatus.NEW);
 		
 		List<StoreInOutDetail> detailList = new ArrayList<StoreInOutDetail>();
 		StoreInOutDetail detail = new StoreInOutDetail();

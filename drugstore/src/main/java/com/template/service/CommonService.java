@@ -127,6 +127,26 @@ public interface CommonService {
 	 * @throws
 	 */
 	public void deleteStoreInOut(int billNo) throws Exception;
+	
+	/**
+	 * 复核通过出入库
+	 * @Description: 复核通过出入库
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * @return void
+	 * @throws
+	 */
+	public void verifySuccess(int billNo, String verifyOper) throws Exception;
+	
+	/**
+	 * 复核驳回出入库
+	 * @Description: 作废出入库草稿
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * @return void
+	 * @throws
+	 */
+	public void verifyFail(int billNo, String verifyOper) throws Exception;
 
 	/**
 	 * 获取药库的用户数据

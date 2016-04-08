@@ -14,7 +14,7 @@ import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 
 /**
- * InStorageService测试类
+ * 入库controller测试类
  * @Description: 测试
  * @author army.liu
  */
@@ -26,7 +26,6 @@ public class InStorageServiceTest {
 	@Test
 	public void testgetEnabledDicProviderList() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//		InStorageService service = (InStorageService) context.getBean("inStorageService");
 		DicProviderService dicProviderService = (DicProviderService) context.getBean("dicProviderService");
 		
 		List<DicProvider> list = dicProviderService.getEnabledDicProviderList("德");
@@ -34,10 +33,16 @@ public class InStorageServiceTest {
 		
 	}
 	
+	/**
+	 * 获取药品下拉列表
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 2016年4月8日 上午8:55:46
+	 */
 	@Test
 	public void testgetEnabledDrugList() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//		InStorageService service = (InStorageService) context.getBean("inStorageService");
 		DicDrugService dicDrugService = (DicDrugService) context.getBean("dicDrugService");
 		
 		List<DicDrug> list = dicDrugService.getEnabledDrugList("aa");
@@ -48,6 +53,13 @@ public class InStorageServiceTest {
 		
 	}
 	
+	/**
+	 * 获取药品最新进价，零售价
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 2016年4月8日 上午8:56:48
+	 */
 	@Test
 	public void testgetDrugLatestPrice() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");

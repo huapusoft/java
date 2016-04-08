@@ -82,6 +82,7 @@ public class InStorageController {
 		try{
 			dicProviderService.getEnabledDicProviderList(providerName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -116,6 +117,7 @@ public class InStorageController {
 			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -152,6 +154,7 @@ public class InStorageController {
 			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id, batchNo);
 			result.put("data", data);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -190,6 +193,7 @@ public class InStorageController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			inStorageService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -221,6 +225,7 @@ public class InStorageController {
 		try{
 			inStorageService.submit(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -252,6 +257,7 @@ public class InStorageController {
 		try{
 			inStorageService.delete(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();

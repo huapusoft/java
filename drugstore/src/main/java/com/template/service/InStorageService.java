@@ -53,4 +53,26 @@ public interface InStorageService {
 	public Map<String, Object> getDrugLatestPrice(String storeName, int id,
 			String batchNo)throws Exception;
 	
+	/**
+	  * 复核通过
+	  * @Description:  复核通过
+	  * @author army.liu
+	  * @param  billNo-票据号
+	  * 		verifyOper-复核员
+	  * @return void
+	  * @throws
+	  */
+	public void verifySuccess(int billNo, String verifyOper) throws Exception;
+	
+	/**
+	 * 复核驳回
+	 * @Description:  复核驳回
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * 		verifyOper-复核员
+	 * @return void
+	 * @throws
+	 */
+	public void verifyFail(int billNo, String verifyOper) throws Exception;
+	
 }

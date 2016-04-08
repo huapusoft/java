@@ -84,6 +84,7 @@ public class OutStorageController {
 			List<DicDepartment> list = dicDepartmentService.getAllDicDepartmentList();
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -118,6 +119,7 @@ public class OutStorageController {
 			List<DrugAndStore> list = commonService.getDrugListForOutStorage(itemName);
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -155,6 +157,7 @@ public class OutStorageController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			outStoreageService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -186,6 +189,7 @@ public class OutStorageController {
 		try{
 			outStoreageService.submit(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -217,6 +221,7 @@ public class OutStorageController {
 		try{
 			outStoreageService.delete(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();

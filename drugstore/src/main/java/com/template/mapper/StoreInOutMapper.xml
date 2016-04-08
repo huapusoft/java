@@ -43,6 +43,9 @@
 				and billNo like CONCAT('',#{currYearMonth},'%')  
 			</if>
 		</where>
+		<if test="orderBybillNo != null">
+			order by billNo desc
+		</if>
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.StoreInOut">

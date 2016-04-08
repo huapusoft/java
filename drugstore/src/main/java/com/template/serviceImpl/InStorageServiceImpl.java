@@ -90,4 +90,18 @@ public class InStorageServiceImpl implements InStorageService{
 		return result;
 	}
 	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifySuccess(int billNo, String verifyOper) throws Exception {
+		commonService.verifySuccess(billNo, verifyOper);
+		
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifyFail(int billNo, String verifyOper) throws Exception {
+		commonService.verifyFail(billNo, verifyOper);
+		
+	}
+
 }

@@ -24,7 +24,7 @@ public class StoreInOut {
 	private String status;//状态：默认为0草稿，1已提交，2复核通过，3复核驳回
 	private Date submitTime;//提交时间
 	private String verifyOper;//复核操作员，默认为空
-	private String verifyTime;//复核时间
+	private Date verifyTime;//复核时间
 	
 	//临时
 	private List<StoreInOutDetail> detailList;
@@ -101,10 +101,10 @@ public class StoreInOut {
 	public void setVerifyOper(String verifyOper) {
 		this.verifyOper = verifyOper;
 	}
-	public String getVerifyTime() {
+	public Date getVerifyTime() {
 		return verifyTime;
 	}
-	public void setVerifyTime(String verifyTime) {
+	public void setVerifyTime(Date verifyTime) {
 		this.verifyTime = verifyTime;
 	}
 	

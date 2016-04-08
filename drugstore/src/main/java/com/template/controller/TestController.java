@@ -131,7 +131,7 @@ public class TestController {
 	}
 	
 	/**
-	  * 测试前后台交互
+	  * 测试前后台交互-出库保存
 	  * @Description: 测试使用
 	  * @author army.liu
 	  * @param  
@@ -141,6 +141,22 @@ public class TestController {
 	@RequestMapping(value = "/transferParams",method=RequestMethod.GET)		
 	public ModelAndView test(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
 		ModelAndView mv = new ModelAndView("test/transferParams");
+		
+		return mv;
+		
+	}
+	
+	/**
+	 * 测试前后台交互-入库保存
+	 * @Description: 测试使用
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/saveInStorage",method=RequestMethod.GET)		
+	public ModelAndView saveInStorage(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("test/saveInStorage");
 		
 		return mv;
 		
