@@ -44,15 +44,27 @@ public interface OutStorageService {
 	 */
 	public void delete(int billNo) throws Exception;
 	
-//	/**
-//	  * 复核
-//	  * @Description: 复核出库
-//	  * @author army.liu
-//	  * @param  billNo-票据号
-//	  * 		verifyOper-复核员
-//	  * @return void
-//	  * @throws
-//	  */
-//	public void verify(Integer billNo, String verifyOper);
+	/**
+	  * 复核通过
+	  * @Description:  复核通过
+	  * @author army.liu
+	  * @param  billNo-票据号
+	  * 		verifyOper-复核员
+	  *         storeName-药库名称
+	  * @return void
+	  * @throws
+	  */
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception;
+	
+	/**
+	 * 复核驳回
+	 * @Description:  复核驳回
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * 		verifyOper-复核员
+	 * @return void
+	 * @throws
+	 */
+	public void verifyFail(int billNo, String verifyOper) throws Exception;
 
 }

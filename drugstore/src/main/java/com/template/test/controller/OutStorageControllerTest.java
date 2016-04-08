@@ -67,36 +67,34 @@ public class OutStorageControllerTest {
 		
 		StoreInOut inOut = new StoreInOut();
 		inOut.setBillType("出库");
-		inOut.setTypeData("领药部门1");
-		inOut.setSum1(123.32);
-		inOut.setSum2(2123.32);
+		inOut.setTypeData("手术室");
+		inOut.setSum1(50.1);
+		inOut.setSum2(75.2);
 		
 		List<StoreInOutDetail> detailList = new ArrayList<StoreInOutDetail>();
 		StoreInOutDetail detail = new StoreInOutDetail();
-		detail.setAmount(2);
-		detail.setBatchNo("PCdsfsdfsd111");
-		detail.setDrugId(1000);
-		detail.setInvoiceNo("P3243243");
+		detail.setAmount(1);
+		detail.setBatchNo("PIHAO0001");
+		detail.setDrugId(10021);//阿莫西林颗粒
+		detail.setInvoiceNo("FAPIAO0001");
 		detail.setOrderNo(1);
-		detail.setPrice1(20);
-		detail.setPrice2(200);
+		detail.setPrice1(10.10);
+		detail.setPrice2(15.00);
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
 		detail = new StoreInOutDetail();
-		detail.setAmount(4);
-		detail.setBatchNo("PCdsfsdfs222");
-		detail.setDrugId(1001);
-		detail.setInvoiceNo("P3243243332");
+		detail.setAmount(2);
+		detail.setBatchNo("PIHAO0002");
+		detail.setDrugId(10017);//阿莫西林胶囊
+		detail.setInvoiceNo("FAPIAO0002");
 		detail.setOrderNo(2);
-		detail.setPrice1(4);
-		detail.setPrice2(23);
+		detail.setPrice1(20.00);
+		detail.setPrice2(30.10);
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
-		String billOper = "test";
-		String storeName = "药库1";
-		outStorageService.save(inOut, detailList, billOper, storeName);
+		outStorageService.save(inOut, detailList, "张三", "一号仓库");
 	}
 	
 	/**
@@ -111,8 +109,38 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		int billNo = 2016041000;
+		int billNo = 2016041003;
 		outStorageService.submit(billNo);
+	}
+	
+	/**
+	 * 复核通过
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 2016年4月8日 上午8:56:48
+	 */
+	@Test
+	public void testverifySuccess() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		
+		outStorageService.verifySuccess(2016041003, "财务1", "一号仓库");
+	}
+	
+	/**
+	 * 复核驳回
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 2016年4月8日 上午8:56:48
+	 */
+	@Test
+	public void testverifyFail() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		
+		outStorageService.verifyFail(2016041003, "财务1");
 	}
 	
 	/**
@@ -127,7 +155,7 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		int billNo = 2016041000;
+		int billNo = 2016041003;
 		outStorageService.delete(billNo);
 	}
 	

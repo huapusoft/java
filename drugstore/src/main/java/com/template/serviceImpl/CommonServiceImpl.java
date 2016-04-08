@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.template.dao.DicDrugStoreMapper;
 import com.template.dao.DicEmployeeMapper;
@@ -245,6 +247,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public boolean validateStoreName(String storeName) {
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -263,6 +266,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
 		if( null == inOut ){
 			throw new RuntimeException("出入库信息为空");
@@ -335,6 +339,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void submitStoreInOut(int billNo) throws Exception {
 		if( 0 == billNo ){
 			throw new RuntimeException("票据号为空");
@@ -361,6 +366,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void deleteStoreInOut(int billNo) throws Exception {
 		if( 0 == billNo ){
 			throw new RuntimeException("票据号为空");
@@ -386,6 +392,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception {
 		if( 0 == billNo ){
 			throw new RuntimeException("票据号为空");
@@ -415,6 +422,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void verifyFail(int billNo, String verifyOper) throws Exception {
 		if( 0 == billNo ){
 			throw new RuntimeException("票据号为空");

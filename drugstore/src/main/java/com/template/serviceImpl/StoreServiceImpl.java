@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
@@ -43,6 +45,7 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void verifySuccess(int billNo, String currStoreName) throws Exception {
 		// TODO Auto-generated method stub
 		StoreInOut inOut = storeInOutMapper.getById(billNo);

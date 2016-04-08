@@ -33,6 +33,9 @@
 		select *
 		from storeInOutDetail
 		<where>
+			<if test="billNo != null and billNo != ''">
+				and billNo = #{billNo}
+			</if>
 			<if test="drugId != null and drugId != ''">
 				and drugId = #{drugId}
 			</if>

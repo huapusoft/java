@@ -51,11 +51,19 @@ public class OutStorageServiceImpl implements OutStorageService {
 		commonService.deleteStoreInOut(billNo);
 	}
 
-//	@Override
-//	public void verify(Integer billNo, String verifyOper) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception {
+		commonService.verifySuccess(billNo, verifyOper, storeName);
+		
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifyFail(int billNo, String verifyOper) throws Exception {
+		commonService.verifyFail(billNo, verifyOper);
+		
+	}
 
 	
 }
