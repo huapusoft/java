@@ -15,7 +15,7 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
 		<style type="text/css">
 		body{
-	background: #ebebeb;
+	background: #a3e9e6;
 	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
 	color: #222;
 	font-size: 15px;
@@ -23,7 +23,7 @@
    *{padding: 0px;margin: 0px;}
    .maincenter{	
 	margin: 130px auto auto; 
-	background: #33CCCC;
+	background: #a3e9e6;
 	border-image: none; 
 	width: 600px; 
 	height:650px; 	
@@ -45,12 +45,14 @@
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,strength=15);/*ie*/
     -moz-box-shadow: 3px 3px 10px #909090;/*firefox*/
     -webkit-box-shadow: 3px 3px 10px #909090;/*safari或chrome*/
-    box-shadow:0px 0px 30px #909090;/*opera或ie9*/	
+   /*  box-shadow:0px 0px 30px #909090; *//*opera或ie9*/	
+	box-shadow:0 6px 6px -2px rgba(255, 255, 255, 0.7) inset, 0 8px 10px 2px rgba(0, 0, 0, 0.3)
    }
    .fonttitle{
     float: left;
    	padding-left: 35px;
    	padding-top: 35px;
+   	
 	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
 	color: #000;
 	font-size: 24px;
@@ -59,6 +61,7 @@
     float: left;
    	padding-left: 35px;
    	padding-top: 25px;
+   
 	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
 	color: #000;
 	font-size: 24px;
@@ -67,6 +70,7 @@
 	border: 2px solid #d3d3d3;
 	padding: 10px 10px;
 	width: 300px;
+	margin-top:5px;
 	/* border-radius: 4px; */
 	/* padding-left: 35px; */
 	/* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -78,7 +82,7 @@
 .selecttype{	
 	width: 325px;
 	height:36px;
-	
+	margin-top:5px;
 	border: 2px solid #d3d3d3;
 }
 .buttonmenue{	
@@ -99,14 +103,21 @@
 	<div class="mainlogn"></div>
 	<div class="mainlogncenter">
     <span class="fonttitle" > 药&nbsp;&nbsp;&nbsp;库</span>
+   
      <p style="position: relative;">
 	  <select name="storeName" class="selecttype" id="storeName">
         
       </select>
 	</p>		
-		 <span class="fonttitles"> 用户名</span>
-     <p style="position: relative;"><input class="ipt"  type="text" id="name" name="name" /></p>
+	<span class="fonttitles"> 用户名</span>
+	
+     <p style="position: relative;">
+     <select name="name" class="selecttype" id="name">
+        
+      </select>
+     </p>
       <span class="fonttitles"> 密&nbsp;&nbsp;&nbsp;码</span>
+     
      <p style="position: relative;"><input class="ipt" type="password" id="password" name="password" /></p>	
      <br />
      <br />
@@ -136,12 +147,59 @@ $(document).ready(function() {
 					var tid=data.data[i].id;
 					$("#storeName").append("<option value='"+tname+"'>"+tname+"</option>");  
 					}
-				
+				$.ajax({
+		    		async:true,
+		    		type:'POST',
+		    		url:"getDicEmployeeBySotreName",
+		    		data:{
+		    			storeName : $('#storeName').val()
+		    			},
+		    		dataType:'JSON',		
+		    		success:function(data){			
+		    			if(data && data.code == 200 ){
+		    				 $("#name").html("");//清空下拉框  
+		    				for(i=0;i<data.data.length;i++){					
+		    					 var tname=data.data[i];
+		    					var tid=data.data[i];
+		    					$("#name").append("<option value='"+tname+"'>"+tname+"</option>");  
+		    					}
+		    				
+		    			}else{
+		    				alert(data.msg);
+		    			}
+		    		}
+		    	})
 			}else{
 				alert(data.msg);
 			}
+		  
+			
 		}
-	})
+	});
+	    $("#storeName").change(function(){    	
+    	$.ajax({
+    		async:true,
+    		type:'POST',
+    		url:"getDicEmployeeBySotreName",
+    		data:{
+    			storeName : $('#storeName').val()
+    			},
+    		dataType:'JSON',		
+    		success:function(data){			
+    			if(data && data.code == 200 ){
+    				 $("#name").html("");//清空下拉框  
+    				for(i=0;i<data.data.length;i++){					
+    					 var tname=data.data[i];
+    					var tid=data.data[i];
+    					$("#name").append("<option value='"+tname+"'>"+tname+"</option>");  
+    					}
+    				
+    			}else{
+    				alert(data.msg);
+    			}
+    		}
+    	})  
+    });  
 	
 	 $('#lognbutton').mousedown(function(){
 	     	$(this).css('background', 'url(/staticPublic/img/buttonlogs.png) no-repeat');
