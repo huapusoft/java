@@ -1,5 +1,7 @@
 package com.template.domain;
 
+import java.util.Date;
+
 /**
  * 药库出入库信息明细表storeInOutDetail的实体类
 * @author  fengql 
@@ -20,7 +22,7 @@ public class StoreInOutDetail {
 	private double amount;//数量
 	private double price1;//价格1,与billType的值相关，billType为调价，字段值为现零售价。billType为其它值时，字段值为进价
 	private double price2;//价格2，与billType的值相关，billType为调价，字段值为新零售价。billType为其它值时，字段值为零售价
-	private String  validDate;//有效期
+	private Date validDate;//有效期
 	
 	public int getId() {
 		return id;
@@ -76,10 +78,10 @@ public class StoreInOutDetail {
 	public void setPrice2(double price2) {
 		this.price2 = price2;
 	}
-	public String getValidDate() {
+	public Date getValidDate() {
 		return validDate;
 	}
-	public void setValidDate(String validDate) {
+	public void setValidDate(Date validDate) {
 		this.validDate = validDate;
 	}
 	

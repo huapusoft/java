@@ -62,7 +62,7 @@ public interface InStorageService {
 	  * @return void
 	  * @throws
 	  */
-	public void verifySuccess(int billNo, String verifyOper) throws Exception;
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception;
 	
 	/**
 	 * 复核驳回

@@ -21,7 +21,7 @@ public interface StoreMapper {
 	
 	public void update(Store bean)  throws Exception;
 	
-	public void delete(int id)  throws Exception;
+	public void delete(Store bean)  throws Exception;
 
 	public Store getDrugLatestPrice(Map<String, Object> params);
 

@@ -37,6 +37,15 @@ public interface CommonService {
 	public int createBillNo() throws Exception;
 	
 	/**
+	 * 生成最新盘点号
+	* @author  fengql 
+	* @date 2016年4月8日 下午1:55:30 
+	* @parameter  
+	* @return int-盘点号，10位，yyyyMMxxxx
+	 */
+	public int createCheckNo() throws Exception;
+	
+	/**
 	  * 获取所有药库信息
 	  * @Description: 获取所有药库信息
 	  * @author army.liu
@@ -136,7 +145,7 @@ public interface CommonService {
 	 * @return void
 	 * @throws
 	 */
-	public void verifySuccess(int billNo, String verifyOper) throws Exception;
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception;
 	
 	/**
 	 * 复核驳回出入库

@@ -1,8 +1,11 @@
 package com.template.test;
 
+import java.util.Date;
+
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.domain.StoreInOutDetail;
 
@@ -24,7 +27,7 @@ public class StoreInOutDetailDaoTest {
 		bean.setAmount(10);
 		bean.setPrice1(1);
 		bean.setPrice2(2);
-		bean.setValidDate("2016-04-01");
+		bean.setValidDate(new Date());
 		
 		storeInOutDaoDetail.insert(bean);
 		

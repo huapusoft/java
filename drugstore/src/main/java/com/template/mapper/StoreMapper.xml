@@ -114,9 +114,13 @@
 		where checkNo = #{id}
 	</update>
 	
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="com.template.domain.Store">
 		delete from store
-		where id = #{id}
+		where storeName = #{storeName}
+			and id = #{drugId}
+			and batchNo = #{batchNo}
+			and inPrice = #{inPrice}
+			and price = #{price}
 	</delete>
 	
 	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">
@@ -146,9 +150,16 @@
 		<result column="inPrice" property="inPrice" />
 		<result column="price" property="price" />
 		<result column="validDate" property="validDate" />
+		<result column="num" property="num" />
+		<result column="orderNo" property="orderNo" />
+		<result column="amount" property="amount" />
+		<result column="storePrice" property="storePrice" />
+		<result column="realAmount" property="realAmount" />
+		<result column="realPrice" property="realPrice" />
 	</resultMap>
-	<select id="getDrugListForOutStorage" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
-		select d.id,d.itemName,d.spc,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate
+	<select id="getDrugAndStoreDataList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+		select d.id,d.itemName,d.spc,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,
+				s.amount,s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
 		from store s
 		inner join dic_drug d
 		on d.id = s.id

@@ -27,6 +27,7 @@ import com.template.domain.StoreInOutDetail;
 import com.template.domain.StoreInOutForCount;
 import com.template.domain.StorePurchasePlanForCount;
 import com.template.service.CommonService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 import com.template.util.Constants;
 
@@ -59,6 +60,9 @@ public class CommonServiceImpl implements CommonService {
 	@Resource
 	private DicEmployeeMapper dicEmployeeMapper;
 	
+	@Resource
+	private StoreService storeService;
+	
 	@Override
 	public void test() {
 		// TODO Auto-generated method stub
@@ -82,6 +86,24 @@ public class CommonServiceImpl implements CommonService {
 		}
 		
 		return Integer.parseInt(currYearMonth + billNoSuffix);
+	}
+	
+	@Override
+	public int createCheckNo() throws Exception {
+		String checkNoSuffix = "";
+		String currYearMonth = CommonUtil.getCurrYearMonth();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("currYearMonth", currYearMonth);
+		List<StoreCheck> list = storeCheckMapper.getByConditions(params);
+		if( null != list && list.size() > 0 ){
+			int oldCheckNo = list.get(0).getCheckNo();
+			checkNoSuffix = String.valueOf( Integer.parseInt( String.valueOf(oldCheckNo).substring(6) ) + 1 );
+			
+		}else{
+			checkNoSuffix = "1000";
+		}
+		
+		return Integer.parseInt(currYearMonth + checkNoSuffix);
 	}
 
 	@Override
@@ -353,7 +375,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 	
 	@Override
-	public void verifySuccess(int billNo, String verifyOper) throws Exception {
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception {
 		if( 0 == billNo ){
 			throw new RuntimeException("票据号为空");
 		}
@@ -377,8 +399,7 @@ public class CommonServiceImpl implements CommonService {
 		//入库：插入or更新+
 		//出库：更新-
 		//调价：更新price
-//		storeService.
-		
+		storeService.verifySuccess(billNo, storeName);
 		
 	}
 

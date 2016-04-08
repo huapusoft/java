@@ -1,6 +1,7 @@
 package com.template.test.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public class InStorageControllerTest {
 		detail.setOrderNo(1);
 		detail.setPrice1(10.10);
 		detail.setPrice2(15.00);
-		detail.setValidDate("2018-01-09");
+		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
 		detail = new StoreInOutDetail();
@@ -110,7 +111,7 @@ public class InStorageControllerTest {
 		detail.setOrderNo(2);
 		detail.setPrice1(20.00);
 		detail.setPrice2(30.10);
-		detail.setValidDate("2018-01-09");
+		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
 		inStorageService.save(inOut, detailList, "张三", "一号仓库");
@@ -158,7 +159,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		inStorageService.verifySuccess(2016041000, "财务1");
+		inStorageService.verifySuccess(2016041000, "财务1", "一号仓库");
 	}
 	
 	/**

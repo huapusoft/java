@@ -3,7 +3,6 @@ package com.template.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 
 /**
@@ -19,7 +18,7 @@ public interface StoreInOutDetailMapper {
 	
 	public void getByBillNo(int billNo)  throws Exception;
 	
-	public List<StoreInOut> getByConditions(Map<String, Object> params) throws Exception;
+	public List<StoreInOutDetail> getByConditions(Map<String, Object> params) throws Exception;
 
 	public StoreInOutDetail getDrugLatestPrice(Map<String, Object> params) throws Exception;
 	

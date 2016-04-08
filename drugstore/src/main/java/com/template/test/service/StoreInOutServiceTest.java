@@ -1,6 +1,7 @@
 package com.template.test.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class StoreInOutServiceTest {
 		detail.setOrderNo(1);
 		detail.setPrice1(20);
 		detail.setPrice2(200);
-		detail.setValidDate("2018-01-09");
+		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
 		detail = new StoreInOutDetail();
@@ -59,7 +60,7 @@ public class StoreInOutServiceTest {
 		detail.setOrderNo(2);
 		detail.setPrice1(4);
 		detail.setPrice2(23);
-		detail.setValidDate("2018-01-09");
+		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
 		String billOper = "test";
