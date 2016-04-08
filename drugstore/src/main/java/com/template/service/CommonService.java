@@ -172,8 +172,9 @@ public interface CommonService {
 	 * @Description: 读取库存表，关联药品基础信息表（已启用）
 	 * @author army.liu
 	 * @param  itemName-药品搜索名称
+	 * 		   storeName-药库名称
 	 * @return void
 	 * @throws
 	 */
-	public List<DrugAndStore> getDrugListForOutStorage(String itemName) throws Exception;
+	public List<DrugAndStore> getDrugListForOutStorage(String storeName, String itemName) throws Exception;
 }

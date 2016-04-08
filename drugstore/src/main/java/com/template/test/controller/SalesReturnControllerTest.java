@@ -8,20 +8,20 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.template.domain.DicDepartment;
+import com.template.domain.DicProvider;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
-import com.template.service.DicDepartmentService;
+import com.template.service.DicProviderService;
 import com.template.service.OutStorageService;
 
 /**
- * 出库controller测试类
+ * 退货controller测试类
  * @Description: 测试
  * @author army.liu
  */
-public class OutStorageControllerTest {
+public class SalesReturnControllerTest {
 
 	/**
 	 * 获取部门列表
@@ -29,9 +29,9 @@ public class OutStorageControllerTest {
 	@Test
 	public void testgetAllDicDepartmentList() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		DicDepartmentService dicDepartmentService = (DicDepartmentService) context.getBean("dicDepartmentService");
+		DicProviderService dicProviderService = (DicProviderService) context.getBean("dicProviderService");
 		
-		List<DicDepartment> list = dicDepartmentService.getAllDicDepartmentList();
+		List<DicProvider> list = dicProviderService.getEnabledDicProviderList("");
 		System.out.println( list.size());
 		
 	}
@@ -66,8 +66,8 @@ public class OutStorageControllerTest {
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
 		StoreInOut inOut = new StoreInOut();
-		inOut.setBillType("出库");
-		inOut.setTypeData("手术室");
+		inOut.setBillType("退货");
+		inOut.setTypeData("国药控股盐城有限公司");
 		inOut.setSum1(50.1);
 		inOut.setSum2(75.2);
 		
@@ -109,7 +109,7 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		int billNo = 2016041003;
+		int billNo = 2016041004;
 		outStorageService.submit(billNo);
 	}
 	
@@ -125,7 +125,7 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		outStorageService.verifySuccess(2016041003, "财务1", "一号仓库");
+		outStorageService.verifySuccess(2016041004, "财务1", "一号仓库");
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		outStorageService.verifyFail(2016041003, "财务1");
+		outStorageService.verifyFail(2016041004, "财务1");
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class OutStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
-		int billNo = 2016041003;
+		int billNo = 2016041005;
 		outStorageService.delete(billNo);
 	}
 	

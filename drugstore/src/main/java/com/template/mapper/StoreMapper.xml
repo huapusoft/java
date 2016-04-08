@@ -148,7 +148,7 @@
 	<resultMap id="BaseResultMap2" type="com.template.domain.DrugAndStore">
 		<result column="id" property="id"  />
 		<result column="itemName" property="itemName"  />
-		<result column="spc" property="spc"  />
+		<result column="spec" property="spec"  />
 		<result column="unit" property="unit"  />
 		<result column="vendor" property="vendor"  />
 		<result column="batchNo" property="batchNo" />
@@ -163,13 +163,16 @@
 		<result column="realPrice" property="realPrice" />
 	</resultMap>
 	<select id="getDrugAndStoreDataList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
-		select d.id,d.itemName,d.spc,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,
+		select d.id,d.itemName,d.spec,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,
 				s.amount,s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
 		from store s
 		inner join dic_drug d
 		on d.id = s.drugId
 		where
 			d.enabled = 1
+			<if test="storeName != null and storeName != ''">
+				and storeName = #{storeName}
+			</if>
 			<if test="itemName != null and itemName != ''">
 				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
 			</if>

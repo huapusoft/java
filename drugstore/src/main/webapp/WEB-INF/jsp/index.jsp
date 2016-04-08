@@ -17,6 +17,7 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/material/easyui.css"/>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"/>
+		<script src="/staticPublic/js/easyui-lang-zh_CN.js"></script>
 		<style type="text/css">
 	/* #maincenter {	
 	
@@ -178,7 +179,7 @@
 		<ul class="menu-two">
 		<li class="item hand" onclick="javascript:addTab('药品入库','/inStorage/new')"> <a >药品入库</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('药品出库','/inStorage/new')"><a >药品出库</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品出库','/outStorage/new')"><a >药品出库</a></li>
 		
 		<li class="item hand" onclick="javascript:addTab('药品退货','test13.jsp')"><a >药品退货</a></li>
 		
@@ -234,7 +235,7 @@
 		</div>
      </div>
 	</div>
-	<div data-options="region:'south',border:false" style="height:20px;background:#A9FACD;">south region</div>
+	<div data-options="region:'south',border:false" style="height:20px; text-align:center;"> 版权所有  江苏华普软件公司</div>
 	<div data-options="region:'center'">
 	<div class="easyui-tabs" id="centerTab" fit="true" border="false">
 					<div title="欢迎页" style="padding: 20px; overflow: hidden;">
@@ -281,7 +282,12 @@ $(document).ready(function() {
         }
     }
 function logout(){
+	jQuery.messager.confirm('提示:','你确认要退出吗?',function(event){ 
+		if(event){ 
+			location.href="logout";
+		}else{ 		
+		} 
+		});
 	
-	location.href="logout";
 }
 </script>

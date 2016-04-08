@@ -61,39 +61,6 @@ public class BreakageController {
 	}
 	
 	/**
-	  * 获取供应商下拉数据
-	  * @Description: 从供应商表中，获取供应商下拉数据
-	  * @author army.liu
-	  * @param  
-	  * @return
-	  * @throws
-	  */
-	@RequestMapping(value = "/getEnabledDicProviderList",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getEnabledDicProviderList(HttpServletRequest request, 
-			HttpServletResponse response,
-			HttpSession session,
-			@RequestParam("providerName") String providerName
-			) throws Exception {
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("code", "300");
-		result.put("msg", "获取失败");
-		
-		try{
-			dicProviderService.getEnabledDicProviderList(providerName);
-			result.put("code", "200");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
-		}
-		 
-		return result;
-	}
-	
-	/**
 	 * 获取药品下拉框中数据
 	 * @Description: 从药品库存表中，读取药品数据
 	 * @author army.liu
@@ -114,9 +81,11 @@ public class BreakageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<DrugAndStore> list = commonService.getDrugListForOutStorage(itemName);
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			List<DrugAndStore> list = commonService.getDrugListForOutStorage(storeName, itemName);
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -154,6 +123,7 @@ public class BreakageController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			breakageService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -185,6 +155,7 @@ public class BreakageController {
 		try{
 			breakageService.submit(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -216,6 +187,7 @@ public class BreakageController {
 		try{
 			breakageService.delete(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -59,6 +59,7 @@ public interface InStorageService {
 	  * @author army.liu
 	  * @param  billNo-票据号
 	  * 		verifyOper-复核员
+	  *         storeName-药库名称
 	  * @return void
 	  * @throws
 	  */

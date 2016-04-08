@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicProvider;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -81,8 +82,10 @@ public class SalesReturnController {
 		result.put("msg", "获取失败");
 		
 		try{
-			dicProviderService.getEnabledDicProviderList(providerName);
+			List<DicProvider> list = dicProviderService.getEnabledDicProviderList(providerName);
+			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -114,9 +117,11 @@ public class SalesReturnController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<DrugAndStore> list = commonService.getDrugListForOutStorage(itemName);
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			List<DrugAndStore> list = commonService.getDrugListForOutStorage(storeName, itemName);
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -154,6 +159,7 @@ public class SalesReturnController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			salesReturnService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -185,6 +191,7 @@ public class SalesReturnController {
 		try{
 			salesReturnService.submit(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -216,6 +223,7 @@ public class SalesReturnController {
 		try{
 			salesReturnService.delete(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();

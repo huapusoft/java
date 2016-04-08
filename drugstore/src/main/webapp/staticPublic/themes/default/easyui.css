@@ -109,7 +109,7 @@
 }
 .panel-header,
 .panel-body {
-  border-color: #0c7185;/*gllxg*/
+  border-color: #ddd;/*ww*/
 }
 .panel-header {
   /*background-color: #E0ECFF;*//*gllxg*/
@@ -864,7 +864,7 @@
   border-left: 5px solid #E6EEF8;
 }
 .layout-split-west {
-  border-right: 3px solid #0c7185;
+  border-right: 3px solid #eee;
 }
 .layout-expand {
   background-color: #E0ECFF;
@@ -1199,8 +1199,8 @@
   filter: none;
 }
 .tabs li.tabs-selected a.tabs-inner {
-  background-color: #bddde1;
-  color: #0E2D5F;
+  background-color:#eee;
+  color: #eee;
   background: -webkit-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
   background: -moz-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
   background: -o-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
