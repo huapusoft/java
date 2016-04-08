@@ -32,7 +32,7 @@ import com.template.util.CommonUtil;
  * @author army.liu
  */
 @Controller
-@RequestMapping("/salesReturn")
+@RequestMapping("/breakage")
 public class BreakageController {
 
 	@Resource 
