@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.template.domain.DicDrugStore;
+import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -145,5 +146,5 @@ public interface CommonService {
 	 * @return void
 	 * @throws
 	 */
-	public List<Store> getDrugListForOutStorage(String itemName) throws Exception;
+	public List<DrugAndStore> getDrugListForOutStorage(String itemName) throws Exception;
 }

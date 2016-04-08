@@ -1,8 +1,13 @@
 package com.template.serviceImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
@@ -22,7 +27,8 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 
 	@Override
 	public List<DrugAndStore> getStoreDrugList() throws Exception {
-		return storeMapper.getCheckDataList();
+		Map<String, Object> params = new HashMap<String, Object>();
+		return storeMapper.getDrugAndStoreDataList(params);
 	}
 
 	@Override

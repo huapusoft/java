@@ -19,6 +19,7 @@ import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DictEmployee;
+import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreInOut;
@@ -366,11 +367,11 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<Store> getDrugListForOutStorage(String itemName) throws Exception {
+	public List<DrugAndStore> getDrugListForOutStorage(String itemName) throws Exception {
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("itemName", itemName);
-			return storeMapper.getDrugListForOutStorage(params);
+			return storeMapper.getDrugAndStoreDataList(params);
 			
 		}catch(Exception e){
 			e.printStackTrace();

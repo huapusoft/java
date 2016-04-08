@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DicDepartment;
-import com.template.domain.Store;
+import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
@@ -115,7 +115,7 @@ public class OutStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<Store> list = commonService.getDrugListForOutStorage(itemName);
+			List<DrugAndStore> list = commonService.getDrugListForOutStorage(itemName);
 			result.put("data", list);
 			result.put("code", "200");
 			

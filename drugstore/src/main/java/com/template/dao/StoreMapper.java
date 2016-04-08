@@ -25,9 +25,8 @@ public interface StoreMapper {
 
 	public Store getDrugLatestPrice(Map<String, Object> params);
 
-	public List<Store> getDrugListForOutStorage(Map<String, Object> params) throws Exception;
+	public List<DrugAndStore> getDrugAndStoreDataList(Map<String, Object> params) throws Exception;
 	
 	public List<DrugAndStore> getGroupByItemName(String itemName)  throws Exception;
-	
-	public List<DrugAndStore> getCheckDataList()  throws Exception;
+
 }

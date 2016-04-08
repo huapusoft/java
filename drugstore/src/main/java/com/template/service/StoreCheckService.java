@@ -13,6 +13,13 @@ import com.template.domain.StoreCheckDetail;
  */
 public interface StoreCheckService {
 	
+	/**
+	 * 新建盘点获取库存表中的数据
+	* @author  fengql 
+	* @date 2016年4月8日 上午8:48:25 
+	* @parameter  
+	* @return
+	 */
 	public List<DrugAndStore> getStoreDrugList() throws Exception;
 	
 	/**
