@@ -103,12 +103,9 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 				throw new RuntimeException("盘点信息不存在");
 			}
 			
-			oldCheckData.setStoreName(storeName);
-			oldCheckData.setCheckTime(new Date());//创建时间
 			oldCheckData.setInSum(checkData.getInSum());
 			oldCheckData.setRetailSum(checkData.getRetailSum());
 			oldCheckData.setCheckRetailSum(checkData.getCheckRetailSum());
-			oldCheckData.setCheckOper(checkOper);
 
 			storeCheckMapper.update(oldCheckData);
 			
@@ -134,6 +131,11 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 		
 		//先将页面中的内容进行保存
 		this.save(checkData, detailList, checkOper, storeName);
+		
+		//更新盘点主表-封存时间、人
+		checkData.setSealTime(new Date());
+		checkData.setSealOper(checkOper);
+		storeCheckMapper.update(checkData);
 		
 		//根据明细表中的内容更新库存表中的数量
 		for(int i=0; i<detailList.size(); i++){
