@@ -13,23 +13,24 @@
 <html>
 	<head>
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" content="ie=edge"/>
-		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/staticPublic/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/material/easyui.css"/>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"/>
 		<style type="text/css">
-		 #maincenter {
+	/* #maincenter {	
 	
-	width: 98%;
-	height: 98%;	
-    marging:0px,auto;
+	margin-top:0px;
+	margin-left:15px;
+	margin-right:15px;
+	margin-bottom:0px;
    
-}
+} */
 #hbox {
 	background-color: #32bfbb;
 }
 .bs_banner_logo {
-	background-image: url(img/logo.png);
+	background-image: url(/staticPublic/img/logo.png);
 	background-repeat: no-repeat;
 	width: 180px; /*logo宽度*/
 	height: 74px; /*logo高度*/
@@ -39,7 +40,7 @@
 }
 
 .bs_banner_title {
-	background-image: url(img/title.png);
+	background-image: url(/staticPublic/img/title.png);
 	background-repeat: no-repeat;
 	width: 400px; /*头部标题宽度*/
 	height: 40px; /*头部标题高度*/
@@ -64,8 +65,8 @@
 
 .bs_navleft {
 	float: left;
-	padding: 0 0 0 15px;
-	color: white;
+	padding: 0 0 55px 15px;
+	color: white;	
 }
 
 .bs_navleft span {
@@ -87,7 +88,7 @@
 	line-height: 1px;
 }
 
-.icon_message {
+/* .icon_message {
 	background-image: url(img/message.png);
 	background-repeat: no-repeat;
 	background-position: 0 40%;
@@ -95,20 +96,15 @@
 	display: inline-block;
 	white-space: nowrap;
 	word-break: keep-all;
-	word-wrap: normal;
-	width: 50px; /*头部标题宽度*/
-	height: 48px; /*头部标题高度*/
-}
+	word-wrap: normal;*/
+	/* width: 50px;*/ /*头部标题宽度*/
+	/* height: 48px;*/ /*头部标题高度*/
+/*} */ 
 
 .icon_exit {
-	background-image: url(img/exit.png);
+	background-image: url(/staticPublic/img/exit.png);
 	background-repeat: no-repeat;
-	background-position: 0 40%;
-	padding: 0 5px 0 18px;
-	display: inline-block;
-	white-space: nowrap;
-	word-break: keep-all;
-	word-wrap: normal;
+	padding-bottom: 50px;
 	width: 50px; /*头部标题宽度*/
 	height: 48px; /*头部标题高度*/
 }
@@ -140,7 +136,7 @@
 	
 	line-height: 24px;
 	text-indent: 20%;
-	font-size: 12px;
+	font-size: 14px;
 	font-family: Microsoft YaHei;
 	
 }
@@ -148,111 +144,109 @@
 	margin: 0;
 	padding: 0;
 }
-		
+	.rightmenue {
+	float:right;
+	width:15px;
+	 background: #fff;	
+	 color:#fff; 
+}	
 		</style>
 	</head>
 	<body>
 	<%-- <h2>Hello，${user.name}</h2>
 		<br></br>
 		<button onclick="logout()">退出</button> --%>
-	<div style="margin-top:0px;margin-left:15px;margin-right:15px;margin-bottom:0px;">  
-    <div class="easyui-layout" id="maincenter" fit="true">
-     <div data-options="region:'north'" style="height:12%;" id="hbox" >
-     <div class="bs_banner_logo">
-				</div>
-				<div class="bs_banner_title"></div>
-				<div class="htabFunction">
+		
+	<div class="easyui-layout" id="maincenter" fit="true" >
+	<div data-options="region:'north',border:false" style="height:115px;" id="hbox">
+	<div class="bs_banner_logo"></div>
+	<div class="bs_banner_title"></div>
+	<div class="htabFunction">
 					<div class="bs_navleft">
-						<span class="fontTitle">欢迎您，张三 </span>
+						<span class="fontTitle">欢迎您，${user.name}</span>
 					</div>
-					<div class="bs_navleft">
-
-
-						<span class="icon_message hand fontTitle" id="home"> <span
-							class="fontlocal">1</span> </span>
-						<span class="icon_exit hand fontTitle" id="exit"></span>
-						<div class="clear"></div>
+					<div class="bs_navleft">					
+						<span class="icon_exit hand" id="exit" onclick="logout()"></span>
+						
 					</div>
 					<div class="clear"></div>
 				</div>
-     </div>
-     <div data-options="region:'south',split:true" style="height:3%;"></div>
-     <div data-options="region:'west',split:true"  style="width:13%;" id="leftwest" >
-     <div class="easyui-accordion"  border="false" id="left" >
+	</div>
+	<div data-options="region:'west',split:true" style="width:11%;" id="leftwest">
+	     <div class="easyui-accordion"  border="false" id="left" >
      <div title="日常操作 " style="overflow: auto; padding: 0px; " id="leftmenuetip"  data-options="collapsible:true,iconCls:'icon-firstmenues'"  >	
 		<ul class="menu-two">
-		<li class="item hand"> <a onclick="javascript:addTab('药品入库','test1.jsp')">药品入库</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品入库','/inStorage/new')"> <a >药品入库</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品出库','test2.jsp')">药品出库</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品出库','/inStorage/new')"><a >药品出库</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品退货','test13.jsp')">药品退货</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品退货','test13.jsp')"><a >药品退货</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品报损','test13.jsp')">药品报损</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品报损','test13.jsp')"><a >药品报损</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品调价','test13.jsp')">药品调价</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品调价','test13.jsp')"><a >药品调价</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品盘点','test13.jsp')">药品盘点</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品盘点','test13.jsp')"><a >药品盘点</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('采购计划','test13.jsp')">采购计划</a></li>
+		<li class="item hand" onclick="javascript:addTab('采购计划','test13.jsp')"><a >采购计划</a></li>
 		</ul>	
 		</div>
 			
 		<div title="查询统计 " style=" padding: 0px;" data-options="iconCls:'icon-nextmenues'"  >	
 		<ul class="menu-two">
-		<li class="item hand"> <a onclick="javascript:addTab('入库查询','test1.jsp')">入库查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('入库查询','test1.jsp')"> <a >入库查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('出库查询','test2.jsp')">出库查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('出库查询','test2.jsp')"><a >出库查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('退货查询','test13.jsp')">退货查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('退货查询','test13.jsp')"><a >退货查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('报损查询','test13.jsp')">报损查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('报损查询','test13.jsp')"><a >报损查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('调价查询','test13.jsp')">调价查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('调价查询','test13.jsp')"><a >调价查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('盘点查询','test13.jsp')">盘点查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('盘点查询','test13.jsp')"><a >盘点查询</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('采购计划','test13.jsp')">采购计划</a></li>
+		<li class="item hand" onclick="javascript:addTab('采购计划','test13.jsp')"><a >采购计划</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('进出统计','test13.jsp')">进出统计</a></li>
+		<li class="item hand" onclick="javascript:addTab('进出统计','test13.jsp')"><a >进出统计</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('药品台账','test13.jsp')">药品台账</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品台账','test13.jsp')"><a >药品台账</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('库存查询','test13.jsp')">库存查询</a></li>
+		<li class="item hand" onclick="javascript:addTab('库存查询','test13.jsp')"><a >库存查询</a></li>
 		</ul>	
 		</div>
 		<div title="设置" style="padding: 0px;" data-options="iconCls:'icon-lastmenues'">	
 		<ul class="menu-two">
-		<li class="item hand"> <a onclick="javascript:addTab('药品设置','test1.jsp')">药品设置</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品设置','test1.jsp')"> <a >药品设置</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('供应商设置','test2.jsp')">供应商设置</a></li>
+		<li class="item hand" onclick="javascript:addTab('供应商设置','test2.jsp')"><a >供应商设置</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('库存分类','test13.jsp')">库存分类</a></li>
+		<li class="item hand" onclick="javascript:addTab('库存分类','test13.jsp')"><a >库存分类</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('库存药品设置','test13.jsp')">库存药品设置</a></li>
+		<li class="item hand" onclick="javascript:addTab('库存药品设置','test13.jsp')"><a >库存药品设置</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('打印设置','test13.jsp')">打印设置</a></li>
+		<li class="item hand" onclick="javascript:addTab('打印设置','test13.jsp')"><a >打印设置</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('领药部门设置','test13.jsp')">领药部门设置</a></li>
+		<li class="item hand" onclick="javascript:addTab('领药部门设置','test13.jsp')"><a >领药部门设置</a></li>
 		
-		<li class="item hand"><a onclick="javascript:addTab('密码修改','test13.jsp')">密码修改</a></li>
+		<li class="item hand" onclick="javascript:addTab('密码修改','test13.jsp')"><a >密码修改</a></li>
 		</ul>	
 		</div>
      </div>
-     </div>
-     <div data-options="region:'center'" style="width:83%;">
-         <div class="easyui-tabs" id="centerTab" fit="true" border="false">
+	</div>
+	<div data-options="region:'south',border:false" style="height:20px;background:#A9FACD;">south region</div>
+	<div data-options="region:'center'">
+	<div class="easyui-tabs" id="centerTab" fit="true" border="false">
 					<div title="欢迎页" style="padding: 20px; overflow: hidden;">
 						<div style="margin-top: 20px;">
 							<h3>
-								你好，欢迎来到权限管理系统
+								你好，欢迎来到管理系统
 							</h3>
 						</div>
 					</div>
 				</div>
-         </div>
-    </div>
-    </div>
-		
+	</div>
+	</div>
 	</body>
 </html>
 <script>
@@ -266,6 +260,12 @@ $(document).ready(function() {
 		$(".menu-two li").click(function() {						
 			  $(this).addClass("navdown").siblings().removeClass("navdown");
           });
+	      $('#exit').mousedown(function(){
+	       	$(this).css('background', 'url(/staticPublic/img/exitov.png) no-repeat');
+	                  //alert('mousedown function is running !');
+	                }).mouseup(function(){
+	                 $(this).css('background', 'url(/staticPublic/img/exit.png) no-repeat');
+	                });
     });
       function addTab(text, url) {
         if ($("#centerTab").tabs('exists', text)) {
@@ -281,6 +281,7 @@ $(document).ready(function() {
         }
     }
 function logout(){
+	
 	location.href="logout";
 }
 </script>

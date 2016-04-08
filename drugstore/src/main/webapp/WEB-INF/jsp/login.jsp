@@ -101,7 +101,7 @@
     <span class="fonttitle" > 药&nbsp;&nbsp;&nbsp;库</span>
      <p style="position: relative;">
 	  <select name="storeName" class="selecttype" id="storeName">
-        <option selected="selected">---请选择---</option>
+        
       </select>
 	</p>		
 		 <span class="fonttitles"> 用户名</span>
@@ -122,7 +122,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {	
-	$.ajax({		
+	$.ajax({
+		async:true,
 		type:'POST',
 		url:"getAllDicDrugStore",
 		data:{},
