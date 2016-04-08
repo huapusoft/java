@@ -9,11 +9,11 @@ public class DicDrug {
 
 	private int id;//标识（唯一）
 
-    private String expenseclass;//收费类别（西药、中成药、中草药）
+    private String expenseClass;//收费类别（西药、中成药、中草药）
 
-    private String storeclass;//库存类别
+    private String storeClass;//库存类别
 
-    private String itemname;//名称
+    private String itemName;//名称
 
     private String spec;//规格
 
@@ -21,320 +21,320 @@ public class DicDrug {
 
     private String unit;//单位
 
-    private String clinicunit;//门诊零售单位
+    private String clinicUnit;//门诊零售单位
 
-    private int clinicunitratio;//门诊零售单位比率
+    private int clinicUnitRatio;//门诊零售单位比率
 
-    private String inhosunit;//住院零售单位
+    private String inhosUnit;//住院零售单位
 
-    private int inhosunitratio;//住院零售单位比率
+    private int inhosUnitRatio;//住院零售单位比率
 
-    private String adviceunit;//医嘱单位
+    private String adviceUnit;//医嘱单位
 
-    private String adviceunitvalue;//医嘱单位数值
+    private String adviceUnitValue;//医嘱单位数值
 
-    private String adviceunitvalueunit;//医嘱单位数值单位
+    private String adviceUnitValueUnit;//医嘱单位数值单位
 
-    private int adviceunitclinicratio;//医嘱单位门诊比率
+    private int adviceUnitClinicRatio;//医嘱单位门诊比率
 
-    private int adviceunitinhosratio;//	医嘱单位住院比率
+    private int adviceUnitInhosRatio;//	医嘱单位住院比率
 
     private String wb;//五笔码
 
     private String py;//拼音码
 
-    private String drugfunction;//药品功能代码
+    private String drugFunction;//药品功能代码
 
-    private String drugclass;//药品类别
+    private String drugClass;//药品类别
 
-    private String drugfrom;//药品剂型
+    private String drugFrom;//药品剂型
 
-    private int compositeitem;//是否为复合项目
+    private int compositeItem;//是否为复合项目
 
-    private int subitemselect;//是否有自选子项目
+    private int subItemSelect;//是否有自选子项目
 
-    private int partselect;//是否自选部位（专指检查项目）
+    private int partSelect;//是否自选部位（专指检查项目）
 
-    private int changeprice;//是否可以更改价格
+    private int changePrice;//是否可以更改价格
 
-    private int showinadvice;//是否在医嘱中显示
+    private int showInAdvice;//是否在医嘱中显示
 
     private int enabled;//是否启用
 
-    private String hzylcode;//合作医疗对应码
+    private String hzylCode;//合作医疗对应码
 
-    private int hzylverify;//合作医疗审批标志
+    private int hzylVerify;//合作医疗审批标志
 
-    private int hzylreimburse;//合作医疗是否报销
+    private int hzylReimburse;//合作医疗是否报销
 
-    private String ybcode;//医疗保险对应码
+    private String ybCode;//医疗保险对应码
 
-    private double ybclinicselfratio;//医疗保险门诊自理比例
+    private double ybClinicSelfRatio;//医疗保险门诊自理比例
 
-    private double ybinhosselfratio;//医疗保险住院自理比例
+    private double ybInhosSelfRatio;//医疗保险住院自理比例
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getExpenseclass() {
-        return expenseclass;
-    }
+	public String getExpenseClass() {
+		return expenseClass;
+	}
 
-    public void setExpenseclass(String expenseclass) {
-        this.expenseclass = expenseclass;
-    }
+	public void setExpenseClass(String expenseClass) {
+		this.expenseClass = expenseClass;
+	}
 
-    public String getStoreclass() {
-        return storeclass;
-    }
+	public String getStoreClass() {
+		return storeClass;
+	}
 
-    public void setStoreclass(String storeclass) {
-        this.storeclass = storeclass;
-    }
+	public void setStoreClass(String storeClass) {
+		this.storeClass = storeClass;
+	}
 
-    public String getItemname() {
-        return itemname;
-    }
+	public String getItemName() {
+		return itemName;
+	}
 
-    public void setItemname(String itemname) {
-        this.itemname = itemname;
-    }
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 
-    public String getSpec() {
-        return spec;
-    }
+	public String getSpec() {
+		return spec;
+	}
 
-    public void setSpec(String spec) {
-        this.spec = spec;
-    }
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
 
-    public String getVendor() {
-        return vendor;
-    }
+	public String getVendor() {
+		return vendor;
+	}
 
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
+	}
 
-    public String getUnit() {
-        return unit;
-    }
+	public String getUnit() {
+		return unit;
+	}
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
 
-    public String getClinicunit() {
-        return clinicunit;
-    }
+	public String getClinicUnit() {
+		return clinicUnit;
+	}
 
-    public void setClinicunit(String clinicunit) {
-        this.clinicunit = clinicunit;
-    }
+	public void setClinicUnit(String clinicUnit) {
+		this.clinicUnit = clinicUnit;
+	}
 
-    public int getClinicunitratio() {
-        return clinicunitratio;
-    }
+	public int getClinicUnitRatio() {
+		return clinicUnitRatio;
+	}
 
-    public void setClinicunitratio(int clinicunitratio) {
-        this.clinicunitratio = clinicunitratio;
-    }
+	public void setClinicUnitRatio(int clinicUnitRatio) {
+		this.clinicUnitRatio = clinicUnitRatio;
+	}
 
-    public String getInhosunit() {
-        return inhosunit;
-    }
+	public String getInhosUnit() {
+		return inhosUnit;
+	}
 
-    public void setInhosunit(String inhosunit) {
-        this.inhosunit = inhosunit;
-    }
+	public void setInhosUnit(String inhosUnit) {
+		this.inhosUnit = inhosUnit;
+	}
 
-    public int getInhosunitratio() {
-        return inhosunitratio;
-    }
+	public int getInhosUnitRatio() {
+		return inhosUnitRatio;
+	}
 
-    public void setInhosunitratio(int inhosunitratio) {
-        this.inhosunitratio = inhosunitratio;
-    }
+	public void setInhosUnitRatio(int inhosUnitRatio) {
+		this.inhosUnitRatio = inhosUnitRatio;
+	}
 
-    public String getAdviceunit() {
-        return adviceunit;
-    }
-
-    public void setAdviceunit(String adviceunit) {
-        this.adviceunit = adviceunit;
-    }
-
-    public String getAdviceunitvalue() {
-        return adviceunitvalue;
-    }
-
-    public void setAdviceunitvalue(String adviceunitvalue) {
-        this.adviceunitvalue = adviceunitvalue;
-    }
-
-    public String getAdviceunitvalueunit() {
-        return adviceunitvalueunit;
-    }
-
-    public void setAdviceunitvalueunit(String adviceunitvalueunit) {
-        this.adviceunitvalueunit = adviceunitvalueunit;
-    }
-
-    public int getAdviceunitclinicratio() {
-        return adviceunitclinicratio;
-    }
-
-    public void setAdviceunitclinicratio(int adviceunitclinicratio) {
-        this.adviceunitclinicratio = adviceunitclinicratio;
-    }
-
-    public int getAdviceunitinhosratio() {
-        return adviceunitinhosratio;
-    }
-
-    public void setAdviceunitinhosratio(int adviceunitinhosratio) {
-        this.adviceunitinhosratio = adviceunitinhosratio;
-    }
-
-    public String getWb() {
-        return wb;
-    }
-
-    public void setWb(String wb) {
-        this.wb = wb;
-    }
-
-    public String getPy() {
-        return py;
-    }
-
-    public void setPy(String py) {
-        this.py = py;
-    }
-
-    public String getDrugfunction() {
-        return drugfunction;
-    }
-
-    public void setDrugfunction(String drugfunction) {
-        this.drugfunction = drugfunction;
-    }
-
-    public String getDrugclass() {
-        return drugclass;
-    }
-
-    public void setDrugclass(String drugclass) {
-        this.drugclass = drugclass;
-    }
-
-    public String getDrugfrom() {
-        return drugfrom;
-    }
-
-    public void setDrugfrom(String drugfrom) {
-        this.drugfrom = drugfrom;
-    }
-
-    public int getCompositeitem() {
-        return compositeitem;
-    }
-
-    public void setCompositeitem(int compositeitem) {
-        this.compositeitem = compositeitem;
-    }
-
-    public int getSubitemselect() {
-        return subitemselect;
-    }
-
-    public void setSubitemselect(int subitemselect) {
-        this.subitemselect = subitemselect;
-    }
-
-    public int getPartselect() {
-        return partselect;
-    }
-
-    public void setPartselect(int partselect) {
-        this.partselect = partselect;
-    }
-
-    public int getChangeprice() {
-        return changeprice;
-    }
-
-    public void setChangeprice(int changeprice) {
-        this.changeprice = changeprice;
-    }
-
-    public int getShowinadvice() {
-        return showinadvice;
-    }
-
-    public void setShowinadvice(int showinadvice) {
-        this.showinadvice = showinadvice;
-    }
-
-    public int getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getHzylcode() {
-        return hzylcode;
-    }
-
-    public void setHzylcode(String hzylcode) {
-        this.hzylcode = hzylcode;
-    }
-
-    public int getHzylverify() {
-        return hzylverify;
-    }
-
-    public void setHzylverify(int hzylverify) {
-        this.hzylverify = hzylverify;
-    }
-
-    public int getHzylreimburse() {
-        return hzylreimburse;
-    }
-
-    public void setHzylreimburse(int hzylreimburse) {
-        this.hzylreimburse = hzylreimburse;
-    }
-
-    public String getYbcode() {
-        return ybcode;
-    }
-
-    public void setYbcode(String ybcode) {
-        this.ybcode = ybcode;
-    }
-
-    public double getYbclinicselfratio() {
-        return ybclinicselfratio;
-    }
-
-    public void setYbclinicselfratio(double ybclinicselfratio) {
-        this.ybclinicselfratio = ybclinicselfratio;
-    }
-
-    public double getYbinhosselfratio() {
-        return ybinhosselfratio;
-    }
-
-    public void setYbinhosselfratio(double ybinhosselfratio) {
-        this.ybinhosselfratio = ybinhosselfratio;
-    }
-	
+	public String getAdviceUnit() {
+		return adviceUnit;
+	}
+
+	public void setAdviceUnit(String adviceUnit) {
+		this.adviceUnit = adviceUnit;
+	}
+
+	public String getAdviceUnitValue() {
+		return adviceUnitValue;
+	}
+
+	public void setAdviceUnitValue(String adviceUnitValue) {
+		this.adviceUnitValue = adviceUnitValue;
+	}
+
+	public String getAdviceUnitValueUnit() {
+		return adviceUnitValueUnit;
+	}
+
+	public void setAdviceUnitValueUnit(String adviceUnitValueUnit) {
+		this.adviceUnitValueUnit = adviceUnitValueUnit;
+	}
+
+	public int getAdviceUnitClinicRatio() {
+		return adviceUnitClinicRatio;
+	}
+
+	public void setAdviceUnitClinicRatio(int adviceUnitClinicRatio) {
+		this.adviceUnitClinicRatio = adviceUnitClinicRatio;
+	}
+
+	public int getAdviceUnitInhosRatio() {
+		return adviceUnitInhosRatio;
+	}
+
+	public void setAdviceUnitInhosRatio(int adviceUnitInhosRatio) {
+		this.adviceUnitInhosRatio = adviceUnitInhosRatio;
+	}
+
+	public String getWb() {
+		return wb;
+	}
+
+	public void setWb(String wb) {
+		this.wb = wb;
+	}
+
+	public String getPy() {
+		return py;
+	}
+
+	public void setPy(String py) {
+		this.py = py;
+	}
+
+	public String getDrugFunction() {
+		return drugFunction;
+	}
+
+	public void setDrugFunction(String drugFunction) {
+		this.drugFunction = drugFunction;
+	}
+
+	public String getDrugClass() {
+		return drugClass;
+	}
+
+	public void setDrugClass(String drugClass) {
+		this.drugClass = drugClass;
+	}
+
+	public String getDrugFrom() {
+		return drugFrom;
+	}
+
+	public void setDrugFrom(String drugFrom) {
+		this.drugFrom = drugFrom;
+	}
+
+	public int getCompositeItem() {
+		return compositeItem;
+	}
+
+	public void setCompositeItem(int compositeItem) {
+		this.compositeItem = compositeItem;
+	}
+
+	public int getSubItemSelect() {
+		return subItemSelect;
+	}
+
+	public void setSubItemSelect(int subItemSelect) {
+		this.subItemSelect = subItemSelect;
+	}
+
+	public int getPartSelect() {
+		return partSelect;
+	}
+
+	public void setPartSelect(int partSelect) {
+		this.partSelect = partSelect;
+	}
+
+	public int getChangePrice() {
+		return changePrice;
+	}
+
+	public void setChangePrice(int changePrice) {
+		this.changePrice = changePrice;
+	}
+
+	public int getShowInAdvice() {
+		return showInAdvice;
+	}
+
+	public void setShowInAdvice(int showInAdvice) {
+		this.showInAdvice = showInAdvice;
+	}
+
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getHzylCode() {
+		return hzylCode;
+	}
+
+	public void setHzylCode(String hzylCode) {
+		this.hzylCode = hzylCode;
+	}
+
+	public int getHzylVerify() {
+		return hzylVerify;
+	}
+
+	public void setHzylVerify(int hzylVerify) {
+		this.hzylVerify = hzylVerify;
+	}
+
+	public int getHzylReimburse() {
+		return hzylReimburse;
+	}
+
+	public void setHzylReimburse(int hzylReimburse) {
+		this.hzylReimburse = hzylReimburse;
+	}
+
+	public String getYbCode() {
+		return ybCode;
+	}
+
+	public void setYbCode(String ybCode) {
+		this.ybCode = ybCode;
+	}
+
+	public double getYbClinicSelfRatio() {
+		return ybClinicSelfRatio;
+	}
+
+	public void setYbClinicSelfRatio(double ybClinicSelfRatio) {
+		this.ybClinicSelfRatio = ybClinicSelfRatio;
+	}
+
+	public double getYbInhosSelfRatio() {
+		return ybInhosSelfRatio;
+	}
+
+	public void setYbInhosSelfRatio(double ybInhosSelfRatio) {
+		this.ybInhosSelfRatio = ybInhosSelfRatio;
+	}
+
 }

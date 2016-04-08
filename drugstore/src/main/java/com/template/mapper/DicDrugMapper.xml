@@ -4,38 +4,38 @@
 
 	<resultMap id="BaseResultMap" type="com.template.domain.DicDrug">
 		<id column="id" property="id"  />
-	    <result column="expenseClass" property="expenseclass"  />
-	    <result column="storeClass" property="storeclass"  />
-	    <result column="itemName" property="itemname"  />
+	    <result column="expenseClass" property="expenseClass"  />
+	    <result column="storeClass" property="storeClass"  />
+	    <result column="itemName" property="itemName"  />
 	    <result column="spec" property="spec"  />
 	    <result column="vendor" property="vendor"  />
 	    <result column="unit" property="unit"  />
-	    <result column="clinicUnit" property="clinicunit"  />
-	    <result column="clinicUnitRatio" property="clinicunitratio"  />
-	    <result column="inhosUnit" property="inhosunit" />
-	    <result column="inhosUnitRatio" property="inhosunitratio"  />
-	    <result column="adviceUnit" property="adviceunit" />
-	    <result column="adviceUnitValue" property="adviceunitvalue"  />
-	    <result column="adviceUnitValueUnit" property="adviceunitvalueunit"  />
-	    <result column="adviceUnitClinicRatio" property="adviceunitclinicratio"  />
-	    <result column="adviceUnitInhosRatio" property="adviceunitinhosratio"  />
+	    <result column="clinicUnit" property="clinicUnit"  />
+	    <result column="clinicUnitRatio" property="clinicUnitRatio"  />
+	    <result column="inhosUnit" property="inhosUnit" />
+	    <result column="inhosUnitRatio" property="inhosUnitRatio"  />
+	    <result column="adviceUnit" property="adviceUnit" />
+	    <result column="adviceUnitValue" property="adviceUnitValue"  />
+	    <result column="adviceUnitValueUnit" property="adviceUnitValueUnit"  />
+	    <result column="adviceUnitClinicRatio" property="adviceUnitClinicRatio"  />
+	    <result column="adviceUnitInhosRatio" property="adviceUnitInhosRatio"  />
 	    <result column="wb" property="wb"  />
 	    <result column="py" property="py"  />
-	    <result column="drugFunction" property="drugfunction"  />
-	    <result column="drugClass" property="drugclass"  />
-	    <result column="drugFrom" property="drugfrom"  />
-	    <result column="compositeItem" property="compositeitem"  />
-	    <result column="subItemSelect" property="subitemselect"  />
-	    <result column="partSelect" property="partselect"  />
-	    <result column="changePrice" property="changeprice"  />
-	    <result column="showInAdvice" property="showinadvice"  />
+	    <result column="drugFunction" property="drugFunction"  />
+	    <result column="drugClass" property="drugClass"  />
+	    <result column="drugFrom" property="drugFrom"  />
+	    <result column="compositeItem" property="compositeItem"  />
+	    <result column="subItemSelect" property="subItemSelect"  />
+	    <result column="partSelect" property="partSelect"  />
+	    <result column="changePrice" property="changePrice"  />
+	    <result column="showInAdvice" property="showInAdvice"  />
 	    <result column="enabled" property="enabled"  />
-	    <result column="hzylCode" property="hzylcode"  />
-	    <result column="hzylVerify" property="hzylverify"  />
-	    <result column="hzylReimburse" property="hzylreimburse"  />
-	    <result column="ybCode" property="ybcode"  />
-	    <result column="ybClinicSelfRatio" property="ybclinicselfratio"  />
-	    <result column="ybInhosSelfRatio" property="ybinhosselfratio"  />
+	    <result column="hzylCode" property="hzylCode"  />
+	    <result column="hzylVerify" property="hzylVerify"  />
+	    <result column="hzylReimburse" property="hzylReimburse"  />
+	    <result column="ybCode" property="ybCode"  />
+	    <result column="ybClinicSelfRatio" property="ybClinicSelfRatio"  />
+	    <result column="ybInhosSelfRatio" property="ybInhosSelfRatio"  />
 	</resultMap>
 
 	<select id="getById" resultMap="BaseResultMap" parameterType="int">
@@ -72,31 +72,31 @@
 	      ybCode, ybClinicSelfRatio, ybInhosSelfRatio
 	    )
 	    values (
-	      #{id}, #{expenseclass}, #{storeclass}, 
-	      #{itemname}, #{spec}, #{vendor}, #{unit}, 
-	      #{clinicunit}, #{clinicunitratio}, #{inhosunit}, 
-	      #{inhosunitratio}, #{adviceunit}, #{adviceunitvalue}, 
-	      #{adviceunitvalueunit}, #{adviceunitclinicratio}, 
-	      #{adviceunitinhosratio}, #{wb}, #{py}, 
-	      #{drugfunction}, #{drugclass}, #{drugfrom}, 
-	      #{compositeitem}, #{subitemselect}, #{partselect}, 
-	      #{changeprice}, #{showinadvice}, #{enabled}, 
-	      #{hzylcode}, #{hzylverify}, #{hzylreimburse}, 
-	      #{ybcode}, #{ybclinicselfratio}, #{ybinhosselfratio} 
+	      #{id}, #{expenseClass}, #{storeClass}, 
+	      #{itemName}, #{spec}, #{vendor}, #{unit}, 
+	      #{clinicUnit}, #{clinicUnitRatio}, #{inhosUnit}, 
+	      #{inhosUnitRatio}, #{adviceUnit}, #{adviceUnitValue}, 
+	      #{adviceUnitValueUnit}, #{adviceUnitClinicRatio}, 
+	      #{adviceUnitInhosRatio}, #{wb}, #{py}, 
+	      #{drugFunction}, #{drugClass}, #{drugFrom}, 
+	      #{compositeItem}, #{subItemSelect}, #{partSelect}, 
+	      #{changePrice}, #{showInAdvice}, #{enabled}, 
+	      #{hzylCode}, #{hzylVerify}, #{hzylReimburse}, 
+	      #{ybCode}, #{ybClinicSelfRatio}, #{ybInhosSelfRatio} 
 	    )
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicDrug">
 		update dic_drug
 		<set >
-	      <if test="expenseclass != null" >
-	        expenseClass = #{expenseclass},
+	      <if test="expenseClass != null" >
+	        expenseClass = #{expenseClass},
 	      </if>
-	      <if test="storeclass != null" >
-	        storeClass = #{storeclass},
+	      <if test="storeClass != null" >
+	        storeClass = #{storeClass},
 	      </if>
-	      <if test="itemname != null" >
-	        itemName = #{itemname},
+	      <if test="itemName != null" >
+	        itemName = #{itemName},
 	      </if>
 	      <if test="spec != null" >
 	        spec = #{spec},
@@ -107,32 +107,32 @@
 	      <if test="unit != null" >
 	        unit = #{unit},
 	      </if>
-	      <if test="clinicunit != null" >
-	        clinicUnit = #{clinicunit},
+	      <if test="clinicUnit != null" >
+	        clinicUnit = #{clinicUnit},
 	      </if>
-	      <if test="clinicunitratio != null" >
-	        clinicUnitRatio = #{clinicunitratio},
+	      <if test="clinicUnitRatio != null" >
+	        clinicUnitRatio = #{clinicUnitRatio},
 	      </if>
-	      <if test="inhosunit != null" >
-	        inhosUnit = #{inhosunit},
+	      <if test="inhosUnit != null" >
+	        inhosUnit = #{inhosUnit},
 	      </if>
-	      <if test="inhosunitratio != null" >
-	        inhosUnitRatio = #{inhosunitratio},
+	      <if test="inhosUnitRatio != null" >
+	        inhosUnitRatio = #{inhosUnitRatio},
 	      </if>
-	      <if test="adviceunit != null" >
-	        adviceUnit = #{adviceunit},
+	      <if test="adviceUnit != null" >
+	        adviceUnit = #{adviceUnit},
 	      </if>
-	      <if test="adviceunitvalue != null" >
-	        adviceUnitValue = #{adviceunitvalue},
+	      <if test="adviceUnitValue != null" >
+	        adviceUnitValue = #{adviceUnitValue},
 	      </if>
-	      <if test="adviceunitvalueunit != null" >
-	        adviceUnitValueUnit = #{adviceunitvalueunit},
+	      <if test="adviceUnitValueUnit != null" >
+	        adviceUnitValueUnit = #{adviceUnitValueUnit},
 	      </if>
-	      <if test="adviceunitclinicratio != null" >
-	        adviceUnitClinicRatio = #{adviceunitclinicratio},
+	      <if test="adviceUnitClinicRatio != null" >
+	        adviceUnitClinicRatio = #{adviceUnitClinicRatio},
 	      </if>
-	      <if test="adviceunitinhosratio != null" >
-	        adviceUnitInhosRatio = #{adviceunitinhosratio},
+	      <if test="adviceUnitInhosRatio != null" >
+	        adviceUnitInhosRatio = #{adviceUnitInhosRatio},
 	      </if>
 	      <if test="wb != null" >
 	        wb = #{wb},
@@ -140,50 +140,50 @@
 	      <if test="py != null" >
 	        py = #{py},
 	      </if>
-	      <if test="drugfunction != null" >
-	        drugFunction = #{drugfunction},
+	      <if test="drugFunction != null" >
+	        drugFunction = #{drugFunction},
 	      </if>
-	      <if test="drugclass != null" >
-	        drugClass = #{drugclass},
+	      <if test="drugClass != null" >
+	        drugClass = #{drugClass},
 	      </if>
-	      <if test="drugfrom != null" >
-	        drugFrom = #{drugfrom},
+	      <if test="drugFrom != null" >
+	        drugFrom = #{drugFrom},
 	      </if>
-	      <if test="compositeitem != null" >
-	        compositeItem = #{compositeitem},
+	      <if test="compositeItem != null" >
+	        compositeItem = #{compositeItem},
 	      </if>
-	      <if test="subitemselect != null" >
-	        subItemSelect = #{subitemselect},
+	      <if test="subItemSelect != null" >
+	        subItemSelect = #{subItemSelect},
 	      </if>
-	      <if test="partselect != null" >
-	        partSelect = #{partselect},
+	      <if test="partSelect != null" >
+	        partSelect = #{partSelect},
 	      </if>
-	      <if test="changeprice != null" >
-	        changePrice = #{changeprice},
+	      <if test="changePrice != null" >
+	        changePrice = #{changePrice},
 	      </if>
-	      <if test="showinadvice != null" >
-	        showInAdvice = #{showinadvice},
+	      <if test="showInAdvice != null" >
+	        showInAdvice = #{showInAdvice},
 	      </if>
 	      <if test="enabled != null" >
 	        enabled = #{enabled},
 	      </if>
-	      <if test="hzylcode != null" >
-	        hzylCode = #{hzylcode},
+	      <if test="hzylCode != null" >
+	        hzylCode = #{hzylCode},
 	      </if>
-	      <if test="hzylverify != null" >
-	        hzylVerify = #{hzylverify},
+	      <if test="hzylVerify != null" >
+	        hzylVerify = #{hzylVerify},
 	      </if>
-	      <if test="hzylreimburse != null" >
-	        hzylReimburse = #{hzylreimburse},
+	      <if test="hzylReimburse != null" >
+	        hzylReimburse = #{hzylReimburse},
 	      </if>
-	      <if test="ybcode != null" >
-	        ybCode = #{ybcode},
+	      <if test="ybCode != null" >
+	        ybCode = #{ybCode},
 	      </if>
-	      <if test="ybclinicselfratio != null" >
-	        ybClinicSelfRatio = #{ybclinicselfratio},
+	      <if test="ybClinicSelfRatio != null" >
+	        ybClinicSelfRatio = #{ybClinicSelfRatio},
 	      </if>
-	      <if test="ybinhosselfratio != null" >
-	        ybInhosSelfRatio = #{ybinhosselfratio},
+	      <if test="ybInhosSelfRatio != null" >
+	        ybInhosSelfRatio = #{ybInhosSelfRatio},
 	      </if>
 	    </set>
 		where id = #{id}
