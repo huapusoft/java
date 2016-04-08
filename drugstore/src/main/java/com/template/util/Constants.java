@@ -16,7 +16,7 @@ public abstract  class Constants {
 		public static final String IN = "入库";//入库
 		public static final String OUT = "出库";//出库
 		public static final String ADJUST_PRICE = "调价";//调价
-		public static final String SALES_RET = "退货";//退货
+		public static final String SALES_RETURN = "退货";//退货
 		public static final String BREAKAGE = "报损";//报损
 		
 	}

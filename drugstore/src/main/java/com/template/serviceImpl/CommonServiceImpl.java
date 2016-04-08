@@ -141,7 +141,7 @@ public class CommonServiceImpl implements CommonService {
 						result.put("adjustPriceSum0", sum0);//草稿
 						result.put("adjustPriceSum1", sum1);//已提交
 						result.put("adjustPriceSum3", sum3);//驳回
-					}else if( Constants.BusinessType.SALES_RET.equals(billType) ){
+					}else if( Constants.BusinessType.SALES_RETURN.equals(billType) ){
 						result.put("salesRetSum0", sum0);//草稿
 						result.put("salesRetSum1", sum1);//已提交
 						result.put("salesRetSum3", sum3);//驳回
