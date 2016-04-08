@@ -21,6 +21,7 @@ public class SecurityServiceImpl implements SecurityService {
 		publicUris.add("/validate"); // 登录检查
 		publicUris.add("/fail"); // 错误页面
 		publicUris.add("/getAllDicDrugStore"); // 登录页面获取药库
+		publicUris.add("/getDicEmployeeBySotreName"); // 登录页面获取药库的用户
 		publicUris.add("/staticPublic"); // 公用图片 样式 脚本
 		publicUris.add("/test/login"); // test
 	}
