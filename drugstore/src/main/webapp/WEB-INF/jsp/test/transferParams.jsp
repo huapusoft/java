@@ -15,8 +15,8 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
 	</head>
 	<body>
-		<h4>前后台交互demo1</h4>
-		参数格式：[出库登记]
+		<h4>保存出库登记</h4>
+		参数格式：
 		<br/>
 &nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;"billType" : "出库",<br/>

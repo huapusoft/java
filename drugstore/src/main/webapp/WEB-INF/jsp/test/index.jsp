@@ -25,9 +25,13 @@
 		<br/>
 		<br/>
 		<br/> -->
-		
-		<h4>----前后台交互demo</h4>
-		<a href="/test/transferParams" target="_blank">---->点击查看</a>
+		<br/>
+		<br/>
+		<h4>前后台交互demo</h4>
+		<a href="/test/saveInStorage" target="_blank">1.入库保存-->点击查看</a>
+		<br/>
+		<br/>
+		<a href="/test/transferParams" target="_blank">2.出库保存-->点击查看</a>
 		
 	</body>
 </html>
