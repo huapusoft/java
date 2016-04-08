@@ -14,10 +14,10 @@
 		<result column="sealTime" property="sealTime" />
 	</resultMap>
 
-	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+	<select id="getByCheckNo" resultMap="BaseResultMap" parameterType="int">
 		select *
 		from storeCheck
-		where checkNo = #{id}
+		where checkNo = #{checkNo}
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
@@ -32,6 +32,9 @@
 			</if>
 			<if test="statusFlag == '0'">
 				and sealOper is null
+			</if>
+			<if test="currYearMonth != null and currYearMonth != ''">
+				and checkNo like CONCAT('',#{currYearMonth},'%')  
 			</if>
 		</where>
 	</select>
@@ -71,11 +74,11 @@
 				sealTime = #{sealTime},
 			</if>
 		</set>
-		where checkNo = #{id}
+		where checkNo = #{checkNo}
 	</update>
 	
 	<delete id="delete" parameterType="int">
 		delete from storeCheck
-		where checkNo = #{id}
+		where checkNo = #{checkNo}
 	</delete>
 </mapper>

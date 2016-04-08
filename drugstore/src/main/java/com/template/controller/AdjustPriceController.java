@@ -73,8 +73,7 @@ public class AdjustPriceController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
+			result.put("msg", "获取失败："+e.getMessage());		
 		}
 		
 		return result;
@@ -110,8 +109,7 @@ public class AdjustPriceController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "保存失败："+e.getMessage());
-			
+			result.put("msg", "保存失败："+e.getMessage());		
 		}
 		 
 		return result;
@@ -140,8 +138,7 @@ public class AdjustPriceController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "提交失败："+e.getMessage());
-			
+			result.put("msg", "提交失败："+e.getMessage());	
 		}
 		
 		return result;
@@ -170,8 +167,7 @@ public class AdjustPriceController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "作废失败："+e.getMessage());
-			
+			result.put("msg", "作废失败："+e.getMessage());	
 		}
 		
 		return result;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.StoreCheckDetailMapper" >
+
+  <resultMap id="BaseResultMap" type="com.template.domain.StoreCheckDetail" >
+    <id column="id" property="id"/>
+    <result column="checkNo" property="checkNo" />
+    <result column="orderNo" property="orderNo" />
+    <result column="drugId" property="drugId" />
+    <result column="batchNo" property="batchNo" />
+    <result column="amount" property="amount" />
+    <result column="realAmount" property="realAmount" />
+    <result column="inPrice" property="inPrice" />
+    <result column="price" property="price" />
+  </resultMap>
+  
+  <select id="getByCheckNo" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from storeCheckDetail
+		where checkNo = #{checkNo}
+  </select>
+  <insert id="insert" parameterType="com.template.domain.StoreCheckDetail" >
+    insert into storeCheckDetail (checkNo, orderNo, drugId, batchNo, amount, realAmount, inPrice, price)
+    values ( #{checkNo}, #{orderNo}, #{drugId}, #{batchNo}, #{amount}, #{realAmount}, #{inPrice}, #{price} )
+  </insert>
+  <delete id="delete" parameterType="int">
+		delete from storeCheckDetail
+		where checkNo = #{checkNo}
+  </delete>
+  
+  
+  
+  <resultMap id="BaseResultMap2" type="com.template.domain.DrugAndCheckDetail" >
+    <id column="orderNo" property="orderNo"/>
+    <result column="checkNo" property="checkNo" />
+    <result column="id" property="id" />
+    <result column="itemName" property="itemName" />
+    <result column="spec" property="spec" />
+    <result column="batchNo" property="batchNo" />
+    <result column="price" property="price" />
+    <result column="amount" property="amount" />
+    <result column="unit" property="unit" />
+    <result column="storePrice" property="storePrice" />
+    <result column="realAmount" property="realAmount" />
+    <result column="realPrice" property="realPrice" />
+  </resultMap>
+  
+  <select id="getCheckDetailList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+  		select a.orderNo,b.id,b.itemName,b.spec,a.batchNo,a.price,a.amount,b.unit,a.price*a.amount as storePrice,
+  				a.realAmount,a.price*a.realAmount realPrice
+		from storeCheckDetail a,dic_drug b
+		where a.drugId=b.id and b.enabled = 1
+			<if test="checkNo != null and checkNo != ''">
+				and a.checkNo = #{checkNo}
+			</if>
+		order by a.orderNo asc
+	</select>
+  
+  
+  
+
+</mapper>

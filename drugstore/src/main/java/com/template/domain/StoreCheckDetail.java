@@ -11,13 +11,13 @@ public class StoreCheckDetail {
 	private static final long serialVersionUID = 1L;
 	
     private int id;//唯一，自增长
-    private int checkno;//盘点号
-    private int orderno;//顺序号
-    private int drugid;//药品id
-    private String batchno;//批号
+    private int checkNo;//盘点号
+    private int orderNo;//顺序号
+    private int drugId;//药品id
+    private String batchNo;//批号
     private double amount;//数量
-    private double realamount;//实际数量
-    private double inprice;//进价
+    private double realAmount;//实际数量
+    private double inPrice;//进价
     private double price;//零售价
     
 	public int getId() {
@@ -26,29 +26,29 @@ public class StoreCheckDetail {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getCheckno() {
-		return checkno;
+	public int getCheckNo() {
+		return checkNo;
 	}
-	public void setCheckno(int checkno) {
-		this.checkno = checkno;
+	public void setCheckNo(int checkNo) {
+		this.checkNo = checkNo;
 	}
-	public int getOrderno() {
-		return orderno;
+	public int getOrderNo() {
+		return orderNo;
 	}
-	public void setOrderno(int orderno) {
-		this.orderno = orderno;
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
 	}
-	public int getDrugid() {
-		return drugid;
+	public int getDrugId() {
+		return drugId;
 	}
-	public void setDrugid(int drugid) {
-		this.drugid = drugid;
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
 	}
-	public String getBatchno() {
-		return batchno;
+	public String getBatchNo() {
+		return batchNo;
 	}
-	public void setBatchno(String batchno) {
-		this.batchno = batchno;
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
 	}
 	public double getAmount() {
 		return amount;
@@ -56,17 +56,17 @@ public class StoreCheckDetail {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public double getRealamount() {
-		return realamount;
+	public double getRealAmount() {
+		return realAmount;
 	}
-	public void setRealamount(double realamount) {
-		this.realamount = realamount;
+	public void setRealAmount(double realAmount) {
+		this.realAmount = realAmount;
 	}
-	public double getInprice() {
-		return inprice;
+	public double getInPrice() {
+		return inPrice;
 	}
-	public void setInprice(double inprice) {
-		this.inprice = inprice;
+	public void setInPrice(double inPrice) {
+		this.inPrice = inPrice;
 	}
 	public double getPrice() {
 		return price;
@@ -74,6 +74,8 @@ public class StoreCheckDetail {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+    
+	
 
 
 }

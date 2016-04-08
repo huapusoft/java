@@ -12,7 +12,7 @@ import com.template.domain.StoreCheck;
  */
 public interface StoreCheckMapper {
 
-	public StoreCheck getById(int id) throws Exception ;
+	public StoreCheck getByCheckNo(int checkNo) throws Exception ;
 
 	public List<StoreCheck> getByConditions(Map<String, Object> params)  throws Exception;
 
@@ -20,6 +20,6 @@ public interface StoreCheckMapper {
 	
 	public void update(StoreCheck bean)  throws Exception;
 	
-	public void delete(int id)  throws Exception;
+	public void delete(int checkNo)  throws Exception;
 	
 }

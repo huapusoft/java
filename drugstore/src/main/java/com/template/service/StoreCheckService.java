@@ -2,6 +2,7 @@ package com.template.service;
 
 import java.util.List;
 
+import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
@@ -23,13 +24,22 @@ public interface StoreCheckService {
 	public List<DrugAndStore> getStoreDrugList() throws Exception;
 	
 	/**
+	 * 打开盘点单
+	* @author  fengql 
+	* @date 2016年4月8日 上午10:13:46 
+	* @parameter  
+	* @return
+	 */
+	public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception;
+	
+	/**
 	 * 保存盘点草稿
 	* @author  fengql 
 	* @date 2016年4月7日 下午4:26:48 
-	* @parameter   checkmain-盘点主表数据，detailList-盘点明细表数据，billOper-操作员，storeName-库房名称
+	* @parameter   checkData-盘点主表数据，detailList-盘点明细表数据，checkOper-操作员，storeName-库房名称
 	* @return void
 	 */
-	public void save(StoreCheck checkmain, List<StoreCheckDetail> detailList, String billOper, String storeName) throws Exception;
+	public void save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
 
 	/**
 	 * 封存盘点数据
@@ -41,7 +51,7 @@ public interface StoreCheckService {
 	public void submit(int checkNo) throws Exception;
 
 	/**
-	 * 取消盘点单
+	 * 作废盘点单
 	* @author  fengql 
 	* @date 2016年4月7日 下午4:33:30 
 	* @parameter  checkNo-盘点号

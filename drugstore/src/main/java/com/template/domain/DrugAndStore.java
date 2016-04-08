@@ -15,15 +15,53 @@ public class DrugAndStore {
 	private String itemName;//药品名称
 	private String spec;//规格
 	private String vendor;//厂家
-	private double num;//进价
+	private double num;//数量总和--调价时用到
 	private String unit;//单位
-	private double price;//当前零售价
+	private double price;//单价-当前零售价
 	
-	private int id;
-	private String batchNo;
-	private double inPrice;
-	private Date validDate;
+	private int id;//药品id
+	private String batchNo;//批号
+	private double inPrice;//进价
+	private Date validDate;//有效期
 	
+	//以下为新建盘点时需要
+	private int orderNo;//序号
+	private double amount;//在库数量
+	private double storePrice;//库存金额
+	private double realAmount;//实际数量
+	private double realPrice;//实际金额
+	
+	
+	public int getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
+	}
+	public double getStorePrice() {
+		return storePrice;
+	}
+	public void setStorePrice(double storePrice) {
+		this.storePrice = storePrice;
+	}
+	public double getRealAmount() {
+		return realAmount;
+	}
+	public void setRealAmount(double realAmount) {
+		this.realAmount = realAmount;
+	}
+	public double getRealPrice() {
+		return realPrice;
+	}
+	public void setRealPrice(double realPrice) {
+		this.realPrice = realPrice;
+	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
 	public int getId() {
 		return id;
 	}
