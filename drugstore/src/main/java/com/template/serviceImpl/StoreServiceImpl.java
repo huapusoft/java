@@ -134,7 +134,8 @@ public class StoreServiceImpl implements StoreService {
 					
 				}else{//减库存
 					Store bean = storeList.get(0);
-					if( bean.getAmount()-amount == 0 ){
+					Double rs = bean.getAmount()-amount;
+					if( rs.intValue() == 0 ){
 						storeMapper.delete(bean.getId());
 						
 					}else{

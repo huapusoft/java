@@ -461,9 +461,10 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<DrugAndStore> getDrugListForOutStorage(String itemName) throws Exception {
+	public List<DrugAndStore> getDrugListForOutStorage(String storeName, String itemName) throws Exception {
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("storeName", storeName);
 			params.put("itemName", itemName);
 			return storeMapper.getDrugAndStoreDataList(params);
 			

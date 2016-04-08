@@ -116,7 +116,8 @@ public class OutStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<DrugAndStore> list = commonService.getDrugListForOutStorage(itemName);
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			List<DrugAndStore> list = commonService.getDrugListForOutStorage(storeName, itemName);
 			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");
