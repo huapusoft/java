@@ -129,7 +129,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		inStorageService.submit(2016041000);
+		inStorageService.submit(2016041001);
 	}
 	
 	/**
@@ -159,7 +159,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		inStorageService.verifySuccess(2016041000, "财务1", "一号仓库");
+		inStorageService.verifySuccess(2016041001, "财务1", "一号仓库");
 	}
 	
 	/**

@@ -3,8 +3,9 @@
 <mapper namespace="com.template.dao.StoreMapper">
 	
 	<resultMap id="BaseResultMap" type="com.template.domain.Store">
-		<result column="storeName" property="storeName" />
 		<result column="id" property="id"  />
+		<result column="storeName" property="storeName" />
+		<result column="drugId" property="drugId"  />
 		<result column="batchNo" property="batchNo" />
 		<result column="inPrice" property="inPrice" />
 		<result column="price" property="price" />
@@ -33,8 +34,8 @@
 			<if test="storeName != null and storeName != ''">
 				and storeName = #{storeName}
 			</if>
-			<if test="id != null and id != ''">
-				and id = #{id}
+			<if test="drugId != null and drugId != ''">
+				and drugId = #{drugId}
 			</if>
 			<if test="batchNo != null and batchNo != ''">
 				and batchNo = #{batchNo}
@@ -56,11 +57,11 @@
 	
 	<insert id="insert" parameterType="com.template.domain.Store">
 		insert into store
-		( storeName, id, batchNo, inPrice, price, amount, amountLowLimit, 
+		( storeName, drugId, batchNo, inPrice, price, amount, amountLowLimit, 
 			validDate, validDateWarnDays, special, customOrderCode, 
 			inTime, place1, place2, place3 )
 		values
-		( #{storeName}, #{id}, #{batchNo}, #{inPrice}, #{price}, #{amount}, #{amountLowLimit}, 
+		( #{storeName}, #{drugId}, #{batchNo}, #{inPrice}, #{price}, #{amount}, #{amountLowLimit}, 
 			#{validDate}, #{validDateWarnDays}, #{special}, #{customOrderCode}, 
 			#{inTime}, #{place1}, #{place2}, #{place3} )
 	</insert>
@@ -70,6 +71,9 @@
 		<set>
 			<if test="storeName != null and storeName != ''">
 				storeName = #{storeName},
+			</if>
+			<if test="drugId != null and drugId != ''">
+				drugId = #{drugId},
 			</if>
 			<if test="batchNo != null and batchNo != ''">
 				batchNo = #{batchNo},
@@ -86,7 +90,7 @@
 			<if test="amountLowLimit != null and amountLowLimit != ''">
 				amountLowLimit = #{amountLowLimit},
 			</if>
-			<if test="validDate != null and validDate != ''">
+			<if test="validDate != null ">
 				validDate = #{validDate},
 			</if>
 			<if test="validDateWarnDays != null and validDateWarnDays != ''">
@@ -98,7 +102,7 @@
 			<if test="customOrderCode != null and customOrderCode != ''">
 				customOrderCode = #{customOrderCode},
 			</if>
-			<if test="inTime != null and inTime != ''">
+			<if test="inTime != null">
 				inTime = #{inTime},
 			</if>
 			<if test="place1 != null and place1 != ''">
@@ -111,16 +115,12 @@
 				place3 = #{place3},
 			</if>
 		</set>
-		where checkNo = #{id}
+		where id = #{id}
 	</update>
 	
-	<delete id="delete" parameterType="com.template.domain.Store">
+	<delete id="delete" parameterType="int">
 		delete from store
-		where storeName = #{storeName}
-			and id = #{drugId}
-			and batchNo = #{batchNo}
-			and inPrice = #{inPrice}
-			and price = #{price}
+		where id = #{id}
 	</delete>
 	
 	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">

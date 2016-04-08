@@ -13,8 +13,9 @@ public class Store {
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	
+	private int id;//主键
 	private String storeName;//药库名称
-	private int id;//药品标识
+	private int drugId;//药品标识
 	private String batchNo;//批号
 	private double inPrice;//进价
 	private double price;//零售价
@@ -29,6 +30,12 @@ public class Store {
 	private String place2;//摆放位置2
 	private String place3;//摆放位置3
 	
+	public int getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
 	public String getStoreName() {
 		return storeName;
 	}

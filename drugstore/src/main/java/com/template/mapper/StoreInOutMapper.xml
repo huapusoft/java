@@ -57,38 +57,17 @@
 	
 	<update id="update" parameterType="com.template.domain.StoreInOut">
 		update storeInOut
-		<set>
-			<if test="storeName != null and storeName != ''">
+		set
 				storeName = #{storeName},
-			</if>
-			<if test="billType != null and billType != ''">
 				billType = #{billType},
-			</if>
-			<if test="typeData != null and typeData != ''">
 				typeData = #{typeData},
-			</if>
-			<if test="sum1 != null and sum1 != ''">
 				sum1 = #{sum1},
-			</if>
-			<if test="sum2 != null and sum2 != ''">
 				sum2 = #{sum2},
-			</if>
-			<if test="billOper != null and billOper != ''">
 				billOper = #{billOper},
-			</if>
-			<if test="status != null and status != ''">
 				status = #{status},
-			</if>
-			<if test="submitTime != null ">
 				submitTime = #{submitTime},
-			</if>
-			<if test="verifyOper != null and verifyOper != ''">
 				verifyOper = #{verifyOper},
-			</if>
-			<if test="verifyTime != null ">
-				verifyTime = #{verifyTime},
-			</if>
-		</set>
+				verifyTime = #{verifyTime}
 		where billNo = #{billNo}
 	</update>
 	

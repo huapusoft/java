@@ -78,12 +78,14 @@ public class StoreServiceImpl implements StoreService {
 				if( null == storeList || storeList.size() == 0 ){//插入
 					Store bean = new Store();
 					bean.setStoreName(storeName);
-					bean.setId(drugId);
+					bean.setDrugId(drugId);
 					bean.setBatchNo(batchNo);
 					bean.setAmount(amount);
 					bean.setInTime(new Date());
 					bean.setValidDate(validDate);
 					bean.setSpecial(0);
+					bean.setInPrice(price1);
+					bean.setPrice(price2);
 					storeMapper.insert(bean);
 					
 				}else{//加库存
@@ -117,18 +119,20 @@ public class StoreServiceImpl implements StoreService {
 				if( null == storeList || storeList.size() == 0 ){//插入：如果库存中没有的时候
 					Store bean = new Store();
 					bean.setStoreName(storeName);
-					bean.setId(drugId);
+					bean.setDrugId(drugId);
 					bean.setBatchNo(batchNo);
 					bean.setAmount(0-amount);
 					bean.setInTime(new Date());
 					bean.setValidDate(validDate);
 					bean.setSpecial(0);
+					bean.setInPrice(price1);
+					bean.setPrice(price2);
 					storeMapper.insert(bean);
 					
 				}else{//减库存
 					Store bean = storeList.get(0);
 					if( bean.getAmount()-amount == 0 ){
-						storeMapper.delete(bean);
+						storeMapper.delete(bean.getId());
 						
 					}else{
 						bean.setAmount( bean.getAmount()-amount );

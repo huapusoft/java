@@ -94,6 +94,7 @@ public class CommonServiceImpl implements CommonService {
 		String currYearMonth = CommonUtil.getCurrYearMonth();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("currYearMonth", currYearMonth);
+		params.put("orderBycheckNo", "Y");
 		List<StoreCheck> list = storeCheckMapper.getByConditions(params);
 		if( null != list && list.size() > 0 ){
 			int oldCheckNo = list.get(0).getCheckNo();
@@ -342,9 +343,19 @@ public class CommonServiceImpl implements CommonService {
 		if( null == inOut ){
 			throw new RuntimeException("票据号对应的数据为空");
 		}
+		//检查状态
+		if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
+				|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
+				|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+			){
+			throw new RuntimeException("不是草稿状态，不可更新");
+			
+		}
 		//更新出入库主表
 		inOut.setStatus( Constants.BusinessStatus.SUBMIT);//已提交
 		inOut.setSubmitTime(new Date());//提交时间
+		inOut.setVerifyOper(null);
+		inOut.setVerifyTime(null);
 		storeInOutMapper.update(inOut);
 		
 	}
