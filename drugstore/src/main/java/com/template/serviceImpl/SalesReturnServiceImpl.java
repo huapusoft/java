@@ -13,7 +13,7 @@ import com.template.dao.StoreInOutMapper;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
-import com.template.service.OutStorageService;
+import com.template.service.SalesReturnService;
 
 /**
  * 退货serviceimpl
@@ -21,7 +21,7 @@ import com.template.service.OutStorageService;
  * @author army.liu
  */
 @Service("saleReturnService")
-public class SalesReturnServiceImpl implements OutStorageService {
+public class SalesReturnServiceImpl implements SalesReturnService {
 	
 	@Resource
 	private StoreInOutMapper storeInOutMapper;

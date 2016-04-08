@@ -12,8 +12,8 @@ import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.BreakageService;
 import com.template.service.CommonService;
-import com.template.service.OutStorageService;
 
 /**
  * 退货serviceimpl
@@ -21,7 +21,7 @@ import com.template.service.OutStorageService;
  * @author army.liu
  */
 @Service("breakageService")
-public class BreakageServiceImpl implements OutStorageService {
+public class BreakageServiceImpl implements BreakageService {
 	
 	@Resource
 	private StoreInOutMapper storeInOutMapper;
