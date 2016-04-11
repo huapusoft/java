@@ -70,6 +70,7 @@ public class AdjustPriceController {
 			List<DrugAndStore>  drugAndStore= adjustPriceService.getStoreDrugList(itemName);
 			result.put("code", "200");
 			result.put("data", drugAndStore);
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -106,6 +107,7 @@ public class AdjustPriceController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			adjustPriceService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -135,6 +137,7 @@ public class AdjustPriceController {
 		try{
 			adjustPriceService.submit(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -164,6 +167,7 @@ public class AdjustPriceController {
 		try{
 			adjustPriceService.delete(billNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
