@@ -31,23 +31,23 @@
 	background-color: #32bfbb;
 }
 .bs_banner_logo {
-	background-image: url(/staticPublic/img/logo.png);
+	background-image: url(/staticPublic/img/logonew.png);
 	background-repeat: no-repeat;
-	width: 180px; /*logo宽度*/
+	width: 200px; /*logo宽度*/
 	height: 74px; /*logo高度*/
 	position: absolute;
-	margin-top: 25px; /*logo y坐标*/
+	margin-top: 40px; /*logo y坐标*/
 	margin-left: 40px; /*logo x坐标*/
 }
 
 .bs_banner_title {
-	background-image: url(/staticPublic/img/title.png);
+	background-image: url(/staticPublic/img/mingzi.png);
 	background-repeat: no-repeat;
 	width: 400px; /*头部标题宽度*/
 	height: 40px; /*头部标题高度*/
 	position: absolute;
 	margin-top: 45px; /*头部标题y坐标*/
-	margin-left: 130px; /*头部标题x坐标*/
+	margin-left: 150px; /*头部标题x坐标*/
 	color: #FFFFFF;
 	text-align: left;
 	font-family: "黑体", "Tahoma", "宋体", "Arial", "Verdana";
