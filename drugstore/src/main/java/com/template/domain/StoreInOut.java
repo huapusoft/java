@@ -29,11 +29,19 @@ public class StoreInOut {
 	//临时
 	private List<StoreInOutDetail> detailList;
 	
+	private List<DrugAndStoreInOutDetail> detailAndDrugList;
+	
 	public List<StoreInOutDetail> getDetailList() {
 		return detailList;
 	}
 	public void setDetailList(List<StoreInOutDetail> detailList) {
 		this.detailList = detailList;
+	}
+	public List<DrugAndStoreInOutDetail> getDetailAndDrugList() {
+		return detailAndDrugList;
+	}
+	public void setDetailAndDrugList(List<DrugAndStoreInOutDetail> detailAndDrugList) {
+		this.detailAndDrugList = detailAndDrugList;
 	}
 	public int getBillNo() {
 		return billNo;
