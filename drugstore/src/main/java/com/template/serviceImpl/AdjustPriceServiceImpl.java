@@ -1,19 +1,20 @@
 package com.template.serviceImpl;
 
 import java.util.List;
-
+import java.util.Map;
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.template.dao.StoreInOutDetailMapper;
+import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.AdjustPriceService;
 import com.template.service.CommonService;
+import com.template.util.Constants;
 
 /**
  * 调价serviceimpl
@@ -28,6 +29,12 @@ public class AdjustPriceServiceImpl implements AdjustPriceService{
 	
 	@Resource
 	private StoreMapper storeMapper;
+	
+	@Resource
+	private StoreInOutMapper storeInOutMapper;
+	
+	@Resource
+	private StoreInOutDetailMapper storeInOutDetailMapper;
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
@@ -67,6 +74,18 @@ public class AdjustPriceServiceImpl implements AdjustPriceService{
 	public void verifyFail(int billNo, String verifyOper) throws Exception {
 		commonService.verifyFail(billNo, verifyOper);
 		
+	}
+
+	@Override
+	public List<StoreInOut> getListData(Map<String, Object> params)
+			throws Exception {
+		params.put("billType", Constants.BusinessType.ADJUST_PRICE);
+		return commonService.getListData(params);
+	}
+
+	@Override
+	public StoreInOut getDetailData(int billNo) throws Exception {
+		return commonService.getDetailData(billNo);
 	}
 
 }

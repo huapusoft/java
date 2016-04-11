@@ -279,7 +279,7 @@ public class InStorageController {
 	 */
 	@RequestMapping(value = "/list",method=RequestMethod.GET)		
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
-		ModelAndView mv = new ModelAndView("dailyWork/inStorage/list");
+		ModelAndView mv = new ModelAndView("queryCount/inStorage/list");
 		return mv;
 		
 	}
@@ -356,7 +356,7 @@ public class InStorageController {
 	 */
 	@RequestMapping(value = "/edit",method=RequestMethod.GET)		
 	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
-		ModelAndView mv = new ModelAndView("dailyWork/inStorage/edit");
+		ModelAndView mv = new ModelAndView("queryCount/inStorage/edit");
 		String billNo = request.getParameter("billNo");
 		mv.addObject("billNo", billNo);
 		

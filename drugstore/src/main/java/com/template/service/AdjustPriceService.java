@@ -1,6 +1,7 @@
 package com.template.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
@@ -71,4 +72,22 @@ public interface AdjustPriceService {
 	 * @throws
 	 */
 	public void verifyFail(int billNo, String verifyOper) throws Exception;
+	
+	/**
+	 * 获取查询列表数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午2:53:00 
+	* @parameter  
+	* @return
+	 */
+	public List<StoreInOut> getListData(Map<String, Object> params) throws Exception;
+	
+	/**
+	 * 获取调价草稿的详细信息
+	* @author  fengql 
+	* @date 2016年4月11日 下午3:04:50 
+	* @parameter  billNo-票据号
+	* @return
+	 */
+	public StoreInOut getDetailData(int billNo) throws Exception;
 }

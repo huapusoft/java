@@ -3,17 +3,13 @@ package com.template.serviceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
-import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -108,29 +104,12 @@ public class InStorageServiceImpl implements InStorageService{
 	public List<StoreInOut> getListData(Map<String, Object> params)
 			throws Exception {
 		params.put("billType", Constants.BusinessType.IN);
-		
-		List<StoreInOut> list = storeInOutMapper.getByConditionsForQuery(params);
-		if( null != list && list.size() > 0 ){
-			for(int i=0; i<list.size(); i++){
-				int billNo = list.get(i).getBillNo();
-				List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
-				list.get(i).setDetailAndDrugList(detailList);
-			}
-		}
-		
-		return list;
+		return commonService.getListData(params);
 	}
 
 	@Override
 	public StoreInOut getDetailData(int billNo) throws Exception {
-		StoreInOut sio = storeInOutMapper.getById(billNo);
-		if( null != sio ){
-			List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
-			sio.setDetailAndDrugList(detailList);
-			return sio;
-		}
-		
-		return null;
+		return commonService.getDetailData(billNo);
 	}
 
 }

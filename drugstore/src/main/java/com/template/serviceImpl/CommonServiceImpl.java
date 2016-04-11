@@ -22,6 +22,7 @@ import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DictEmployee;
 import com.template.domain.DrugAndStore;
+import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreInOut;
@@ -490,6 +491,33 @@ public class CommonServiceImpl implements CommonService {
 			
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public List<StoreInOut> getListData(Map<String, Object> params)
+			throws Exception {
+		List<StoreInOut> list = storeInOutMapper.getByConditionsForQuery(params);
+		if( null != list && list.size() > 0 ){
+			for(int i=0; i<list.size(); i++){
+				int billNo = list.get(i).getBillNo();
+				List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
+				list.get(i).setDetailAndDrugList(detailList);
+			}
+		}
+		
+		return list;
+	}
+
+	@Override
+	public StoreInOut getDetailData(int billNo) throws Exception {
+		StoreInOut sio = storeInOutMapper.getById(billNo);
+		if( null != sio ){
+			List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
+			sio.setDetailAndDrugList(detailList);
+			return sio;
 		}
 		
 		return null;
