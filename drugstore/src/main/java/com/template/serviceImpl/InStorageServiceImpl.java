@@ -13,11 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
+import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.InStorageService;
+import com.template.util.Constants;
 
 /**
  * 入库serviceimpl
@@ -100,6 +102,35 @@ public class InStorageServiceImpl implements InStorageService{
 	public void verifyFail(int billNo, String verifyOper) throws Exception {
 		commonService.verifyFail(billNo, verifyOper);
 		
+	}
+
+	@Override
+	public List<StoreInOut> getListData(Map<String, Object> params)
+			throws Exception {
+		params.put("billType", Constants.BusinessType.IN);
+		
+		List<StoreInOut> list = storeInOutMapper.getByConditionsForQuery(params);
+		if( null != list && list.size() > 0 ){
+			for(int i=0; i<list.size(); i++){
+				int billNo = list.get(i).getBillNo();
+				List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
+				list.get(i).setDetailAndDrugList(detailList);
+			}
+		}
+		
+		return list;
+	}
+
+	@Override
+	public StoreInOut getDetailData(int billNo) throws Exception {
+		StoreInOut sio = storeInOutMapper.getById(billNo);
+		if( null != sio ){
+			List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
+			sio.setDetailAndDrugList(detailList);
+			return sio;
+		}
+		
+		return null;
 	}
 
 }

@@ -25,4 +25,13 @@ public interface StoreInOutMapper {
 
 	public List<StoreInOutForCount> getWaitingDataCount(Map<String, Object> params)  throws Exception;
 	
+	/**
+	  * 获取入库查询页面的列表数据
+	  * @Description: 获取入库查询页面的列表数据
+	  * @author army.liu
+	  * @param  
+	  * @return 
+	  * @throws
+	  */
+	public List<StoreInOut> getByConditionsForQuery(Map<String, Object> params)  throws Exception;
 }

@@ -1,11 +1,14 @@
 package com.template.util;
 
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.template.domain.DictEmployee;
 
@@ -114,6 +117,27 @@ public abstract  class CommonUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		return sdf.format(new Date());
 		
+	}
+
+	/**
+	  * 转化字符串为日期
+	  * 
+	  * @Description: 转化字符串为日期
+	  * @author army.liu
+	  * @date 2016年4月5日 上午11:05:19
+	 */
+	public static Date parseStringToDate(String formatStr, String startTime) {
+		if( StringUtils.isNotEmpty(formatStr) && StringUtils.isNotEmpty(startTime) ){
+			SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+			try {
+				return sdf.parse(startTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return null;
 	}
 
 }

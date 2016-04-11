@@ -24,9 +24,29 @@
 	<delete id="delete" parameterType="int">
 		delete from storeInOutDetail where billNo=#{billNo}
 	</delete>
-	<select id="getByBillNo" resultMap="BaseResultMap" parameterType="int">
+	
+	<resultMap id="BaseResultMapForGroup" type="com.template.domain.DrugAndStoreInOutDetail">
+		<result column="itemName" property="itemName"  />
+		<result column="spec" property="spec"  />
+		<result column="unit" property="unit"  />
+		<result column="vendor" property="vendor"  />
+		
+		<result column="id" property="id"  />
+		<result column="billNo" property="billNo"  />
+		<result column="orderNo" property="orderNo" />
+		<result column="drugId" property="drugId" />
+		<result column="invoiceNo" property="invoiceNo" />
+		<result column="batchNo" property="batchNo" />
+		<result column="amount" property="amount" />
+		<result column="price1" property="price1" />
+		<result column="price2" property="price2" />
+		<result column="validDate" property="validDate" />
+	</resultMap>
+	<select id="getByBillNo" resultMap="BaseResultMapForGroup" parameterType="int">
 		select *
-		from storeInOutDetail where billNo=#{billNo}
+		from storeInOutDetail siod,dic_drug dd
+		where siod.drugId = dd.id
+			and siod.billNo = #{billNo}
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">

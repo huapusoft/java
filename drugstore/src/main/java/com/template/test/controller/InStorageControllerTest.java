@@ -2,6 +2,7 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.template.domain.StoreInOutDetail;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
+import com.template.util.CommonUtil;
 
 /**
  * 入库controller测试类
@@ -176,5 +178,49 @@ public class InStorageControllerTest {
 		
 		inStorageService.verifyFail(2016041000, "财务1");
 	}
+	
+	/**
+	 * 获取入库登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
+		
+		StoreInOut detailData = inStorageService.getDetailData(2016041001);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取入库查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("billType", "入库");
+		params.put("typeData", "国药控股盐城有限公司");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-09") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+//		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StoreInOut> list = inStorageService.getListData(params);
+		System.out.println(list.size());
+		
+	}
+	
 }
 
