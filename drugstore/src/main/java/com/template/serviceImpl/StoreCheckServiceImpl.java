@@ -23,7 +23,7 @@ import com.template.service.StoreCheckService;
 * @author  fengql 
 * @date 2016年4月7日 下午4:59:13
  */
-@Service("StoreCheckService")
+@Service("storeCheckService")
 public class StoreCheckServiceImpl implements StoreCheckService{
 	
 	@Resource
@@ -80,7 +80,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 			checkNo = commonService.createCheckNo();
 			
 			checkData.setCheckNo(checkNo);//盘点号
-			checkData.setStoreName(storeName);//药库名：从session获取
+			checkData.setStoreName(storeName);//药库名
 			checkData.setCheckTime(new Date());//创建时间
 			checkData.setCheckOper(checkOper);//操作员
 			
