@@ -45,7 +45,7 @@
     <result column="realPrice" property="realPrice" />
   </resultMap>
   
-  <select id="getCheckDetailList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+  <select id="getCheckDetailList" resultMap="BaseResultMap2" parameterType="int">
   		select a.orderNo,b.id,b.itemName,b.spec,a.batchNo,a.price,a.amount,b.unit,a.price*a.amount as storePrice,
   				a.realAmount,a.price*a.realAmount realPrice
 		from storeCheckDetail a,dic_drug b

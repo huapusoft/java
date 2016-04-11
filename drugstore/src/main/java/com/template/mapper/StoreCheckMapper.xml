@@ -36,6 +36,12 @@
 			<if test="currYearMonth != null and currYearMonth != ''">
 				and checkNo like CONCAT('',#{currYearMonth},'%')  
 			</if>
+			<if test="startTime != null">
+				and checkTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				and checkTime &lt;= #{endTime}
+			</if>
 		</where>
 		<if test="orderBycheckNo != null">
 			order by checkNo desc

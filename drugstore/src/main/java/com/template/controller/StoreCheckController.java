@@ -1,15 +1,15 @@
 package com.template.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
@@ -242,6 +241,70 @@ public class StoreCheckController {
 		}catch(Exception e){
 			e.printStackTrace();
 			result.put("msg", "封存失败："+e.getMessage());	
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 盘点查询页面
+	* @author  fengql 
+	* @date 2016年4月11日 下午3:54:28 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/list",method=RequestMethod.GET)		
+	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("queryCount/storeCheck/list");
+		return mv;
+		
+	}
+	
+	/**
+	 * 获取盘点查询数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午3:55:16 
+	* @parameter  startTime-开始日期,yyyy-MM-dd ,endTime-结束日期,yyyy-MM-dd
+	* @return
+	 */
+	@RequestMapping(value = "/getListData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getListData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("startTime") String startTime,
+			@RequestParam("endTime") String endTime
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			
+			if( StringUtils.isNotEmpty(startTime) ){
+				Date startTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", startTime);
+				params.put("startTime", startTimeObj);
+				
+			}
+			if( StringUtils.isNotEmpty(endTime) ){
+				Date endTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", endTime);
+				params.put("endTime", endTimeObj);
+				
+			}
+		
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			params.put("storeName", storeName);
+			
+			List<StoreCheck> list = storeCheckService.getListData(params);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());		
 		}
 		 
 		return result;

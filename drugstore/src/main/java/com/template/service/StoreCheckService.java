@@ -1,11 +1,13 @@
 package com.template.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
+import com.template.domain.StoreInOut;
 
 /**
  * 药库盘点service
@@ -59,5 +61,12 @@ public interface StoreCheckService {
 	 */
 	public void delete(int checkNo) throws Exception;
 	
-	
+	/**
+	 * 获取盘点列表数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午4:03:10 
+	* @parameter  
+	* @return
+	 */
+	public List<StoreCheck> getListData(Map<String, Object> params) throws Exception;
 }

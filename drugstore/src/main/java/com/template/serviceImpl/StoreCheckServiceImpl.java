@@ -4,18 +4,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.template.dao.StoreCheckDetailMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
+import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
+import com.template.domain.StoreInOut;
 import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
 /**
@@ -61,9 +66,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 		}
 		
 		//获取当前盘点号的明细数据	
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("checkNo", checkNo);	
-		return storeCheckDetailMapper.getCheckDetailList(params);
+		return storeCheckDetailMapper.getCheckDetailList(checkNo);
 	}
 
 	@Override
@@ -178,6 +181,22 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 		//删除盘点明细表
 		storeCheckDetailMapper.delete(checkNo);
 		
+	}
+
+	@Override
+	public List<StoreCheck> getListData(Map<String, Object> params)
+			throws Exception {
+		List<StoreCheck> list = storeCheckMapper.getByConditions(params);
+		if( null != list && list.size() > 0 ){
+			for(int i=0; i<list.size(); i++){
+				int checkNo = list.get(i).getCheckNo();
+				List<DrugAndCheckDetail> detailList = storeCheckDetailMapper.getCheckDetailList(checkNo);
+				list.get(i).setDetailAndDrugList(detailList);
+			}
+			return list;
+		}
+		
+		return null;
 	}
 	
 }

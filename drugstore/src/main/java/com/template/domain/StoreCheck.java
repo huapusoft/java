@@ -26,12 +26,20 @@ public class StoreCheck {
 	
 	//临时
 	private List<StoreCheckDetail> detailList;//盘点明细
+	
+	private List<DrugAndCheckDetail> detailAndDrugList;
 		
 	public List<StoreCheckDetail> getDetailList() {
 		return detailList;
 	}
 	public void setDetailList(List<StoreCheckDetail> detailList) {
 		this.detailList = detailList;
+	}
+	public List<DrugAndCheckDetail> getDetailAndDrugList() {
+		return detailAndDrugList;
+	}
+	public void setDetailAndDrugList(List<DrugAndCheckDetail> detailAndDrugList) {
+		this.detailAndDrugList = detailAndDrugList;
 	}
 	public int getCheckNo() {
 		return checkNo;
