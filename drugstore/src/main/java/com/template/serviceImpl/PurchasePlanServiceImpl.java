@@ -18,14 +18,15 @@ import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.InStorageService;
+import com.template.service.PurchasePlanService;
 
 /**
- * 入库serviceimpl
+ * 采购计划serviceimpl
 * @author  fengql 
-* @date 2016年4月5日 上午10:59:41
+* @date 2016年4月11日 上午9:37:16
  */
-@Service("inStorageService")
-public class InStorageServiceImpl implements InStorageService{
+@Service("purchasePlanService")
+public class PurchasePlanServiceImpl implements PurchasePlanService{
 	
 	@Resource
 	private StoreInOutMapper storeInOutMapper;
@@ -61,7 +62,8 @@ public class InStorageServiceImpl implements InStorageService{
 	}
 
 	@Override
-	public Map<String, Object> getDrugLatestPrice(String storeName, int id) throws Exception {
+	public Map<String, Object> getDrugLatestPrice(String storeName, int id,
+			String batchNo) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("price1", null);
 		result.put("price2", null);
@@ -70,6 +72,7 @@ public class InStorageServiceImpl implements InStorageService{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeName", storeName);
 		params.put("drugId", id);
+		params.put("batchNo", batchNo);
 		StoreInOutDetail detail = storeInOutDetailMapper.getDrugLatestPrice(params);
 		if( null != detail ){
 			result.put("price1", detail.getPrice1());

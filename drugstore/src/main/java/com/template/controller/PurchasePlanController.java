@@ -27,13 +27,13 @@ import com.template.service.InStorageService;
 import com.template.util.CommonUtil;
 
 /**
- * 入库Controller
+ * 采购计划Controller
 * @author  fengql 
-* @date 2016年4月5日 上午10:44:39
+* @date 2016年4月11日 上午9:12:38
  */
 @Controller
-@RequestMapping("/inStorage")
-public class InStorageController {
+@RequestMapping("/purchasePlan")
+public class PurchasePlanController {
 	
 	@Resource  
 	private InStorageService inStorageService;
@@ -43,30 +43,28 @@ public class InStorageController {
 	
 	@Resource  
 	private DicDrugService dicDrugService;
-	
+
 	/**
-	 * 入库登记页面
-	 * @Description: 入库登记页面
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	 * 采购计划登记页面
+	* @author  fengql 
+	* @date 2016年4月11日 上午9:13:22 
+	* @parameter  
+	* @return
 	 */
 	@RequestMapping(value = "/new",method=RequestMethod.GET)		
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
-		ModelAndView mv = new ModelAndView("dailyWork/inStorage/new");
+		ModelAndView mv = new ModelAndView("dailyWork/purchasePlan/new");
 		return mv;
 		
 	}
-	
+
 	/**
-	  * 获取供应商下拉数据
-	  * @Description: 从供应商表中，获取供应商下拉数据
-	  * @author army.liu
-	  * @param  
-	  * @return
-	  * @throws
-	  */
+	 * 获取供应商下拉数据
+	* @author  fengql 
+	* @date 2016年4月11日 上午9:14:15 
+	* @parameter  providerName-供应商名称输入
+	* @return
+	 */
 	@RequestMapping(value = "/getEnabledDicProviderList",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getEnabledDicProviderList(HttpServletRequest request, 
@@ -86,20 +84,18 @@ public class InStorageController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
+			result.put("msg", "获取失败："+e.getMessage());		
 		}
 		 
 		return result;
 	}
 	
 	/**
-	 * 获取药品下拉框中数据
-	 * @Description: 从药品基础信息表中，读取已启用的药品数据
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	 * 获取药品下拉数据
+	* @author  fengql 
+	* @date 2016年4月11日 上午9:14:41 
+	* @parameter  itemName-药品名称输入
+	* @return
 	 */
 	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
 	@ResponseBody
@@ -121,8 +117,7 @@ public class InStorageController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
+			result.put("msg", "获取失败："+e.getMessage());		
 		}
 		
 		return result;
@@ -157,8 +152,7 @@ public class InStorageController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
+			result.put("msg", "获取失败："+e.getMessage());	
 		}
 		
 		return result;

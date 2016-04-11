@@ -69,7 +69,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		Map<String, Object> data = inStorageService.getDrugLatestPrice( "一号仓库", 1000, "PCdsfsdfsd111");
+		Map<String, Object> data = inStorageService.getDrugLatestPrice( "一号仓库", 1000);
 		System.out.println(data);
 	}
 	

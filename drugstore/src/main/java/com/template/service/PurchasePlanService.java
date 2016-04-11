@@ -7,11 +7,11 @@ import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 
 /**
- * 入库service
+ * 采购计划service
 * @author  fengql 
-* @date 2016年4月5日 上午10:47:40
+* @date 2016年4月11日 上午9:36:58
  */
-public interface InStorageService {
+public interface PurchasePlanService {
 	
 	/**
 	 * 保存入库草稿
@@ -50,7 +50,8 @@ public interface InStorageService {
 	  * @return void
 	  * @throws
 	  */
-	public Map<String, Object> getDrugLatestPrice(String storeName, int id)throws Exception;
+	public Map<String, Object> getDrugLatestPrice(String storeName, int id,
+			String batchNo)throws Exception;
 	
 	/**
 	  * 复核通过

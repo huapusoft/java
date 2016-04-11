@@ -133,9 +133,6 @@
 			<if test="drugId != null and drugId != ''">
 				and drugId = #{drugId}
 			</if>
-			<if test="batchNo != null and batchNo != ''">
-				and batchNo = #{batchNo}
-			</if>
 		</where>
 		order by inTime desc
 	</select>
