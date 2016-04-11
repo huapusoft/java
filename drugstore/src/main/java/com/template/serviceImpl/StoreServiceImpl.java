@@ -163,9 +163,11 @@ public class StoreServiceImpl implements StoreService {
 				if( null == storeList || storeList.size() == 0 ){//如果库存中没有的时候
 					
 				}else{//调零售价
-					Store bean = storeList.get(0);
-					bean.setPrice(price2);
-					storeMapper.update(bean);
+					for(int j=0; j<storeList.size(); j++){
+						Store bean = storeList.get(j);
+						bean.setPrice(price2);
+						storeMapper.update(bean);
+					}
 					
 				}
 			}

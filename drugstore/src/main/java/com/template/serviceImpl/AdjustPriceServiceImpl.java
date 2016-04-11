@@ -1,10 +1,13 @@
 package com.template.serviceImpl;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
@@ -17,7 +20,7 @@ import com.template.service.CommonService;
 * @author  fengql 
 * @date 2016年4月7日 下午1:46:56
  */
-@Service("AdjustPriceService")
+@Service("adjustPriceService")
 public class AdjustPriceServiceImpl implements AdjustPriceService{
 	
 	@Resource
@@ -52,4 +55,18 @@ public class AdjustPriceServiceImpl implements AdjustPriceService{
 		return storeMapper.getGroupByItemName(itemName);
 	}
 	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception {
+		commonService.verifySuccess(billNo, verifyOper, storeName);
+		
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifyFail(int billNo, String verifyOper) throws Exception {
+		commonService.verifyFail(billNo, verifyOper);
+		
+	}
+
 }

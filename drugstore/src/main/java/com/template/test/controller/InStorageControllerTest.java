@@ -94,25 +94,25 @@ public class InStorageControllerTest {
 		List<StoreInOutDetail> detailList = new ArrayList<StoreInOutDetail>();
 		StoreInOutDetail detail = new StoreInOutDetail();
 		detail.setAmount(100);
-		detail.setBatchNo("PIHAO0001");
+		detail.setBatchNo("PIHAO0002");
 		detail.setDrugId(10021);//阿莫西林颗粒
-		detail.setInvoiceNo("FAPIAO0001");
+		detail.setInvoiceNo("FAPIAO0002");
 		detail.setOrderNo(1);
 		detail.setPrice1(10.10);
 		detail.setPrice2(15.00);
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
-		detail = new StoreInOutDetail();
-		detail.setAmount(100);
-		detail.setBatchNo("PIHAO0002");
-		detail.setDrugId(10017);//阿莫西林胶囊
-		detail.setInvoiceNo("FAPIAO0002");
-		detail.setOrderNo(2);
-		detail.setPrice1(20.00);
-		detail.setPrice2(30.10);
-		detail.setValidDate(new Date());
-		detailList.add(detail);
+//		detail = new StoreInOutDetail();
+//		detail.setAmount(100);
+//		detail.setBatchNo("PIHAO0002");
+//		detail.setDrugId(10017);//阿莫西林胶囊
+//		detail.setInvoiceNo("FAPIAO0002");
+//		detail.setOrderNo(2);
+//		detail.setPrice1(20.00);
+//		detail.setPrice2(30.10);
+//		detail.setValidDate(new Date());
+//		detailList.add(detail);
 		
 		inStorageService.save(inOut, detailList, "张三", "一号仓库");
 	}
@@ -129,7 +129,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		inStorageService.submit(2016041002);
+		inStorageService.submit(2016041006);
 	}
 	
 	/**
@@ -159,7 +159,7 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		inStorageService.verifySuccess(2016041002, "财务1", "一号仓库");
+		inStorageService.verifySuccess(2016041006, "财务1", "一号仓库");
 	}
 	
 	/**
