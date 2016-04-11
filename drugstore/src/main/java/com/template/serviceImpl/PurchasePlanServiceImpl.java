@@ -121,6 +121,10 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 		//更新采购计划主表
 		purchaseData.setStatus( Constants.BusinessStatus.SUBMIT);//已提交
 		purchaseData.setSubmitTime(new Date());//提交时间
+		purchaseData.setFinanceOper(null);
+		purchaseData.setFinanceTime(null);
+		purchaseData.setLeader(null);
+		purchaseData.setLeaderTime(null);
 		storePurchasePlanMapper.update(purchaseData);
 	}
 

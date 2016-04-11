@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.template.domain.DicDrug;
+import com.template.domain.DicProvider;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
 import com.template.service.DicDrugService;
@@ -79,7 +83,8 @@ public class PurchasePlanController {
 		result.put("msg", "获取失败");
 		
 		try{
-			dicProviderService.getEnabledDicProviderList(providerName);
+			List<DicProvider> list = dicProviderService.getEnabledDicProviderList(providerName);
+			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

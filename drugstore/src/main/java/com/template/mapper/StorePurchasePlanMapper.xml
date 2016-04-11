@@ -55,41 +55,19 @@
 	
 	<update id="update" parameterType="com.template.domain.StorePurchasePlan">
 		update storePurchasePlan
-		<set>
-			<if test="storeName != null and storeName != ''">
+		set
 				storeName = #{storeName},
-			</if>
-			<if test="purchaseTime != null and purchaseTime != ''">
 				purchaseTime = #{purchaseTime},
-			</if>
-			<if test="remark != null and remark != ''">
 				remark = #{remark},
-			</if>
-			<if test="inSum != null and inSum != ''">
 				inSum = #{inSum},
-			</if>
-			<if test="retailSum != null and retailSum != ''">
 				retailSum = #{retailSum},
-			</if>
-			<if test="status != null and status != ''">
 				status = #{status},
-			</if>
-			<if test="oper != null and oper != ''">
 				oper = #{oper},
-			</if>
-			<if test="financeOper != null and financeOper != ''">
+				submitTime = #{submitTime},
 				financeOper = #{financeOper},
-			</if>
-			<if test="financeTime != null and financeTime != ''">
 				financeTime = #{financeTime},
-			</if>
-			<if test="leader != null and leader != ''">
 				leader = #{leader},
-			</if>
-			<if test="leaderTime != null and leaderTime != ''">
-				leaderTime = #{leaderTime},
-			</if>
-		</set>
+				leaderTime = #{leaderTime}
 		where purchaseNo = #{purchaseNo}
 	</update>
 	
