@@ -46,6 +46,15 @@ public interface CommonService {
 	public int createCheckNo() throws Exception;
 	
 	/**
+	 * 生成最新的采购号
+	* @author  fengql 
+	* @date 2016年4月11日 上午10:34:08 
+	* @parameter  
+	* @return int-采购号，10位，yyyyMMxxxx
+	 */
+	public int createPurchaseNo() throws Exception;
+	
+	/**
 	  * 获取所有药库信息
 	  * @Description: 获取所有药库信息
 	  * @author army.liu

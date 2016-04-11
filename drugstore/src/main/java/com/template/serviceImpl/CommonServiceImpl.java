@@ -27,6 +27,7 @@ import com.template.domain.StoreCheck;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.domain.StoreInOutForCount;
+import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanForCount;
 import com.template.service.CommonService;
 import com.template.service.StoreService;
@@ -107,6 +108,25 @@ public class CommonServiceImpl implements CommonService {
 		}
 		
 		return Integer.parseInt(currYearMonth + checkNoSuffix);
+	}
+	
+	@Override
+	public int createPurchaseNo() throws Exception {
+		String purchaseNoSuffix = "";
+		String currYearMonth = CommonUtil.getCurrYearMonth();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("currYearMonth", currYearMonth);
+		params.put("orderBypurchaseNo", "Y");
+		List<StorePurchasePlan> list = storePurchasePlanMapper.getByConditions(params);
+		if( null != list && list.size() > 0 ){
+			int oldPurchaseNo = list.get(0).getPurchaseNo();
+			purchaseNoSuffix = String.valueOf( Integer.parseInt( String.valueOf(oldPurchaseNo).substring(6) ) + 1 );
+			
+		}else{
+			purchaseNoSuffix = "1000";
+		}
+		
+		return Integer.parseInt(currYearMonth + purchaseNoSuffix);
 	}
 
 	@Override
@@ -353,7 +373,7 @@ public class CommonServiceImpl implements CommonService {
 				|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
 				|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
 			){
-			throw new RuntimeException("不是草稿状态，不可更新");
+			throw new RuntimeException("不是草稿状态，不可操作");
 			
 		}
 		//更新出入库主表

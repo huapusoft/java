@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.template.domain.DicDrug;
-import com.template.domain.StoreInOut;
-import com.template.domain.StoreInOutDetail;
+import com.template.domain.StorePurchasePlan;
+import com.template.domain.StorePurchasePlanDetail;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
+import com.template.service.PurchasePlanService;
 import com.template.util.CommonUtil;
 
 /**
@@ -34,6 +32,9 @@ import com.template.util.CommonUtil;
 @Controller
 @RequestMapping("/purchasePlan")
 public class PurchasePlanController {
+	
+	@Resource  
+	private PurchasePlanService purchasePlanService;
 	
 	@Resource  
 	private InStorageService inStorageService;
@@ -122,14 +123,13 @@ public class PurchasePlanController {
 		
 		return result;
 	}
-	
+
 	/**
 	 * 获取选中药品的最近一次进价，零售价
-	 * @Description: 获取选中药品的最近一次进价，零售价，用于添加某个药品后，自动回显进价和零售价
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	* @author  fengql 
+	* @date 2016年4月11日 上午10:04:55 
+	* @parameter  
+	* @return
 	 */
 	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
 	@ResponseBody
@@ -159,19 +159,18 @@ public class PurchasePlanController {
 	}
 	
 	/**
-	  * 保存入库草稿
-	  * @Description: 保存入库草稿
-	  * @author army.liu
-	  * @param  
-	  * @return
-	  * @throws
-	  */
+	 * 保存采购计划草稿
+	* @author  fengql 
+	* @date 2016年4月11日 上午10:05:19 
+	* @parameter  
+	* @return
+	 */
 	@RequestMapping(value = "/save",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> save(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestBody StoreInOut inOut
+			@RequestBody StorePurchasePlan purchaseData
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -180,11 +179,11 @@ public class PurchasePlanController {
 		
 		try{
 			//详细信息
-			List<StoreInOutDetail> detailList = inOut.getDetailList();
+			List<StorePurchasePlanDetail> detailList = purchaseData.getDetailList();
 			
-			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String oper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			inStorageService.save(inOut, detailList, billOper, storeName);
+			purchasePlanService.save(purchaseData, detailList, oper, storeName);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -198,17 +197,16 @@ public class PurchasePlanController {
 	}
 	
 	/**
-	 * 提交入库草稿
-	 * @Description: 提交入库草稿
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	 * 提交采购计划草稿
+	* @author  fengql 
+	* @date 2016年4月11日 上午11:08:06 
+	* @parameter  purchaseNo-采购号
+	* @return
 	 */
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo")int billNo
+			@RequestParam("purchaseNo")int purchaseNo
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -216,7 +214,7 @@ public class PurchasePlanController {
 		result.put("msg", "提交失败");
 		
 		try{
-			inStorageService.submit(billNo);
+			purchasePlanService.submit(purchaseNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -230,17 +228,16 @@ public class PurchasePlanController {
 	}
 	
 	/**
-	 * 作废入库草稿
-	 * @Description: 作废入库草稿
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	 * 作废采购计划
+	* @author  fengql 
+	* @date 2016年4月11日 上午11:09:30 
+	* @parameter  purchaseNo-采购号
+	* @return
 	 */
 	@RequestMapping(value = "/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> delete(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo")int billNo
+			@RequestParam("purchaseNo")int purchaseNo
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -248,7 +245,7 @@ public class PurchasePlanController {
 		result.put("msg", "作废失败");
 		
 		try{
-			inStorageService.delete(billNo);
+			purchasePlanService.delete(purchaseNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

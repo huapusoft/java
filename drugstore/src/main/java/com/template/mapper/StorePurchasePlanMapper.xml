@@ -18,10 +18,10 @@
 		<result column="leaderTime" property="leaderTime" />
 	</resultMap>
 
-	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+	<select id="getByPurchaseNo" resultMap="BaseResultMap" parameterType="int">
 		select *
 		from storePurchasePlan
-		where purchaseNo = #{id}
+		where purchaseNo = #{purchaseNo}
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
@@ -37,7 +37,13 @@
 			<if test="status != null and status != ''">
 				and status = #{status}
 			</if>
+			<if test="currYearMonth != null and currYearMonth != ''">
+				and purchaseNo like CONCAT('',#{currYearMonth},'%')  
+			</if>
 		</where>
+		<if test="orderBypurchaseNo != null">
+			order by purchaseNo desc
+		</if>
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.StorePurchasePlan">
@@ -84,12 +90,12 @@
 				leaderTime = #{leaderTime},
 			</if>
 		</set>
-		where purchaseNo = #{id}
+		where purchaseNo = #{purchaseNo}
 	</update>
 	
 	<delete id="delete" parameterType="int">
 		delete from storePurchasePlan
-		where purchaseNo = #{id}
+		where purchaseNo = #{purchaseNo}
 	</delete>
 	
 	<resultMap id="BaseResultMapForCount" type="com.template.domain.StorePurchasePlanForCount">

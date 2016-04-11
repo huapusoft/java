@@ -1,6 +1,7 @@
 package com.template.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 采购计划信息表
@@ -27,6 +28,14 @@ public class StorePurchasePlan {
 	private String leader;//领导
 	private Date leaderTime;//领导审批时间
 	
+	private List<StorePurchasePlanDetail> detailList;
+	
+	public List<StorePurchasePlanDetail> getDetailList() {
+		return detailList;
+	}
+	public void setDetailList(List<StorePurchasePlanDetail> detailList) {
+		this.detailList = detailList;
+	}
 	public int getPurchaseNo() {
 		return purchaseNo;
 	}

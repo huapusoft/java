@@ -15,6 +15,38 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 
+	<select id="getByPurchaseNo" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from storePurchasePlanDetail
+		where purchaseNo = #{purchaseNo}
+	</select>
 	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from storePurchasePlanDetail
+		<where>
+			<if test="purchaseNo != null and purchaseNo != ''">
+				and purchaseNo = #{purchaseNo}
+			</if>
+			<if test="provider != null and provider != ''">
+				and provider = #{provider}
+			</if>
+			<if test="drugId != null and drugId != ''">
+				and drugId = #{drugId}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.StorePurchasePlanDetail">
+		insert into storePurchasePlanDetail
+		( purchaseNo, orderNo, provider, arriveTime, drugId, amount, inPrice, price, remark)
+		values
+		( #{purchaseNo}, #{orderNo}, #{provider}, #{arriveTime}, #{drugId}, #{amount}, #{inPrice}, #{price}, #{remark} )
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from storePurchasePlanDetail
+		where purchaseNo = #{purchaseNo}
+	</delete>
 	
 </mapper>

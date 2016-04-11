@@ -2,9 +2,7 @@ package com.template.dao;
 
 import java.util.List;
 import java.util.Map;
-
-import com.template.domain.StorePurchasePlan;
-import com.template.domain.StorePurchasePlanForCount;
+import com.template.domain.StorePurchasePlanDetail;
 
 /**
  * 采购计划明细表dao
@@ -13,16 +11,12 @@ import com.template.domain.StorePurchasePlanForCount;
  */
 public interface StorePurchasePlanDetailMapper {
 
-	/*public StorePurchasePlan getById(int id) throws Exception ;
+	public StorePurchasePlanDetail getByPurchaseNo(int purchaseNo) throws Exception ;
 
-	public List<StorePurchasePlan> getByConditions(Map<String, Object> params)  throws Exception;
+	public List<StorePurchasePlanDetail> getByConditions(Map<String, Object> params)  throws Exception;
 
-	public void insert(StorePurchasePlan bean)  throws Exception;
+	public void insert(StorePurchasePlanDetail bean)  throws Exception;
 	
-	public void update(StorePurchasePlan bean)  throws Exception;
-	
-	public void delete(int id)  throws Exception;
-	
-	public List<StorePurchasePlanForCount> getWaitingDataCount(Map<String, Object> params)  throws Exception;*/
+	public void delete(int purchaseNo)  throws Exception;
 	
 }

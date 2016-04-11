@@ -13,7 +13,7 @@ import com.template.domain.StorePurchasePlanForCount;
  */
 public interface StorePurchasePlanMapper {
 
-	public StorePurchasePlan getById(int id) throws Exception ;
+	public StorePurchasePlan getByPurchaseNo(int purchaseNo) throws Exception ;
 
 	public List<StorePurchasePlan> getByConditions(Map<String, Object> params)  throws Exception;
 
@@ -21,7 +21,7 @@ public interface StorePurchasePlanMapper {
 	
 	public void update(StorePurchasePlan bean)  throws Exception;
 	
-	public void delete(int id)  throws Exception;
+	public void delete(int purchaseNo)  throws Exception;
 	
 	public List<StorePurchasePlanForCount> getWaitingDataCount(Map<String, Object> params)  throws Exception;
 	
