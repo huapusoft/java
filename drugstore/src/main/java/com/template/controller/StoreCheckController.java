@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.template.domain.DicDrug;
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
-import com.template.service.DicDrugService;
+import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
 import com.template.util.CommonUtil;
 
@@ -40,7 +39,7 @@ public class StoreCheckController {
 	private StoreCheckService storeCheckService;
 	
 	@Resource  
-	private DicDrugService dicDrugService;
+	private CommonService commonService;
 
 	/**
 	 * 盘点新建页面
@@ -54,6 +53,42 @@ public class StoreCheckController {
 		ModelAndView mv = new ModelAndView("dailyWork/storeCheck/new");
 		return mv;
 		
+	}
+	
+	/**
+	 * 获取药品下拉框中数据
+	 * @Description: 从药品库存表中，读取药品数据
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getDrugListFromStore",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugListFromStore(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("itemName") String itemName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			List<DrugAndStore> list = commonService.getDrugListForOutStorage(storeName, itemName);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -75,6 +110,7 @@ public class StoreCheckController {
 			List<DrugAndStore>  drugAndStore= storeCheckService.getStoreDrugList();
 			result.put("code", "200");
 			result.put("data", drugAndStore);
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -104,6 +140,7 @@ public class StoreCheckController {
 			List<DrugAndCheckDetail>  drugAndStore= storeCheckService.getCheckDetailList(checkNo);
 			result.put("code", "200");
 			result.put("data", drugAndStore);
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -113,38 +150,6 @@ public class StoreCheckController {
 		return result;
 	}
 
-	/**
-	 * 获取药品下拉框数据，从药品基础表中获取
-	* @author  fengql 
-	* @date 2016年4月8日 上午10:48:32 
-	* @parameter  itemName-输入的内容
-	* @return
-	 */
-	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getDicProviderList(HttpServletRequest request, 
-			HttpServletResponse response,
-			HttpSession session,
-			@RequestParam("itemName") String itemName
-			) throws Exception {
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("code", "300");
-		result.put("msg", "获取失败");
-		
-		try{
-			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
-			result.put("data", list);
-			result.put("code", "200");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());		
-		}
-		
-		return result;
-	}
-	
 	/**
 	 * 保存盘点内容-未封存
 	* @author  fengql 
@@ -169,6 +174,7 @@ public class StoreCheckController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			storeCheckService.save(checkData, detailList, checkOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -197,6 +203,7 @@ public class StoreCheckController {
 		try{
 			storeCheckService.delete(checkNo);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -230,6 +237,7 @@ public class StoreCheckController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			storeCheckService.submit(checkData, detailList, checkOper, storeName);
 			result.put("code", "200");
+			result.put("msg", "成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
