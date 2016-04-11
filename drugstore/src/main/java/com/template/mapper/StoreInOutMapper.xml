@@ -75,9 +75,7 @@
 			<if test="itemName != null and itemName != ''">
 				and dd.itemName = #{itemName}
 			</if>
-		<if test="orderBybillNo != null">
 			order by sio.billNo desc
-		</if>
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.StoreInOut">

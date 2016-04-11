@@ -2,7 +2,9 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +17,7 @@ import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.DicDepartmentService;
 import com.template.service.OutStorageService;
+import com.template.util.CommonUtil;
 
 /**
  * 出库controller测试类
@@ -157,6 +160,49 @@ public class OutStorageControllerTest {
 		
 		int billNo = 2016041003;
 		outStorageService.delete(billNo);
+	}
+	
+	/**
+	 * 获取出库登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		
+		StoreInOut detailData = outStorageService.getDetailData(2016041001);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取出库查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("billType", "出库");
+		params.put("typeData", "手术室");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+//		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StoreInOut> list = outStorageService.getListData(params);
+		System.out.println(list.size());
+		
 	}
 	
 }

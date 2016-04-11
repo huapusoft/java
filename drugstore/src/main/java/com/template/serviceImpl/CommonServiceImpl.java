@@ -497,8 +497,9 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public List<StoreInOut> getListData(Map<String, Object> params)
+	public List<StoreInOut> getListData(String billType, Map<String, Object> params)
 			throws Exception {
+		params.put("billType", billType);
 		List<StoreInOut> list = storeInOutMapper.getByConditionsForQuery(params);
 		if( null != list && list.size() > 0 ){
 			for(int i=0; i<list.size(); i++){

@@ -2,7 +2,9 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +16,8 @@ import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.DicProviderService;
-import com.template.service.OutStorageService;
+import com.template.service.SalesReturnService;
+import com.template.util.CommonUtil;
 
 /**
  * 退货controller测试类
@@ -63,7 +66,7 @@ public class SalesReturnControllerTest {
 	@Test
 	public void testSave() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
 		
 		StoreInOut inOut = new StoreInOut();
 		inOut.setBillType("退货");
@@ -94,7 +97,7 @@ public class SalesReturnControllerTest {
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
-		outStorageService.save(inOut, detailList, "张三", "一号仓库");
+		salesReturnService.save(inOut, detailList, "张三", "一号仓库");
 	}
 	
 	/**
@@ -107,10 +110,10 @@ public class SalesReturnControllerTest {
 	@Test
 	public void testSubmit() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
 		
 		int billNo = 2016041004;
-		outStorageService.submit(billNo);
+		salesReturnService.submit(billNo);
 	}
 	
 	/**
@@ -123,9 +126,9 @@ public class SalesReturnControllerTest {
 	@Test
 	public void testverifySuccess() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
 		
-		outStorageService.verifySuccess(2016041004, "财务1", "一号仓库");
+		salesReturnService.verifySuccess(2016041004, "财务1", "一号仓库");
 	}
 	
 	/**
@@ -138,9 +141,9 @@ public class SalesReturnControllerTest {
 	@Test
 	public void testverifyFail() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
 		
-		outStorageService.verifyFail(2016041004, "财务1");
+		salesReturnService.verifyFail(2016041004, "财务1");
 	}
 	
 	/**
@@ -153,10 +156,52 @@ public class SalesReturnControllerTest {
 	@Test
 	public void testDelete() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
 		
 		int billNo = 2016041005;
-		outStorageService.delete(billNo);
+		salesReturnService.delete(billNo);
+	}
+	
+	/**
+	 * 获取退货登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
+		
+		StoreInOut detailData = salesReturnService.getDetailData(2016041001);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取退货查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		SalesReturnService salesReturnService = (SalesReturnService) context.getBean("salesReturnService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("typeData", "国药控股盐城有限公司");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+//		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StoreInOut> list = salesReturnService.getListData(params);
+		System.out.println(list.size());
+		
 	}
 	
 }

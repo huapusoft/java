@@ -1,6 +1,7 @@
 package com.template.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -67,4 +68,24 @@ public interface OutStorageService {
 	 */
 	public void verifyFail(int billNo, String verifyOper) throws Exception;
 
+	/**
+	  * 获取查询列表数据
+	  * @Description: 根据参数，查询出入库表，统计入库记录
+	  * @author army.liu
+	  * @param  
+	  * @return 
+	  * @throws
+	  */
+	public List<StoreInOut> getListData(Map<String, Object> params) throws Exception;
+
+	/**
+	  * 获取出库登记详细信息
+	  * @Description: 根据票据号，获取出库登记详细信息
+	  * @author army.liu
+	  * @param  billNo-票据号
+	  * @return 
+	  * @throws
+	  */
+	public StoreInOut getDetailData(int billNo) throws Exception;
+	
 }

@@ -79,8 +79,7 @@ public class AdjustPriceServiceImpl implements AdjustPriceService{
 	@Override
 	public List<StoreInOut> getListData(Map<String, Object> params)
 			throws Exception {
-		params.put("billType", Constants.BusinessType.ADJUST_PRICE);
-		return commonService.getListData(params);
+		return commonService.getListData(Constants.BusinessType.ADJUST_PRICE, params);
 	}
 
 	@Override

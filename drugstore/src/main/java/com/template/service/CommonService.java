@@ -195,7 +195,7 @@ public interface CommonService {
 	  * @return 
 	  * @throws
 	  */
-	public List<StoreInOut> getListData(Map<String, Object> params) throws Exception;
+	public List<StoreInOut> getListData(String billType, Map<String, Object> params) throws Exception;
 
 	/**
 	  * 获取入库登记详细信息

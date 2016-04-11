@@ -103,8 +103,7 @@ public class InStorageServiceImpl implements InStorageService{
 	@Override
 	public List<StoreInOut> getListData(Map<String, Object> params)
 			throws Exception {
-		params.put("billType", Constants.BusinessType.IN);
-		return commonService.getListData(params);
+		return commonService.getListData(Constants.BusinessType.IN, params);
 	}
 
 	@Override

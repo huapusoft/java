@@ -1,6 +1,7 @@
 package com.template.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,13 +15,14 @@ import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.SalesReturnService;
+import com.template.util.Constants;
 
 /**
  * 退货serviceimpl
  * @Description: 提供退货业务方法
  * @author army.liu
  */
-@Service("saleReturnService")
+@Service("salesReturnService")
 public class SalesReturnServiceImpl implements SalesReturnService {
 	
 	@Resource
@@ -51,11 +53,31 @@ public class SalesReturnServiceImpl implements SalesReturnService {
 		commonService.deleteStoreInOut(billNo);
 	}
 
-//	@Override
-//	public void verify(Integer billNo, String verifyOper) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifySuccess(int billNo, String verifyOper, String storeName) throws Exception {
+		commonService.verifySuccess(billNo, verifyOper, storeName);
+		
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void verifyFail(int billNo, String verifyOper) throws Exception {
+		commonService.verifyFail(billNo, verifyOper);
+		
+	}
+
+	@Override
+	public List<StoreInOut> getListData(Map<String, Object> params)
+			throws Exception {
+		return commonService.getListData(Constants.BusinessType.SALES_RETURN, params);
+	}
+
+	@Override
+	public StoreInOut getDetailData(int billNo) throws Exception {
+		return commonService.getDetailData(billNo);
+	}
+
 
 	
 }

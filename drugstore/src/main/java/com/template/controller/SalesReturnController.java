@@ -1,6 +1,7 @@
 package com.template.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -231,6 +233,138 @@ public class SalesReturnController {
 			
 		}
 		
+		return result;
+	}
+	
+	/**
+	 * 查询页面
+	 * @Description: 查询页面
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/list",method=RequestMethod.GET)		
+	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("queryCount/salesReturn/list");
+		return mv;
+		
+	}
+	
+	/**
+	  * 获取查询页面的列表数据
+	  * @Description: 获取查询页面的列表数据
+	  * @author army.liu
+	  * @param  startTime-开始日期,yyyy-MM-dd
+	  * 		endTime-结束日期,yyyy-MM-dd
+	  *         departmentName-部门名称
+	  *         itemName-药品名称
+	  *         status-状态
+	  * @return 
+	  * @throws
+	  */
+	@RequestMapping(value = "/getListData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getListData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("startTime") String startTime,
+			@RequestParam("endTime") String endTime,
+			@RequestParam("departmentName") String departmentName,
+			@RequestParam("itemName") String itemName,
+			@RequestParam("status") String status
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			
+			if( StringUtils.isNotEmpty(startTime) ){
+				Date startTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", startTime);
+				params.put("startTime", startTimeObj);
+				
+			}
+			if( StringUtils.isNotEmpty(endTime) ){
+				Date endTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", endTime);
+				params.put("endTime", endTimeObj);
+				
+			}
+			params.put("typeData", departmentName);
+			params.put("itemName", itemName);
+			params.put("status", status);
+			
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			params.put("storeName", storeName);
+			
+			List<StoreInOut> list = salesReturnService.getListData(params);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 编辑页面
+	 * @Description: 编辑页面
+	 * @author army.liu
+	 * @param  billNo-票据号
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/edit",method=RequestMethod.GET)		
+	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("queryCount/salesReturn/edit");
+		String billNo = request.getParameter("billNo");
+		mv.addObject("billNo", billNo);
+		
+		return mv;
+	}
+	
+	/**
+	  * 获取编辑页面的详细信息
+	  * @Description: 获取编辑页面的详细信息
+	  * @author army.liu
+	  * @param  billNo-票据号
+	  * @return {
+	  * 			
+	  * 			detailAndDrugList : [ ] --详细信息
+	  * 		}
+	  * @throws
+	  */
+	@RequestMapping(value = "/getDetailData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDetailData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("billNo") int billNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			StoreInOut bean = salesReturnService.getDetailData( billNo );
+			result.put("data", bean);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
 		return result;
 	}
 	

@@ -1,6 +1,7 @@
 package com.template.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,7 @@ import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.OutStorageService;
+import com.template.util.Constants;
 
 /**
  * 出库serviceimpl
@@ -65,5 +67,15 @@ public class OutStorageServiceImpl implements OutStorageService {
 		
 	}
 
-	
+	@Override
+	public List<StoreInOut> getListData(Map<String, Object> params)
+			throws Exception {
+		return commonService.getListData(Constants.BusinessType.OUT, params);
+	}
+
+	@Override
+	public StoreInOut getDetailData(int billNo) throws Exception {
+		return commonService.getDetailData(billNo);
+	}
+
 }
