@@ -23,6 +23,7 @@ public class DrugAndStore {
 	private String batchNo;//批号
 	private double inPrice;//进价
 	private Date validDate;//有效期
+	private String place1;//摆放位置
 	
 	//以下为新建盘点时需要
 	private int orderNo;//序号
@@ -32,6 +33,12 @@ public class DrugAndStore {
 	private double realPrice;//实际金额
 	
 	
+	public String getPlace1() {
+		return place1;
+	}
+	public void setPlace1(String place1) {
+		this.place1 = place1;
+	}
 	public int getOrderNo() {
 		return orderNo;
 	}

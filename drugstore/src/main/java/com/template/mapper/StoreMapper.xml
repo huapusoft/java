@@ -152,6 +152,7 @@
 		<result column="inPrice" property="inPrice" />
 		<result column="price" property="price" />
 		<result column="validDate" property="validDate" />
+		<result column="place1" property="place1" />
 		<result column="num" property="num" />
 		<result column="orderNo" property="orderNo" />
 		<result column="amount" property="amount" />
@@ -160,7 +161,7 @@
 		<result column="realPrice" property="realPrice" />
 	</resultMap>
 	<select id="getDrugAndStoreDataList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
-		select d.id,d.itemName,d.spec,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,
+		select d.id,d.itemName,d.spec,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,s.place1,
 				s.amount,s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
 		from store s
 		inner join dic_drug d
