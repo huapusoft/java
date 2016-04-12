@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
@@ -106,7 +109,8 @@ public class StoreCheckController {
 		result.put("msg", "新建失败");
 		
 		try{
-			List<DrugAndStore>  drugAndStore= storeCheckService.getStoreDrugList();
+			Map<String, Object> params = new HashMap<String, Object>();
+			List<DrugAndStore>  drugAndStore= storeCheckService.getStoreDrugList(params);
 			result.put("code", "200");
 			result.put("data", drugAndStore);
 			result.put("msg", "成功");

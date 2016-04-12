@@ -53,8 +53,8 @@ public class StoreCheckControllerTest {
 	public void testgetStoreDrugList() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
-		
-		List<DrugAndStore> list = storeCheckService.getStoreDrugList();
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<DrugAndStore> list = storeCheckService.getStoreDrugList(params);
 		System.out.println( list.size());
 		
 	}

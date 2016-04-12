@@ -170,6 +170,9 @@
 			<if test="storeName != null and storeName != ''">
 				and storeName = #{storeName}
 			</if>
+			<if test="batchNo != null and batchNo != ''">
+				and s.batchNo = #{batchNo}
+			</if>
 			<if test="itemName != null and itemName != ''">
 				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
 			</if>

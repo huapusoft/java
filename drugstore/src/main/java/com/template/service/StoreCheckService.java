@@ -2,6 +2,7 @@ package com.template.service;
 
 import java.util.List;
 import java.util.Map;
+
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
@@ -21,7 +22,7 @@ public interface StoreCheckService {
 	* @parameter  
 	* @return
 	 */
-	public List<DrugAndStore> getStoreDrugList() throws Exception;
+	public List<DrugAndStore> getStoreDrugList(Map<String, Object> params) throws Exception;
 	
 	/**
 	 * 打开盘点单

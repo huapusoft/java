@@ -1,7 +1,6 @@
 package com.template.serviceImpl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -39,8 +38,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	private CommonService commonService;
 
 	@Override
-	public List<DrugAndStore> getStoreDrugList() throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
+	public List<DrugAndStore> getStoreDrugList(Map<String, Object> params) throws Exception {
 		return storeMapper.getDrugAndStoreDataList(params);
 	}
 	
