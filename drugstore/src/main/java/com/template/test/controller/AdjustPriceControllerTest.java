@@ -1,7 +1,9 @@
 package com.template.test.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -11,6 +13,7 @@ import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.AdjustPriceService;
+import com.template.util.CommonUtil;
 
 /**
  * 调价controller测试类
@@ -127,6 +130,47 @@ public class AdjustPriceControllerTest {
 		
 		int billNo = 2016041007;
 		adjustPriceService.delete(billNo);
+		
+	}
+	
+	/**
+	 * 获取调价登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
+		
+		StoreInOut detailData = adjustPriceService.getDetailData(2016041007);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取调价查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+		params.put("itemName", "阿莫西林胶囊");
+		params.put("status", null);
+		
+		List<StoreInOut> list = adjustPriceService.getListData(params);
+		System.out.println(list.size());
 		
 	}
 	

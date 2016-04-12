@@ -196,7 +196,7 @@ public class SalesReturnControllerTest {
 		params.put("typeData", "国药控股盐城有限公司");
 		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
 		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
-//		params.put("itemName", "阿莫西林颗粒");
+		params.put("itemName", "阿莫西林颗粒");
 		params.put("status", null);
 		
 		List<StoreInOut> list = salesReturnService.getListData(params);

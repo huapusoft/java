@@ -2,7 +2,9 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -11,8 +13,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.BreakageService;
 import com.template.service.CommonService;
-import com.template.service.OutStorageService;
+import com.template.util.CommonUtil;
 
 /**
  * 报损controller测试类
@@ -48,7 +51,7 @@ public class BreakageControllerTest {
 	@Test
 	public void testSave() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
 		
 		StoreInOut inOut = new StoreInOut();
 		inOut.setBillType("报损");
@@ -79,7 +82,7 @@ public class BreakageControllerTest {
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
-		outStorageService.save(inOut, detailList, "张三", "一号仓库");
+		breakageService.save(inOut, detailList, "张三", "一号仓库");
 	}
 	
 	/**
@@ -92,10 +95,10 @@ public class BreakageControllerTest {
 	@Test
 	public void testSubmit() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
 		
 		int billNo = 2016041005;
-		outStorageService.submit(billNo);
+		breakageService.submit(billNo);
 	}
 	
 	/**
@@ -108,9 +111,9 @@ public class BreakageControllerTest {
 	@Test
 	public void testverifySuccess() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
 		
-		outStorageService.verifySuccess(2016041005, "财务1", "一号仓库");
+		breakageService.verifySuccess(2016041005, "财务1", "一号仓库");
 	}
 	
 	/**
@@ -123,9 +126,9 @@ public class BreakageControllerTest {
 	@Test
 	public void testverifyFail() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
 		
-		outStorageService.verifyFail(2016041005, "财务1");
+		breakageService.verifyFail(2016041005, "财务1");
 	}
 	
 	/**
@@ -138,10 +141,51 @@ public class BreakageControllerTest {
 	@Test
 	public void testDelete() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
 		
 		int billNo = 2016041005;
-		outStorageService.delete(billNo);
+		breakageService.delete(billNo);
+	}
+	
+	/**
+	 * 获取报损登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
+		
+		StoreInOut detailData = breakageService.getDetailData(2016041001);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取报损查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		BreakageService breakageService = (BreakageService) context.getBean("breakageService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StoreInOut> list = breakageService.getListData(params);
+		System.out.println(list.size());
+		
 	}
 	
 }
