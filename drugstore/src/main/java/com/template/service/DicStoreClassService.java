@@ -42,4 +42,14 @@ public interface DicStoreClassService {
 	 */
 	public List<DicStoreClass> getByConditions(Map<String, Object> params) throws Exception;
 
+	/**
+	 * 主键查询
+	 * @Description: 主键查询
+	 * @author army.liu
+	 * @param  id-编号
+	 * @return void
+	 * @throws
+	 */
+	public DicStoreClass getById(int id) throws Exception;
+
 }

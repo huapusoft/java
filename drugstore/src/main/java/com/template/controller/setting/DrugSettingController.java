@@ -141,7 +141,7 @@ public class DrugSettingController {
 	 */
 	@RequestMapping(value = "/new",method=RequestMethod.GET)		
 	public ModelAndView savenew(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
-		ModelAndView mv = new ModelAndView("systemSetting/storeClassSetting/new");
+		ModelAndView mv = new ModelAndView("systemSetting/drugSetting/new");
 		return mv;
 		
 	}

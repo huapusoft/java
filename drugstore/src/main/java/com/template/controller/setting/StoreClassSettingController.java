@@ -89,6 +89,56 @@ public class StoreClassSettingController {
 	}
 	
 	/**
+	 * 新建或编辑页面
+	 * @Description:  新建或编辑
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/new",method=RequestMethod.GET)		
+	public ModelAndView savenew(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("systemSetting/storeClassSetting/new");
+		return mv;
+		
+	}
+	
+	/**
+	  * 获取库存分类详细信息
+	  * @Description: 获取库存分类详细信息
+	  * @author army.liu
+	  * @param  id-药品标识
+	  * @return 
+	  * @throws
+	  */
+	@RequestMapping(value = "/getDetailData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDetailData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("id") int id
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			DicStoreClass bean = dicStoreClassService.getById( id );
+			result.put("data", bean);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
 	  * 保存
 	  * @Description: 保存
 	  * @author army.liu

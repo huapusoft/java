@@ -52,4 +52,9 @@ public class DicStoreClassServiceImpl implements DicStoreClassService {
 		
 	}
 
+	@Override
+	public DicStoreClass getById(int id) throws Exception {
+		return dicStoreClassMapper.getById(id);
+	}
+
 }
