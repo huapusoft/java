@@ -2,6 +2,7 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.service.PurchasePlanService;
+import com.template.util.CommonUtil;
 
 /**
  * 采购计划controller测试类
@@ -207,4 +209,44 @@ public class PurchasePlanControllerTest {
 		purchasePlanService.leaderAudit(2016041000, "领导1", 0);
 	}
 	
+	/**
+	 * 获取采购计划登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
+		
+		StorePurchasePlan detailData = purchasePlanService.getDetailData(2016041000);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取采购计划查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StorePurchasePlan> list = purchasePlanService.getListData(params);
+		System.out.println(list.size());
+		
+	}
 }

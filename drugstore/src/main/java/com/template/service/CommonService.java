@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.template.domain.DicDrugStore;
+import com.template.domain.DrugAndReports;
 import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
@@ -206,4 +207,15 @@ public interface CommonService {
 	  * @throws
 	  */
 	public StoreInOut getDetailData(int billNo) throws Exception;
+	
+	/**
+	 * 获取药品台账的列表数据
+	 * @Description: 根据参数，获取药品台账数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DrugAndReports> getListDataForDrugReports(Map<String, Object> params) throws Exception;
+	
 }

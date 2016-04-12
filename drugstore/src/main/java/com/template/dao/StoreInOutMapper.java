@@ -3,6 +3,7 @@ package com.template.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.template.domain.DrugAndReports;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutForCount;
 
@@ -34,4 +35,14 @@ public interface StoreInOutMapper {
 	  * @throws
 	  */
 	public List<StoreInOut> getByConditionsForQuery(Map<String, Object> params)  throws Exception;
+
+	/**
+	 * 获取药品台账的列表数据
+	 * @Description: 根据参数，获取药品台账数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DrugAndReports> getListDataForDrugReports( Map<String, Object> params );
 }

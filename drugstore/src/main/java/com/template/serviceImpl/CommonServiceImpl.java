@@ -21,6 +21,7 @@ import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DictEmployee;
+import com.template.domain.DrugAndReports;
 import com.template.domain.DrugAndStore;
 import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
@@ -522,6 +523,13 @@ public class CommonServiceImpl implements CommonService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public List<DrugAndReports> getListDataForDrugReports(Map<String, Object> params)
+			throws Exception {
+		
+		return storeInOutMapper.getListDataForDrugReports(params);
 	}
 
 }

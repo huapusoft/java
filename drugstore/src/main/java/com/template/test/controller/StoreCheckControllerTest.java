@@ -2,7 +2,9 @@ package com.template.test.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +16,7 @@ import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
+import com.template.util.CommonUtil;
 
 /**
  * 盘点controller测试类
@@ -191,6 +194,48 @@ public class StoreCheckControllerTest {
 		
 		List<DrugAndCheckDetail> list = storeCheckService.getCheckDetailList(2016041000);
 		System.out.println(list);
+	}
+	
+	/**
+	 * 获取盘点登记详细信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetDetailData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
+		
+		List<DrugAndCheckDetail> detailData = storeCheckService.getCheckDetailList(2016041001);
+		System.out.println(detailData);
+	}
+	
+	/**
+	 * 获取盘点查询列表信息
+	 * 
+	 * @Description: 方法功能描述
+	 * @author army.liu
+	 * @date 
+	 */
+	@Test
+	public void testgetListData() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("storeName", "一号仓库");
+		params.put("typeData", "国药控股盐城有限公司");
+		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+		params.put("itemName", "阿莫西林颗粒");
+		params.put("status", null);
+		
+		List<StoreCheck> list = storeCheckService.getListData(params);
+		System.out.println(list.size());
+		
 	}
 	
 }
