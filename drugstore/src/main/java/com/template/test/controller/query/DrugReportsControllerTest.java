@@ -13,14 +13,14 @@ import com.template.service.CommonService;
 import com.template.util.CommonUtil;
 
 /**
- * 入库controller测试类
+ * 查询统计：药品台账controller测试类
  * @Description: 测试
  * @author army.liu
  */
 public class DrugReportsControllerTest {
 
 	/**
-	 * 获取入库查询列表信息
+	 * 获取查询列表信息
 	 * 
 	 * @Description: 方法功能描述
 	 * @author army.liu
