@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicStoreClassMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicStoreClass">
+		<id column="id" property="id"  />
+		<result column="name" property="name" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_storeClass
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_storeClass
+		<where>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name},'%')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicStoreClass">
+		insert into dic_storeClass
+		( id,  name )
+		values
+		( #{id}, #{name} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicStoreClass">
+		update dic_storeClass
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_storeClass
+		where id = #{id}
+	</delete>
+	
+</mapper>

@@ -12,7 +12,7 @@ import com.template.domain.DicDrug;
  */
 public interface DicDrugMapper {
 
-	public DicDrug getById(int departmentId) throws Exception ;
+	public DicDrug getById(int id) throws Exception ;
 
 	public List<DicDrug> getByConditions(Map<String, Object> params)  throws Exception;
 

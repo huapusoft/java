@@ -51,6 +51,15 @@ public interface DicDrugService {
 	 * @throws
 	 */
 	public List<DicDrug> getEnabledDrugList(String itemName)  throws Exception;
-	
+
+	/**
+	 * 查询药品详细信息
+	 * @Description:  查询药品详细信息
+	 * @author army.liu
+	 * @param  params-查询条件
+	 * @return 
+	 * @throws
+	 */
+	public DicDrug getById(int id) throws Exception;
 	
 }
