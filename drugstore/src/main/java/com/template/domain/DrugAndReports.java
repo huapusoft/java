@@ -16,7 +16,7 @@ public class DrugAndReports {
 	private String vendor;//厂家
 	private double addNum;//贷方
 	private double reduceNum;//借方
-	private String desc;//摘要
+	private String remark;//摘要
 	
 	public String getItemName() {
 		return itemName;
@@ -48,11 +48,11 @@ public class DrugAndReports {
 	public void setReduceNum(double reduceNum) {
 		this.reduceNum = reduceNum;
 	}
-	public String getDesc() {
-		return desc;
+	public String getRemark() {
+		return remark;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 }

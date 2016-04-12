@@ -528,7 +528,6 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public List<DrugAndReports> getListDataForDrugReports(Map<String, Object> params)
 			throws Exception {
-		
 		return storeInOutMapper.getListDataForDrugReports(params);
 	}
 

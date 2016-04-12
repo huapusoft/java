@@ -130,4 +130,44 @@
 		group by 
 			billType
 	</select>
+	
+	<resultMap id="BaseResultMapForDrugReports" type="com.template.domain.DrugAndReports">
+		<result column="itemName" property="itemName" />
+		<result column="spec" property="spec" />
+		<result column="vendor" property="vendor" />
+		<result column="addNum" property="addNum" />
+		<result column="reduceNum" property="reduceNum" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<select id="getListDataForDrugReports" resultMap="BaseResultMapForDrugReports" parameterType="java.util.HashMap">
+		select 
+			sio.billNo,dd.itemName,dd.spec,dd.vendor,
+			SUM( CASE WHEN sio.billType IN ( '入库') THEN siod.amount ELSE 0 END) AS addNum,
+			SUM( CASE WHEN sio.billType IN ( '出库','退货','报损') THEN siod.amount ELSE 0 END) AS reduceNum,
+			sio.billType AS remark
+		from 
+			storeInOut sio, storeInOutDetail siod, dic_drug dd
+		where
+			siod.billNo = sio.billNo
+			and siod.drugId = dd.id
+			and sio.status = 2
+			<if test="storeName != null and storeName != ''">
+				and sio.storeName = #{storeName} 
+			</if>
+			<if test="billType != null and billType != ''">
+				and sio.billType = #{billType}
+			</if>
+			<if test="startTime != null">
+				and sio.billTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				and sio.billTime &lt;= #{endTime}
+			</if>
+			<if test="itemName != null and itemName != ''">
+				and dd.itemName = #{itemName}
+			</if>
+			group by sio.billNo, sio.billType, dd.itemName, dd.spec, dd.vendor
+			order by sio.billNo desc
+	</select>
+	
 </mapper>
