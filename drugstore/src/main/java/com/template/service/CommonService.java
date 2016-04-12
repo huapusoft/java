@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.template.domain.DicDrugStore;
+import com.template.domain.DrugAndInOutStatistics;
 import com.template.domain.DrugAndReports;
 import com.template.domain.DrugAndStore;
+import com.template.domain.DrugAndStoreInOutDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -228,6 +230,15 @@ public interface CommonService {
 	public List<Store> getBatchNoFromStore(String storeName, int drugId) throws Exception;
 	
 	/**
+	 * 获取药品名称的下拉框
+	* @author  fengql 
+	* @date 2016年4月12日 下午3:24:26 
+	* @parameter  storeName-药库名称，itemName-药品名称
+	* @return
+	 */
+	public List<DrugAndStoreInOutDetail> getDrugListFromInOutDetail(String storeName, String itemName) throws Exception;
+	
+	/**
 	 * 获取批号-根据药品id
 	* @author  fengql 
 	* @date 2016年4月12日 下午1:00:34 
@@ -235,5 +246,14 @@ public interface CommonService {
 	* @return
 	 */
 	public List<StoreInOutDetail> getBatchNoFromInOutDetail(String storeName, int drugId) throws Exception;
+	
+	/**
+	 * 获取进出统计数据
+	* @author  fengql 
+	* @date 2016年4月12日 下午3:37:30 
+	* @parameter  
+	* @return
+	 */
+	public List<DrugAndInOutStatistics> getInOutStatisticsDetail(Map<String, Object> params) throws Exception;
 	
 }

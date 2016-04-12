@@ -49,8 +49,20 @@
 			and siod.billNo = #{billNo}
 	</select>
 	
+	<select id="getListByConditions" resultMap="BaseResultMapForGroup" parameterType="java.util.HashMap">
+		select distinct d.id,d.itemName,d.spec,d.unit,d.vendor
+		from storeInOutDetail siod,dic_drug d,storeInOut sio
+		where siod.drugId = d.id and siod.billNo=sio.billNo
+			<if test="storeName != null and storeName != ''">
+				and sio.storeName = #{storeName}
+			</if>
+			<if test="itemName != null and itemName != ''">
+				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
+			</if>
+	</select>
+	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-		select a.*
+		select distinct a.*
 		from storeInOutDetail a left join storeInOut b
 		where a.billNo=b.billNo
 			<if test="billNo != null and billNo != ''">
@@ -83,4 +95,74 @@
 		order by sio.billNo desc
 	</select>
 	
+	<resultMap id="ListForInOutStatistics" type="com.template.domain.DrugAndInOutStatistics">
+		<result column="drugId" property="drugId"  />
+		<result column="batchNo" property="batchNo"  />
+		<result column="itemName" property="itemName"  />
+		<result column="spec" property="spec"  />
+		<result column="vendor" property="vendor"  />
+		<result column="unit" property="unit"  />
+		<result column="inSum" property="inSum"  />
+		<result column="outSum" property="outSum"  />
+		<result column="returnSum" property="returnSum" />
+		<result column="breakageSum" property="breakageSum" />
+		<result column="firstSum" property="firstSum" />
+		<result column="storeSum" property="storeSum" />
+	</resultMap>
+	<select id="getInOutStatisticsListData" resultMap="ListForInOutStatistics" parameterType="java.util.HashMap">
+		select x.*,
+		CASE WHEN y.firstSum is NULL THEN 0 ELSE y.firstSum  END firstSum,
+		CASE WHEN z.storeSum is NULL THEN 0 ELSE z.storeSum  END storeSum
+		from  (
+		select drugId,batchNo,itemName,spec,vendor,unit,
+				SUM( CASE WHEN billType = '入库' THEN amount ELSE 0 END) AS inSum,
+				SUM( CASE WHEN billType = '出库' THEN amount ELSE 0 END) AS outSum,
+				SUM( CASE WHEN billType = '退货' THEN amount ELSE 0 END) AS returnSum,
+				SUM( CASE WHEN billType = '报损' THEN amount ELSE 0 END) AS breakageSum
+		from(
+		select a.drugId,a.batchNo,b.billType,a.amount,c.itemName,c.spec,c.unit,c.vendor
+		from storeInOutDetail a,storeInOut b,dic_drug c
+		where a.drugId = c.id and a.billNo=b.billNo 
+			  and b.billType in ('入库','出库','退货','报损')
+			<if test="storeName != null and storeName != ''">
+				and b.storeName = #{storeName} 
+			</if>
+		  	<if test="startTime != null">
+				and b.billTime &gt;= #{startTime} 
+			</if>
+		  	<if test="endTime != null">
+				and b.billTime &lt;= #{endTime}
+			</if>
+			<if test="itemName != null and itemName != ''">
+				and ( c.itemName like CONCAT('%',#{itemName},'%') ) OR ( c.wb like CONCAT('%',#{itemName},'%') ) OR ( c.py like CONCAT('%',#{itemName},'%') )
+		  	</if>
+		  	<if test="batchNo != null and batchNo != ''">
+				and a.batchNo = #{batchNo}
+			</if>) d
+		group by drugId,batchNo,itemName,spec,vendor,unit
+		order by drugId,batchNo) x
+		left join  (select a.drugId,a.batchNo,sum(realAmount) as firstSum
+			 		from storeCheckDetail a,storeCheck b
+			 		where a.checkNo=b.checkNo
+			 			and a.checkNo =(select max(checkNo) from storeCheck 
+			 							<where>
+			 								<if test="storeName != null and storeName != ''">
+												and storeName = #{storeName} 
+											</if>
+			 							</where>
+			 							)
+					group by a.drugId,a.batchNo
+					) y
+				on x.drugId=y.drugId and x.batchNo=y.batchNo
+		left join  (select drugId,batchNo,sum(amount) storeSum
+					from store
+					<where>
+			 			<if test="storeName != null and storeName != ''">
+							and storeName = #{storeName} 
+						</if>
+			 		</where>
+					group by drugId,batchNo
+					) z
+				on x.drugId=z.drugId and x.batchNo=z.batchNo
+	</select>
 </mapper>

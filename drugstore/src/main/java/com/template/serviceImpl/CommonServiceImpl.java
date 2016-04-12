@@ -21,6 +21,7 @@ import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DictEmployee;
+import com.template.domain.DrugAndInOutStatistics;
 import com.template.domain.DrugAndReports;
 import com.template.domain.DrugAndStore;
 import com.template.domain.DrugAndStoreInOutDetail;
@@ -540,6 +541,13 @@ public class CommonServiceImpl implements CommonService {
 		return storeMapper.getByConditions(params);
 	}
 
+	public List<DrugAndStoreInOutDetail> getDrugListFromInOutDetail(String storeName, String itemName) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeName", storeName);
+		params.put("itemName", itemName);
+		return storeInOutDetailMapper.getListByConditions(params);
+	}
+	
 	@Override
 	public List<StoreInOutDetail> getBatchNoFromInOutDetail(String storeName,
 			int drugId) throws Exception {
@@ -547,6 +555,12 @@ public class CommonServiceImpl implements CommonService {
 		params.put("storeName", storeName);
 		params.put("drugId", drugId);
 		return storeInOutDetailMapper.getByConditions(params);
+	}
+
+	@Override
+	public List<DrugAndInOutStatistics> getInOutStatisticsDetail(
+			Map<String, Object> params) throws Exception {
+		return storeInOutDetailMapper.getInOutStatisticsListData(params);
 	}
 
 }
