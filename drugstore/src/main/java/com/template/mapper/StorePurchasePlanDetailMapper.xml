@@ -49,4 +49,26 @@
 		where purchaseNo = #{purchaseNo}
 	</delete>
 	
+	<resultMap id="BaseResultMap2" type="com.template.domain.DrugAndPurchasePlanDetail">
+		<result column="purchaseNo" property="purchaseNo" />
+		<result column="drugId" property="drugId" />
+		<result column="itemName" property="itemName" />
+		<result column="spec" property="spec" />
+		<result column="vendor" property="vendor" />
+		<result column="unit" property="unit" />
+		<result column="provider" property="provider" />
+		<result column="arriveTime" property="arriveTime" />
+		<result column="amount" property="amount" />
+		<result column="inPrice" property="inPrice" />
+		<result column="price" property="price" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<select id="getPurchaseDetailList" resultMap="BaseResultMap2" parameterType="int">
+		select a.drugId,b.itemName,b.spec,b.vendor,b.unit,a.provider,a.arriveTime,a.amount,a.inPrice,a.price,a.remark
+		from storePurchasePlanDetail a,dic_drug b
+		where a.drugId=b.id and  a.purchaseNo = #{purchaseNo}
+		order by a.orderNo
+	</select>
+	
 </mapper>

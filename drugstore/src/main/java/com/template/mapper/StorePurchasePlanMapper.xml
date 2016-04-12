@@ -46,6 +46,33 @@
 		</if>
 	</select>
 	
+	<select id="getByConditionsForQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select DISTINCT a.*
+		from storePurchasePlan a, storePurchasePlanDetail b, dic_drug c
+		where
+			a.purchaseNo = b.purchaseNo
+			and b.drugId = c.id
+			<if test="storeName != null and storeName != ''">
+				and a.storeName = #{storeName} 
+			</if>
+			<if test="providerName != null and providerName != ''">
+				and b.provider = #{providerName}
+			</if>
+			<if test="status != null and status != ''">
+				and a.status = #{status}
+			</if>
+			<if test="startTime != null">
+				and a.purchaseTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				and a.purchaseTime &lt;= #{endTime}
+			</if>
+			<if test="itemName != null and itemName != ''">
+				and c.itemName = #{itemName}
+			</if>
+			order by a.purchaseNo desc
+	</select>
+	
 	<insert id="insert" parameterType="com.template.domain.StorePurchasePlan">
 		insert into storePurchasePlan
 		( purchaseNo, storeName, purchaseTime, remark, inSum, retailSum, status, oper, submitTime, financeOper, financeTime, leader, leaderTime)

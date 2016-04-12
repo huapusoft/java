@@ -2,6 +2,7 @@ package com.template.dao;
 
 import java.util.List;
 import java.util.Map;
+import com.template.domain.DrugAndPurchasePlanDetail;
 import com.template.domain.StorePurchasePlanDetail;
 
 /**
@@ -18,5 +19,7 @@ public interface StorePurchasePlanDetailMapper {
 	public void insert(StorePurchasePlanDetail bean)  throws Exception;
 	
 	public void delete(int purchaseNo)  throws Exception;
+	
+	public List<DrugAndPurchasePlanDetail> getPurchaseDetailList(int purchaseNo) throws Exception ;
 	
 }

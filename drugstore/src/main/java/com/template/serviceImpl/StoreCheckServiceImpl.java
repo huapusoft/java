@@ -181,6 +181,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	@Override
 	public List<StoreCheck> getListData(Map<String, Object> params)
 			throws Exception {
+		params.put("orderBycheckNo", "Y");
 		List<StoreCheck> list = storeCheckMapper.getByConditions(params);
 		if( null != list && list.size() > 0 ){
 			for(int i=0; i<list.size(); i++){

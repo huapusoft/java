@@ -30,11 +30,20 @@ public class StorePurchasePlan {
 	
 	private List<StorePurchasePlanDetail> detailList;
 	
+	private List<DrugAndPurchasePlanDetail> detailAndDrugList;
+	
 	public List<StorePurchasePlanDetail> getDetailList() {
 		return detailList;
 	}
 	public void setDetailList(List<StorePurchasePlanDetail> detailList) {
 		this.detailList = detailList;
+	}
+	public List<DrugAndPurchasePlanDetail> getDetailAndDrugList() {
+		return detailAndDrugList;
+	}
+	public void setDetailAndDrugList(
+			List<DrugAndPurchasePlanDetail> detailAndDrugList) {
+		this.detailAndDrugList = detailAndDrugList;
 	}
 	public int getPurchaseNo() {
 		return purchaseNo;

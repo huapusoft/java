@@ -1,6 +1,7 @@
 package com.template.service;
 
 import java.util.List;
+import java.util.Map;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
 
@@ -56,4 +57,21 @@ public interface PurchasePlanService {
 	 */
 	public void leaderAudit(int purchaseNo, String oper, int auditType) throws Exception;
 	
+	/**
+	 * 获取查询列表数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:05:01 
+	* @parameter  
+	* @return
+	 */
+	public List<StorePurchasePlan> getListData(Map<String, Object> params) throws Exception;
+	
+	/**
+	 * 获取采购计划草稿的详细数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:05:17 
+	* @parameter  purchaseNo-采购号
+	* @return
+	 */
+	public StorePurchasePlan getDetailData(int purchaseNo) throws Exception;
 }

@@ -2,12 +2,14 @@ package com.template.serviceImpl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.template.dao.StorePurchasePlanDetailMapper;
 import com.template.dao.StorePurchasePlanMapper;
+import com.template.domain.DrugAndPurchasePlanDetail;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
 import com.template.service.CommonService;
@@ -205,6 +207,32 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 		purchaseData.setLeaderTime(new Date());//领导审批时间
 		storePurchasePlanMapper.update(purchaseData);
 		
+	}
+
+	@Override
+	public List<StorePurchasePlan> getListData(Map<String, Object> params)
+			throws Exception {
+		List<StorePurchasePlan> list = storePurchasePlanMapper.getByConditionsForQuery(params);
+		if( null != list && list.size() > 0 ){
+			for(int i=0; i<list.size(); i++){
+				int purchaseNo = list.get(i).getPurchaseNo();
+				List<DrugAndPurchasePlanDetail> detailList = storePurchasePlanDetailMapper.getPurchaseDetailList(purchaseNo);
+				list.get(i).setDetailAndDrugList(detailList);
+			}
+			return list;
+		}		
+		return null;
+	}
+
+	@Override
+	public StorePurchasePlan getDetailData(int purchaseNo) throws Exception {
+		StorePurchasePlan purchaseData = storePurchasePlanMapper.getByPurchaseNo(purchaseNo);
+		if( null != purchaseData ){
+			List<DrugAndPurchasePlanDetail> detailList = storePurchasePlanDetailMapper.getPurchaseDetailList(purchaseNo);	
+			purchaseData.setDetailAndDrugList(detailList);
+			return purchaseData;
+		}	
+		return null;
 	}
 
 }

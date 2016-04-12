@@ -1,15 +1,15 @@
 package com.template.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.template.domain.DicDrug;
 import com.template.domain.DicProvider;
 import com.template.domain.StorePurchasePlan;
@@ -263,4 +262,128 @@ public class PurchasePlanController {
 		return result;
 	}
 	
+	/**
+	 * 采购计划查询页面
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:02:08 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/list",method=RequestMethod.GET)		
+	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("queryCount/purchasePlan/list");
+		return mv;
+		
+	}
+	
+	/**
+	 * 获取查询页面的列表数据
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:02:47 
+	* @parameter  startTime-开始日期,yyyy-MM-dd
+				  endTime-结束日期,yyyy-MM-dd
+	           	  providerName-供应商名称
+	              itemName-药品名称
+	              status-状态
+	* @return
+	 */
+	@RequestMapping(value = "/getListData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getListData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("startTime") String startTime,
+			@RequestParam("endTime") String endTime,
+			@RequestParam("providerName") String providerName,
+			@RequestParam("itemName") String itemName,
+			@RequestParam("status") String status
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			
+			if( StringUtils.isNotEmpty(startTime) ){
+				Date startTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", startTime);
+				params.put("startTime", startTimeObj);
+				
+			}
+			if( StringUtils.isNotEmpty(endTime) ){
+				Date endTimeObj = CommonUtil.parseStringToDate("yyyy-MM-dd", endTime);
+				params.put("endTime", endTimeObj);
+				
+			}
+			params.put("providerName", providerName);
+			params.put("itemName", itemName);
+			params.put("status", status);
+			
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			params.put("storeName", storeName);
+			
+			List<StorePurchasePlan> list = purchasePlanService.getListData(params);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 编辑采购计划登记页面
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:07:57 
+	* @parameter  purchaseNo-采购号
+	* @return
+	 */
+	@RequestMapping(value = "/edit",method=RequestMethod.GET)		
+	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("queryCount/purchasePlan/edit");
+		String purchaseNo = request.getParameter("purchaseNo");
+		mv.addObject("purchaseNo", purchaseNo);
+		
+		return mv;
+	}
+	
+	/**
+	 * 获取采购计划草稿的详细信息
+	* @author  fengql 
+	* @date 2016年4月11日 下午5:08:59 
+	* @parameter  purchaseNo-采购号
+	* @return detailAndDrugList--详细信息
+	 */
+	@RequestMapping(value = "/getDetailData",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDetailData(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("purchaseNo") int purchaseNo
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			StorePurchasePlan bean = purchasePlanService.getDetailData( purchaseNo );
+			result.put("data", bean);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
 }
