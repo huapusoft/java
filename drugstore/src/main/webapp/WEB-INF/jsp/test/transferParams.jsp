@@ -20,14 +20,14 @@
 		<br/>
 &nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;"billType" : "出库",<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;"typeData" : "盐城市第一制药厂",<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"typeData" : "手术室",<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;"sum1" : 123.11,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;"sum2" : 456.32,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;"detailList" : <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"orderNo" : 1,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id" : 1001,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"drugId" : 1001,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"invoiceNo" : "P000234123",<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"batchNo" : "国药准字CB12382193",<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"amount" : 2,<br/>
@@ -37,7 +37,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"orderNo" : 2,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id" : 1002,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"drugId" : 1002,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"invoiceNo" : "P00045623",<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"batchNo" : "国药准字CB12376876",<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"amount" : 5,<br/>
@@ -65,15 +65,14 @@ function save(){
 	$('#result').html("")
 	var $paramJson={
 			"billType" : "出库",
-			"typeData" : "盐城市第一制药厂",
+			"typeData" : "手术室",
 			"sum1" : 123.11,
 			"sum2" : 456.32,
 			"detailList" : 
 				[
 			      	{
 			    	  	"orderNo" : 1,
-						"id" : 1001,
-						"invoiceNo" : "P000234123",
+						"drugId" : 1001,
 						"batchNo" : "国药准字CB12382193",
 						"amount" : 2,
 						"price1" : 1,
@@ -82,8 +81,7 @@ function save(){
 			      	},
 			      	{
 			    	  	"orderNo" : 2,
-						"id" : 1002,
-						"invoiceNo" : "P00045623",
+						"drugId" : 1002,
 						"batchNo" : "国药准字CB12376876",
 						"amount" : 5,
 						"price1" : 10,
