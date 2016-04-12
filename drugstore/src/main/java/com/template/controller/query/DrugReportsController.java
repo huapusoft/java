@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDrug;
 import com.template.domain.DrugAndReports;
 import com.template.service.CommonService;
+import com.template.service.DicDrugService;
 import com.template.util.CommonUtil;
 
 /**
@@ -35,6 +37,9 @@ public class DrugReportsController {
 	@Resource  
 	private CommonService commonService;
 	
+	@Resource  
+	private DicDrugService dicDrugService;
+	
 	/**
 	 * 查询页面
 	 * @Description: 查询页面
@@ -48,6 +53,41 @@ public class DrugReportsController {
 		ModelAndView mv = new ModelAndView("queryCount/drugReports/list");
 		return mv;
 		
+	}
+	
+	/**
+	 * 获取药品下拉框中数据
+	 * @Description: 从药品基础信息表中，读取已启用的药品数据
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDicProviderList(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("itemName") String itemName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
 	}
 	
 	/**
