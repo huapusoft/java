@@ -50,11 +50,14 @@
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-		select *
-		from storeInOutDetail
-		<where>
+		select a.*
+		from storeInOutDetail a left join storeInOut b
+		where a.billNo=b.billNo
 			<if test="billNo != null and billNo != ''">
 				and billNo = #{billNo}
+			</if>
+			<if test="storeName != null and storeName != ''">
+				and b.storeName = #{storeName}
 			</if>
 			<if test="drugId != null and drugId != ''">
 				and drugId = #{drugId}
@@ -62,7 +65,6 @@
 			<if test="batchNo != null and batchNo != ''">
 				and batchNo = #{batchNo}
 			</if>
-		</where>
 	</select>
 	
 	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">

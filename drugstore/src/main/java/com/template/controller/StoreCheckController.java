@@ -58,12 +58,11 @@ public class StoreCheckController {
 	}
 	
 	/**
-	 * 获取药品下拉框中数据
-	 * @Description: 从药品库存表中，读取药品数据
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
+	 * 获取药品下拉框数据，从库存表中获取
+	* @author  fengql 
+	* @date 2016年4月12日 上午10:43:44 
+	* @parameter  itemName-药品名称
+	* @return
 	 */
 	@RequestMapping(value = "/getDrugListFromStore",method=RequestMethod.POST)
 	@ResponseBody
@@ -86,8 +85,7 @@ public class StoreCheckController {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
+			result.put("msg", "获取失败："+e.getMessage());		
 		}
 		
 		return result;

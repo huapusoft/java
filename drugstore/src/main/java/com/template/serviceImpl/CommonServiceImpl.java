@@ -531,4 +531,22 @@ public class CommonServiceImpl implements CommonService {
 		return storeInOutMapper.getListDataForDrugReports(params);
 	}
 
+	@Override
+	public List<Store> getBatchNoFromStore(String storeName, int drugId)
+			throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeName", storeName);
+		params.put("drugId", drugId);
+		return storeMapper.getByConditions(params);
+	}
+
+	@Override
+	public List<StoreInOutDetail> getBatchNoFromInOutDetail(String storeName,
+			int drugId) throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("storeName", storeName);
+		params.put("drugId", drugId);
+		return storeInOutDetailMapper.getByConditions(params);
+	}
+
 }

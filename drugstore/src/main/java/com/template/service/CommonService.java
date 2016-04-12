@@ -218,4 +218,22 @@ public interface CommonService {
 	 */
 	public List<DrugAndReports> getListDataForDrugReports(Map<String, Object> params) throws Exception;
 	
+	/**
+	 * 获取批号-根据药品id
+	* @author  fengql 
+	* @date 2016年4月12日 下午1:00:10 
+	* @parameter  storeName-药库名称，drugId-药品id
+	* @return
+	 */
+	public List<Store> getBatchNoFromStore(String storeName, int drugId) throws Exception;
+	
+	/**
+	 * 获取批号-根据药品id
+	* @author  fengql 
+	* @date 2016年4月12日 下午1:00:34 
+	* @parameter  storeName-药库名称，drugId-药品id
+	* @return
+	 */
+	public List<StoreInOutDetail> getBatchNoFromInOutDetail(String storeName, int drugId) throws Exception;
+	
 }
