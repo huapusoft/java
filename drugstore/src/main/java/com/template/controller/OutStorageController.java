@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DicDepartment;
+import com.template.domain.DicDrug;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.CommonService;
 import com.template.service.DicDepartmentService;
+import com.template.service.DicDrugService;
 import com.template.service.OutStorageService;
 import com.template.util.CommonUtil;
 
@@ -46,6 +48,9 @@ public class OutStorageController {
 	
 	@Resource 
 	private CommonService commonService;
+	
+	@Resource  
+	private DicDrugService dicDrugService;
 	
 	/**
 	 * 出库登记页面
@@ -258,6 +263,40 @@ public class OutStorageController {
 		ModelAndView mv = new ModelAndView("queryCount/outStorage/list");
 		return mv;
 		
+	}
+	
+	/**
+	 *  获取已启用的药品信息--用于出库查询页面的名称下拉
+	* @author  fengql 
+	* @date 2016年4月13日 下午2:29:46 
+	* @parameter  itemName-药品名称简写
+	* @return	List<DicDrug>
+	 */
+	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getEnabledDrugList(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("itemName") String itemName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			
+			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());		
+		}
+		 
+		return result;
 	}
 	
 	/**

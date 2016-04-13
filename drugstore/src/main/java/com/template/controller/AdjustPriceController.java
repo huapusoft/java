@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDrug;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.AdjustPriceService;
+import com.template.service.DicDrugService;
 import com.template.util.CommonUtil;
 
 /**
@@ -37,6 +39,9 @@ public class AdjustPriceController {
 	
 	@Resource  
 	private AdjustPriceService adjustPriceService;
+	
+	@Resource  
+	private DicDrugService dicDrugService;
 	
 	/**
 	 * 调价登记页面
@@ -53,7 +58,7 @@ public class AdjustPriceController {
 	}
 	
 	/**
-	 * 获取药品名称下拉框内容，从库存表中读取
+	 * 获取药品名称下拉框内容，从库存表中读取-用于药品调价页面药品下拉
 	* @author  fengql 
 	* @date 2016年4月7日 下午1:49:31 
 	* @parameter  itemName-页面输入的名称代码
@@ -205,6 +210,40 @@ public class AdjustPriceController {
 		ModelAndView mv = new ModelAndView("queryCount/adjustPrice/list");
 		return mv;
 		
+	}
+	
+	/**
+	 *  获取已启用的药品信息--用于调价查询页面的名称下拉
+	* @author  fengql 
+	* @date 2016年4月13日 下午2:29:46 
+	* @parameter  itemName-药品名称简写
+	* @return	List<DicDrug>
+	 */
+	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getEnabledDrugList(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("itemName") String itemName
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			
+			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());		
+		}
+		 
+		return result;
 	}
 	
 	/**
