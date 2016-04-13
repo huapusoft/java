@@ -164,7 +164,8 @@ public class DrugSettingController {
 	@ResponseBody
 	public Map<String, Object> getAllHzylCode(HttpServletRequest request, 
 			HttpServletResponse response,
-			HttpSession session
+			HttpSession session,
+			@RequestParam("name") String name
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -173,6 +174,7 @@ public class DrugSettingController {
 		
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("name", name);
 			List<DicHzylContrast> list = commonService.getDicHzylContrast(params);
 			result.put("data", list);
 			result.put("code", "200");
@@ -199,7 +201,8 @@ public class DrugSettingController {
 	@ResponseBody
 	public Map<String, Object> getAllYbCode(HttpServletRequest request, 
 			HttpServletResponse response,
-			HttpSession session
+			HttpSession session,
+			@RequestParam("name") String name
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -208,6 +211,7 @@ public class DrugSettingController {
 		
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("name", name);
 			List<DicMiContrast> list = commonService.getDicMiContrast(params);
 			result.put("data", list);
 			result.put("code", "200");

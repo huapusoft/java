@@ -10,7 +10,7 @@
 
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
 		select *
-		from dic_hzyl_constrast
+		from dic_hzyl_contrast
 		<where>
 			<if test="bm != null and bm != ''">
 				bm = #{bm} 
