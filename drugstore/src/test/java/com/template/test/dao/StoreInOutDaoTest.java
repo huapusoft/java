@@ -1,4 +1,4 @@
-package com.template.test;
+package com.template.test.dao;
 
 import java.util.Date;
 
@@ -56,7 +56,6 @@ public class StoreInOutDaoTest {
 		
 		bean = storeInOutDao.getById(2016041000);
 		Assert.assertEquals(bean.getStatus(), "1");
-		Assert.assertNotEquals(bean.getSubmitTime(), null);
 		
 	}
 	

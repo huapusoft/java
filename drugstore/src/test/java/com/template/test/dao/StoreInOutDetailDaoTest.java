@@ -1,4 +1,4 @@
-package com.template.test;
+package com.template.test.dao;
 
 import java.util.Date;
 
