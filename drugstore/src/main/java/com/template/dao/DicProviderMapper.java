@@ -12,7 +12,7 @@ import com.template.domain.DicProvider;
  */
 public interface DicProviderMapper {
 
-	public DicProvider getById(int departmentId) throws Exception ;
+	public DicProvider getById(int id) throws Exception ;
 
 	public List<DicProvider> getByConditions(Map<String, Object> params)  throws Exception;
 
@@ -20,6 +20,8 @@ public interface DicProviderMapper {
 	
 	public void update(DicProvider bean)  throws Exception;
 	
-	public void delete(int departmentId)  throws Exception;
+	public void delete(int id)  throws Exception;
+	
+	public void updateStatus(int id,int status)  throws Exception;
 	
 }

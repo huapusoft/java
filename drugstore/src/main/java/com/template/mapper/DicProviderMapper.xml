@@ -28,14 +28,17 @@
 			<if test="providerName != null and providerName != ''">
 				and  ( providerName like CONCAT('%',#{providerName},'%') ) OR ( wb like CONCAT('%',#{providerName},'%') ) OR ( py like CONCAT('%',#{providerName},'%') )
 			</if>
+			<if test="status != null and status != ''">
+				and  enabled = #{status}
+			</if>
 		</where>
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.DicProvider">
 		insert into dic_provider
-		( id, providerName, addr, phone , linkman, finance, bank , wb, py, enabled )
+		( providerName, addr, phone , linkman, finance, bank , wb, py, enabled )
 		values
-		( #{id}, #{providerName}, #{addr}, #{phone}, #{linkman}, #{finance}, #{bank}, #{wb}, #{py}, #{enabled} )
+		( #{providerName}, #{addr}, #{phone}, #{linkman}, #{finance}, #{bank}, #{wb}, #{py}, #{enabled} )
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicProvider">
@@ -57,4 +60,9 @@
 		delete from dic_provider
 		where id = #{id}
 	</delete>
+	
+	<update id="updateStatus" parameterType="int">
+		update dic_provider set enabled = #{status}
+		where id = #{id}
+	</update>
 </mapper>

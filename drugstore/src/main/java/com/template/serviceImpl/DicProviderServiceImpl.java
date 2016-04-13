@@ -3,13 +3,10 @@ package com.template.serviceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.template.dao.DicProviderMapper;
 import com.template.domain.DicProvider;
 import com.template.service.DicProviderService;
@@ -29,21 +26,30 @@ public class DicProviderServiceImpl implements DicProviderService {
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void insert(DicProvider bean) throws Exception {
 		dicProviderMapper.insert(bean);
-		
 	}
 	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public void update(DicProvider bean) throws Exception {
 		dicProviderMapper.update(bean);
-		
 	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void delete(int departmentId) throws Exception {
-		dicProviderMapper.delete(departmentId);
-		
+	public void save(DicProvider bean) throws Exception {
+		int id = bean.getId();
+		if( 0 == id ){
+			bean.setEnabled(1);
+			dicProviderMapper.insert(bean);
+		}else{
+			dicProviderMapper.update(bean);		
+		}
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void delete(int id) throws Exception {
+		dicProviderMapper.delete(id);
 	}
 
 	@Override
@@ -59,6 +65,16 @@ public class DicProviderServiceImpl implements DicProviderService {
 		params.put("providerName", providerName);//模糊查询
 		params.put("enabled", 1);//启用
 		return dicProviderMapper.getByConditions(params);
+	}
+
+	@Override
+	public DicProvider getById(int id) throws Exception {
+		return dicProviderMapper.getById(id);
+	}
+
+	@Override
+	public void updateStatus(int id, int status) throws Exception {
+		dicProviderMapper.updateStatus(id,status);
 	}
 
 }
