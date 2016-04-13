@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/material/easyui.css"/>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"/>
+		<script src="/staticPublic/js/easyui-lang-zh_CN.js"></script>
 <title>出库页面</title>
 <style type="text/css">
 .ipt {
@@ -56,6 +57,7 @@
 </style>
 </head>
 <body onkeydown="keyCheck()">
+<input type="hidden" name="billNo" id="billNo">
 <div class="box1">
 <table>
 <tr>
@@ -68,7 +70,7 @@
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px; height:38px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px; height:38px;">打印</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px; height:38px;">提交</a></td>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px; height:38px;" onclick="dosubmit();">提交</a></td>
 
 </tr>
 </table>
@@ -89,7 +91,7 @@
 				<th data-options="field:'jj55',width:100,align:'center'">进价金额</th>
 				<th data-options="field:'price',width:100,align:'center'">零售价</th>
 				<th data-options="field:'ll77',width:100,align:'center'">零售价金额</th>
-				<th data-options="field:'batchNo',width:100,align:'center'">批号</th>
+				<th data-options="field:'batchno',width:100,align:'center'">批号</th>
 				<th data-options="field:'validDate',width:100,align:'center'">有效期</th>
 				<th data-options="field:'id',width:100,align:'center'">id</th>
 				<th data-options="field:'invoiceNo',width:100,align:'center'">发票号</th>
@@ -342,6 +344,7 @@ $.extend($.fn.datagrid.methods, {
                	 							        +"</td><td width='30px' height='22px' name='vendor' title='"+data.data[i].vendor+"' style=\"display:none\">"+data.data[i].vendor
                	 						            +"</td><td width='30px' height='22px' name='price' title='"+data.data[i].price+"'  style=\"display:none\">"+data.data[i].price
                	 					                +"</td><td width='30px' height='22px' name='inPrice' title='"+data.data[i].inPrice+"'  style=\"display:none\">"+data.data[i].inPrice
+               	 					                +"</td><td width='30px' height='22px' name='id' title='"+data.data[i].id+"'  style=\"display:none\">"+data.data[i].id
                	 									+"</td><td width='30px' height='22px' name='validDate' title='"+validDate+"'  style=\"display:none\">"+validDate+"</td></tr>");
                	 									$("#table1").append(_tr); 
                	   							}
@@ -369,8 +372,8 @@ $.extend($.fn.datagrid.methods, {
                	  							        var price= tablerow.find("[name='price']").text();
                	  						            var inPrice= tablerow.find("[name='inPrice']").text();
                	  					                var validDate= tablerow.find("[name='validDate']").text();
-               	  					               
-               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate});
+               	  					                var id= tablerow.find("[name='id']").text();
+               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
                										});
                								});
                								//单击checkbox
@@ -392,7 +395,8 @@ $.extend($.fn.datagrid.methods, {
             	  							        var price= tablerow.find("[name='price']").text();
             	  						            var inPrice= tablerow.find("[name='inPrice']").text();
             	  					                var validDate= tablerow.find("[name='validDate']").text();
-               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate});
+            	  					                var id= tablerow.find("[name='id']").text();
+               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
                										});
                									e.stopPropagation();//阻止tr冒泡
                								});
@@ -426,7 +430,8 @@ $.extend($.fn.datagrid.methods, {
                	    										batchno:'',
                	    										price: '',
                	    										inPrice: '',
-               	    										validDate: ''
+               	    										validDate: '',
+               	    										id:''
                	    									});
                	    								}
                	    								$('#mytable').datagrid('updateRow',{
@@ -440,7 +445,8 @@ $.extend($.fn.datagrid.methods, {
                	    										batchno: selectedData[i]['BatchNo'],
                	    										price: selectedData[i]['Price'],
                	    										inPrice: selectedData[i]['InPrice'],
-               	    										validDate: selectedData[i]['ValidDate']
+               	    										validDate: selectedData[i]['ValidDate'],
+               	    								         id:selectedData[i]['Id']
                	    									}
                	    								});
                	 									inumber = i+1+rowindex;
@@ -456,7 +462,8 @@ $.extend($.fn.datagrid.methods, {
            	    										batchno:'',
            	    										price: '',
            	    										inPrice: '',
-           	    										validDate: ''
+           	    										validDate: '',
+           	    										id:''
            	    									});
                	 											
                	    							}
@@ -599,9 +606,10 @@ function keyCheck(){
 		        var price= $("#table1 tr:eq("+rowNo+")").find("[name='price']").text().trim(); 
 	            var inPrice= $("#table1 tr:eq("+rowNo+")").find("[name='inPrice']").text().trim(); 
               var validDate= $("#table1 tr:eq("+rowNo+")").find("[name='validDate']").text().trim(); 
+              var id= $("#table1 tr:eq("+rowNo+")").find("[name='id']").text().trim(); 
 			if(matname != null && matname != "")
 			{
-				selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate});
+				selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
 			}
 		}
 		if(selectedData.length > 0)
@@ -619,7 +627,8 @@ function keyCheck(){
 							batchno:'',
 							price: '',
 							inPrice: '',
-							validDate: ''
+							validDate: '',
+							id:''
 						});
 	    		}	    	
 	 			$('#mytable').datagrid('updateRow',{
@@ -633,7 +642,8 @@ function keyCheck(){
 								batchno: selectedData[i]['BatchNo'],
 								price: selectedData[i]['Price'],
 								inPrice: selectedData[i]['InPrice'],
-								validDate: selectedData[i]['ValidDate']
+								validDate: selectedData[i]['ValidDate'],
+								id: selectedData[i]['Id']
 						}
 					});
 	 			inumber = i+1+rowindex;
@@ -650,7 +660,8 @@ function keyCheck(){
 						batchno:'',
 						price: '',
 						inPrice: '',
-						validDate: ''
+						validDate: '',
+						id:''
 					});
 	    	}
     	}
@@ -682,40 +693,190 @@ function dosave(){
 	var typeData =$('#departmentId').combotree('getText'); 
 	var sum1 = $('#sum1').val();
 	var sum2 = $('#sum2').val();
-	alert( sum1);
-	var json = "";
-	json= "{"+
-	for (var i = 0; i < rows.length; i++) {
-		
+	
+	
+	 var obj = {};
+	 obj.billType = "出库";
+	 obj.typeData = typeData;
+	 obj.sum1 = sum1;
+	 obj.sum2 = sum2;
+	 var newArray = [];
+	var json = '';
+	/* json= "{"+"\"billType\":\"出库\",\"typeData\":\""+typeData+"\",\"sum1\":"+sum1+",\"sum2\":"+sum2+",\"detailList\":["; */
+	for (var i = 0; i < rows.length; i++) {			
 	    var row = rows[i];   
 	    if(rows[i].orderNo!=""&&rows[i].orderNo!=null&&rows[i].orderNo!="undefined"){
-	    	/* alert( rows[i].orderNo); */	
-	    	 detailList["list[" + i + "].orderNo"] = rows[i].orderNo; //这里list要和后台的参数名List<Category> list一样
-	 	    detailList["list[" + i + "].id"] = rows[i].id; 
-	 	   detailList["list[" + i + "].invoiceNo"] = rows[i].invoiceNo; 
-	 	  detailList["list[" + i + "].batchNo"] = rows[i].batchNo; 
-	 	 detailList["list[" + i + "].amount"] = rows[i].amount; 
-	 	detailList["list[" + i + "].price1"] = rows[i].inPrice; 
-	 	detailList["list[" + i + "].price2"] = rows[i].price; 
-	 	detailList["list[" + i + "].validDate"] = rows[i].validDate; 
-	    }
-	   
+	    	/* json+="{\"orderNo\":"+rows[i].orderNo+"\",\"amount\":"+rows[i].amount+",\"price1\":"+rows[i].inPrice+",\"price2\":"+rows[i].price+",\"validDate\":\""+rows[i].validDate+"\"},";	   */    	
+	    	var objes = {};
+	    	 objes.orderNo = rows[i].orderNo;
+	    	 objes.drugId = rows[i].id;
+	    	 objes.batchNo = rows[i].batchno;
+	    	 objes.amount = rows[i].amount;
+	    	 objes.price1 = rows[i].inPrice;
+	    	 objes.price2 = rows[i].price;
+	    	 objes.validDate = rows[i].validDate;
+		        newArray.push(objes);	    	
+	    }	  
 	}
+	if(typeData==""||typeData==null||typeData=="undefined"){
+		jQuery.messager.alert('提示:',"请选择领药部门！",'info');
+		return false;
+	}
+	/* alert(newArray.length); */
+	if(newArray.length==0){
+		jQuery.messager.alert('提示:',"请选择要出库的药品！",'info');
+		return false;
+	}
+	 obj.detailList = newArray;
+	   /*  alert(obj); */
 	$.ajax({
 		type : 'POST',
 		url : "/outStorage/save",
-		data : {billType:'出库',typeData:typeData,sum1:sum1,sum2:sum1			
-		},
+		data : JSON.stringify(obj),
+		contentType:"application/json;charset=UTF-8",
 		dataType : 'JSON',
 		success : function(data) {			
-			if (data && data.code == 200) {				
-				alert("asqw");
+			if (data && data.code == 200) {										
+				$('#billNo').val(data.data);
+				jQuery.messager.alert('提示:',"保存成功！",'info'); 
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
 			}
 		}
 	});
 }
-
+function dosubmit(){	
+	var detailList = {};
+	var _list = {};
+	var rows = $('#mytable').datagrid('getRows');
+	/* var typeData = $('#departmentId').val(); */
+	var typeData =$('#departmentId').combotree('getText'); 
+	var sum1 = $('#sum1').val();
+	var sum2 = $('#sum2').val();		
+	 var obj = {};
+	 obj.billType = "出库";
+	 obj.typeData = typeData;
+	 obj.sum1 = sum1;
+	 obj.sum2 = sum2;
+	 if($('#billNo').val()!=""&&$('#billNo').val()!=null&&$('#billNo').val()!="undefined"){
+		 obj.billNo = $('#billNo').val();
+	 }
+	 var newArray = [];
+	var json = '';
+	/* json= "{"+"\"billType\":\"出库\",\"typeData\":\""+typeData+"\",\"sum1\":"+sum1+",\"sum2\":"+sum2+",\"detailList\":["; */
+	for (var i = 0; i < rows.length; i++) {			
+	    var row = rows[i];   
+	    if(rows[i].orderNo!=""&&rows[i].orderNo!=null&&rows[i].orderNo!="undefined"){
+	    	/* json+="{\"orderNo\":"+rows[i].orderNo+"\",\"amount\":"+rows[i].amount+",\"price1\":"+rows[i].inPrice+",\"price2\":"+rows[i].price+",\"validDate\":\""+rows[i].validDate+"\"},";	   */    	
+	    	var objes = {};
+	    	 objes.orderNo = rows[i].orderNo;
+	    	 objes.drugId = rows[i].id;
+	    	 objes.batchNo = rows[i].batchno;
+	    	 objes.amount = rows[i].amount;
+	    	 objes.price1 = rows[i].inPrice;
+	    	 objes.price2 = rows[i].price;
+	    	 objes.validDate = rows[i].validDate;
+		        newArray.push(objes);	    	
+	    }	  
+	}
+	if(typeData==""||typeData==null||typeData=="undefined"){
+		jQuery.messager.alert('提示:',"请选择领药部门！",'info');
+		return false;
+	}
+	alert(newArray.length);
+	if(newArray.length==0){
+		jQuery.messager.alert('提示:',"请选择要出库的药品！",'info');
+		return false;
+	}
+	 obj.detailList = newArray;
+	   /*  alert(obj); */
+	 $.ajax({
+		type : 'POST',
+		url : "/outStorage/submit",
+		data : JSON.stringify(obj),
+		contentType:"application/json;charset=UTF-8",
+		dataType : 'JSON',
+		success : function(data) {			
+			if (data && data.code == 200) {				
+				/* alert("asqw"); */
+				$('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+				$('#mytable').datagrid('appendRow',{
+	 				orderNo:'',
+						itemName: '',
+						spec: '',
+						unit: '',
+						vendor: '',
+						batchno:'',
+						price: '',
+						inPrice: '',
+						validDate: '',
+						id:''
+					});
+			} else {
+				jQuery.messager.alert('提示:',data.msg,'info'); 
+			}
+		}
+	}); 
+}
 </script>
 </html>
