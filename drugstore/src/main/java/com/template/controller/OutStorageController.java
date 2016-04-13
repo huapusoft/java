@@ -158,9 +158,10 @@ public class OutStorageController {
 			
 			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			outStorageService.save(inOut, detailList, billOper, storeName);
+			int billNo = outStorageService.save(inOut, detailList, billOper, storeName);
 			result.put("code", "200");
 			result.put("msg", "成功");
+			result.put("data", billNo);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -182,7 +183,7 @@ public class OutStorageController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo")int billNo
+			@RequestBody StoreInOut inOut
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -190,7 +191,15 @@ public class OutStorageController {
 		result.put("msg", "提交失败");
 		
 		try{
+			//先保存
+			List<StoreInOutDetail> detailList = inOut.getDetailList();
+			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			int billNo = outStorageService.save(inOut, detailList, billOper, storeName);
+			
+			//再提交
 			outStorageService.submit(billNo);
+			
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

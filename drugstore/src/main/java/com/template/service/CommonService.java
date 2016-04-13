@@ -127,10 +127,10 @@ public interface CommonService {
 	  * @param  inOut-药库出入库主表数据
 	  * 		detail-药库出入库详细表数据
 	  * 		billOper-操作员
-	  * @return void
+	  * @return 票据号
 	  * @throws
 	  */
-	public void saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName)  throws Exception;
+	public int saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName)  throws Exception;
 	
 	/**
 	  * 提交出入库草稿

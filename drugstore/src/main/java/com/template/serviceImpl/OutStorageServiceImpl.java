@@ -36,8 +36,8 @@ public class OutStorageServiceImpl implements OutStorageService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
-		commonService.saveStoreInOut(inOut, detailList, billOper, storeName);
+	public int save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
+		return commonService.saveStoreInOut(inOut, detailList, billOper, storeName);
 		
 	}
 

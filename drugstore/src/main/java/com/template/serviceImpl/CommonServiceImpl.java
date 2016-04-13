@@ -311,7 +311,7 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
+	public int saveStoreInOut(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception {
 		if( null == inOut ){
 			throw new RuntimeException("出入库信息为空");
 		}
@@ -380,6 +380,7 @@ public class CommonServiceImpl implements CommonService {
 			
 		}
 		
+		return billNo;
 	}
 	
 	@Override
