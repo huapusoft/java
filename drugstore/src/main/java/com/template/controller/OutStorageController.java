@@ -138,7 +138,7 @@ public class OutStorageController {
 	  * @Description: 保存出库草稿
 	  * @author army.liu
 	  * @param  
-	  * @return
+	  * @return 
 	  * @throws
 	  */
 	@RequestMapping(value = "/save",method=RequestMethod.POST)
@@ -200,6 +200,7 @@ public class OutStorageController {
 			//再提交
 			outStorageService.submit(billNo);
 			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
