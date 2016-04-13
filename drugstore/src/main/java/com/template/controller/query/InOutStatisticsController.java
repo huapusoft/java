@@ -90,7 +90,7 @@ public class InOutStatisticsController {
 	* @parameter  drugId-药品id
 	* @return
 	 */
-	@RequestMapping(value = "/getBatchNoFromStore",method=RequestMethod.POST)
+	@RequestMapping(value = "/getBatchNoFromInOutDetail",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getBatchNoFromInOutDetail(HttpServletRequest request, 
 			HttpServletResponse response,

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.template.domain.DicDepartment;
 import com.template.service.DicDepartmentService;
-import com.template.service.DicProviderService;
 
 /**
  * 系统设置-领药部门设置
@@ -27,9 +26,6 @@ import com.template.service.DicProviderService;
 @Controller
 @RequestMapping("/departmentSetting")
 public class DepartmentSettingController {
-	
-	@Resource  
-	private DicProviderService dicProviderService;
 	
 	@Resource  
 	private DicDepartmentService dicDepartmentService;

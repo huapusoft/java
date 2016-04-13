@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDrug;
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 import com.template.service.CommonService;
+import com.template.service.DicDrugService;
 import com.template.service.StoreCheckService;
 import com.template.service.StoreService;
 import com.template.util.CommonUtil;
@@ -46,6 +48,9 @@ public class StoreCheckController {
 	
 	@Resource  
 	private CommonService commonService;
+	
+	@Resource  
+	private DicDrugService dicDrugService;
 
 	/**
 	 * 盘点新建页面
@@ -62,15 +67,15 @@ public class StoreCheckController {
 	}
 	
 	/**
-	 * 获取药品下拉框数据，从库存表中获取
+	 *  获取已启用的药品信息--用于名称下拉
 	* @author  fengql 
-	* @date 2016年4月12日 上午10:43:44 
-	* @parameter  itemName-药品名称
-	* @return
+	* @date 2016年4月13日 下午2:29:46 
+	* @parameter  itemName-药品名称简写
+	* @return	List<DicDrug>
 	 */
-	@RequestMapping(value = "/getDrugListFromStore",method=RequestMethod.POST)
+	@RequestMapping(value = "/getEnabledDrugList",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getDrugListFromStore(HttpServletRequest request, 
+	public Map<String, Object> getEnabledDrugList(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
 			@RequestParam("itemName") String itemName
@@ -81,8 +86,8 @@ public class StoreCheckController {
 		result.put("msg", "获取失败");
 		
 		try{
-			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			List<DrugAndStore> list = commonService.getDrugListForOutStorage(storeName, itemName);
+			
+			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
 			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");
@@ -91,7 +96,7 @@ public class StoreCheckController {
 			e.printStackTrace();
 			result.put("msg", "获取失败："+e.getMessage());		
 		}
-		
+		 
 		return result;
 	}
 	
@@ -126,7 +131,7 @@ public class StoreCheckController {
 	}
 	
 	/**
-	 * 获取盘点内容
+	 * 根据盘点号 打开盘点信息
 	* @author  fengql 
 	* @date 2016年4月7日 下午4:55:20 
 	* @parameter  checkNo-盘点号
