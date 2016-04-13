@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.template.domain.DicDrug;
 import com.template.domain.DicProvider;
+import com.template.domain.DrugAndStore;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.service.PurchasePlanService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 
 /**
@@ -47,6 +49,9 @@ public class PurchasePlanController {
 	
 	@Resource  
 	private DicDrugService dicDrugService;
+	
+	@Resource  
+	private StoreService storeService;
 
 	/**
 	 * 采购计划登记页面
@@ -60,6 +65,36 @@ public class PurchasePlanController {
 		ModelAndView mv = new ModelAndView("dailyWork/purchasePlan/new");
 		return mv;
 		
+	}
+	
+	/**
+	 * 获取缺货的药品列表
+	* @author  fengql 
+	* @date 2016年4月13日 下午1:56:40 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/getDrugsForStockout",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getDrugsForStockout(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("stockOutFlag", "Y");
+			List<DrugAndStore> list = storeService.getByConditionsForQuery(params);
+			result.put("data", list);
+			result.put("code", "200");		
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());	
+		}	 
+		return result;
 	}
 
 	/**

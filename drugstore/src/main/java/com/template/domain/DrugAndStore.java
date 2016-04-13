@@ -19,7 +19,7 @@ public class DrugAndStore {
 	private String unit;//单位
 	private double price;//单价-当前零售价
 	
-	private int id;//药品id
+	private int drugId;//药品id
 	private String batchNo;//批号
 	private double inPrice;//进价
 	private Date validDate;//有效期
@@ -42,6 +42,12 @@ public class DrugAndStore {
 	private int validDateWarnDays;//有效期报警天数
 	private int customOrderCode;//自定义顺序码
 	
+	public int getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
 	public String getStoreClass() {
 		return storeClass;
 	}
@@ -125,12 +131,6 @@ public class DrugAndStore {
 	}
 	public void setAmount(double amount) {
 		this.amount = amount;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getBatchNo() {
 		return batchNo;
