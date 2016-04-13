@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DicDrug;
+import com.template.domain.DicProvider;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
 import com.template.service.DicDrugService;
@@ -82,7 +83,9 @@ public class InStorageController {
 		result.put("msg", "获取失败");
 		
 		try{
-			dicProviderService.getEnabledDicProviderList(providerName);
+			List<DicProvider> list = dicProviderService.getEnabledDicProviderList(providerName);
+			
+			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -117,6 +120,7 @@ public class InStorageController {
 		
 		try{
 			List<DicDrug> list = dicDrugService.getEnabledDrugList(itemName);
+			
 			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");

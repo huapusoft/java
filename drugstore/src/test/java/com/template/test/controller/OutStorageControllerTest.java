@@ -69,8 +69,9 @@ public class OutStorageControllerTest {
 		OutStorageService outStorageService = (OutStorageService) context.getBean("outStorageService");
 		
 		StoreInOut inOut = new StoreInOut();
+		inOut.setBillNo(2016041027);
 		inOut.setBillType("出库");
-		inOut.setTypeData("手术室");
+		inOut.setTypeData("门诊");
 		inOut.setSum1(50.1);
 		inOut.setSum2(75.2);
 		
@@ -97,7 +98,8 @@ public class OutStorageControllerTest {
 		detail.setValidDate(new Date());
 		detailList.add(detail);
 		
-		outStorageService.save(inOut, detailList, "张三", "一号仓库");
+		int save = outStorageService.save(inOut, detailList, "张三", "一号仓库");
+		System.out.println(save);
 	}
 	
 	/**
