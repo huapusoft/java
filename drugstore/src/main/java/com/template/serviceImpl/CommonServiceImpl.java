@@ -14,12 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.template.dao.DicDrugStoreMapper;
 import com.template.dao.DicEmployeeMapper;
+import com.template.dao.DicHzylContrastMapper;
+import com.template.dao.DicMiContrastMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
 import com.template.domain.DicDrugStore;
+import com.template.domain.DicHzylContrast;
+import com.template.domain.DicMiContrast;
 import com.template.domain.DictEmployee;
 import com.template.domain.DrugAndInOutStatistics;
 import com.template.domain.DrugAndReports;
@@ -65,6 +69,12 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private DicEmployeeMapper dicEmployeeMapper;
+	
+	@Resource
+	private DicHzylContrastMapper dicHzylContrastMapper;
+	
+	@Resource
+	private DicMiContrastMapper dicMiContrastMapper;
 	
 	@Resource
 	private StoreService storeService;
@@ -561,6 +571,18 @@ public class CommonServiceImpl implements CommonService {
 	public List<DrugAndInOutStatistics> getInOutStatisticsDetail(
 			Map<String, Object> params) throws Exception {
 		return storeInOutDetailMapper.getInOutStatisticsListData(params);
+	}
+
+	@Override
+	public List<DicHzylContrast> getDicHzylContrast(Map<String, Object> params)
+			throws Exception {
+		return dicHzylContrastMapper.getByConditions(params);
+	}
+
+	@Override
+	public List<DicMiContrast> getDicMiContrast(Map<String, Object> params)
+			throws Exception {
+		return dicMiContrastMapper.getByConditions(params);
 	}
 
 }

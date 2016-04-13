@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.template.domain.DicDrugStore;
+import com.template.domain.DicHzylContrast;
+import com.template.domain.DicMiContrast;
 import com.template.domain.DrugAndInOutStatistics;
 import com.template.domain.DrugAndReports;
 import com.template.domain.DrugAndStore;
@@ -255,5 +257,25 @@ public interface CommonService {
 	* @return
 	 */
 	public List<DrugAndInOutStatistics> getInOutStatisticsDetail(Map<String, Object> params) throws Exception;
+
+	/**
+	 * 获取合作医疗编码的列表数据
+	 * @Description: 根据参数，查询合作医疗编码表，获取合作医疗编码数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DicHzylContrast> getDicHzylContrast(Map<String, Object> params) throws Exception;
+
+	/**
+	 * 获取医保编码的列表数据
+	 * @Description: 根据参数，查询医保编码表，获取医保编码数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DicMiContrast> getDicMiContrast(Map<String, Object> params) throws Exception;
 	
 }

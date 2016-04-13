@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DicDrug;
+import com.template.domain.DicHzylContrast;
+import com.template.domain.DicMiContrast;
 import com.template.domain.DicStoreClass;
+import com.template.service.CommonService;
 import com.template.service.DicDrugService;
 import com.template.service.DicStoreClassService;
 
@@ -38,6 +41,9 @@ public class DrugSettingController {
 	
 	@Resource  
 	private DicStoreClassService dicStoreClassService;
+	
+	@Resource  
+	private CommonService commonService;
 	
 	/**
 	 * 查询页面
@@ -144,6 +150,76 @@ public class DrugSettingController {
 		ModelAndView mv = new ModelAndView("systemSetting/drugSetting/new");
 		return mv;
 		
+	}
+	
+	/**
+	 * 获取合疗编码下拉框数据
+	 * @Description: 从合疗编码信息表中，读取所有数据
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getAllHzylCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getAllHzylCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			List<DicHzylContrast> list = commonService.getDicHzylContrast(params);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 获取医保编码下拉框数据
+	 * @Description: 从医保编码信息表中，读取所有数据
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/getAllYbCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getAllYbCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			List<DicMiContrast> list = commonService.getDicMiContrast(params);
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
 	}
 	
 	/**
