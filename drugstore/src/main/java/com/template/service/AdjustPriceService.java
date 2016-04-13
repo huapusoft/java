@@ -21,7 +21,7 @@ public interface AdjustPriceService {
 	* @parameter  inOut-药库出入库主表数据，detailList-药库出入库详细表数据，billOper-操作员，storeName-库房名称
 	* @return void
 	 */
-	public void save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception;
+	public int save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName) throws Exception;
 
 	/**
 	 * 提交

@@ -58,7 +58,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
+	public int save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
 		
 		if( null == checkData ){
 			throw new RuntimeException("盘点信息为空");
@@ -113,14 +113,15 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 			}
 		}
 		
+		return checkNo;
 	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
+	public int submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
 		
 		//先将页面中的内容进行保存
-		this.save(checkData, detailList, checkOper, storeName);
+		int checkNo = this.save(checkData, detailList, checkOper, storeName);
 		
 		//更新盘点主表-封存时间、人
 		checkData.setSealTime(new Date());
@@ -147,6 +148,8 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 
 			storeMapper.updateCheck(store);		
 		}
+		
+		return checkNo;
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public interface StoreCheckService {
 	* @parameter   checkData-盘点主表数据，detailList-盘点明细表数据，checkOper-操作员，storeName-库房名称
 	* @return void
 	 */
-	public void save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
+	public int save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
 
 	/**
 	 * 封存盘点数据
@@ -39,7 +39,7 @@ public interface StoreCheckService {
 	* @parameter   checkData-盘点主表数据，detailList-盘点明细表数据，checkOper-操作员，storeName-库房名称
 	* @return
 	 */
-	public void submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
+	public int submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception;
 
 	/**
 	 * 作废盘点单

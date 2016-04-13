@@ -177,7 +177,9 @@ public class StoreCheckController {
 			
 			String checkOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			storeCheckService.save(checkData, detailList, checkOper, storeName);
+			int checkNo = storeCheckService.save(checkData, detailList, checkOper, storeName);
+			
+			result.put("data", checkNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -240,7 +242,9 @@ public class StoreCheckController {
 			
 			String checkOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			storeCheckService.submit(checkData, detailList, checkOper, storeName);
+			int checkNo = storeCheckService.submit(checkData, detailList, checkOper, storeName);
+			
+			result.put("data", checkNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

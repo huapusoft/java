@@ -156,10 +156,11 @@ public class SalesReturnController {
 		try{
 			//详细信息
 			List<StoreInOutDetail> detailList = inOut.getDetailList();
-			
 			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			salesReturnService.save(inOut, detailList, billOper, storeName);
+			int billNo = salesReturnService.save(inOut, detailList, billOper, storeName);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -183,7 +184,7 @@ public class SalesReturnController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo")int billNo
+			@RequestBody StoreInOut inOut
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -191,7 +192,14 @@ public class SalesReturnController {
 		result.put("msg", "提交失败");
 		
 		try{
+			List<StoreInOutDetail> detailList = inOut.getDetailList();
+			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			int billNo = salesReturnService.save(inOut, detailList, billOper, storeName);
+			
 			salesReturnService.submit(billNo);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

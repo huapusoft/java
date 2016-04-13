@@ -187,7 +187,9 @@ public class PurchasePlanController {
 			
 			String oper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			purchasePlanService.save(purchaseData, detailList, oper, storeName);
+			int purchaseNo = purchasePlanService.save(purchaseData, detailList, oper, storeName);
+			
+			result.put("data", purchaseNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -210,7 +212,7 @@ public class PurchasePlanController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("purchaseNo")int purchaseNo
+			@RequestBody StorePurchasePlan purchaseData
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -218,7 +220,15 @@ public class PurchasePlanController {
 		result.put("msg", "提交失败");
 		
 		try{
+			//详细信息
+			List<StorePurchasePlanDetail> detailList = purchaseData.getDetailList();
+			String oper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			int purchaseNo = purchasePlanService.save(purchaseData, detailList, oper, storeName);
+			
 			purchasePlanService.submit(purchaseNo);
+			
+			result.put("data", purchaseNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

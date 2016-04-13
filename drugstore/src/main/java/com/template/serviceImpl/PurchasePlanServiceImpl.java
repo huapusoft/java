@@ -35,7 +35,7 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void save(StorePurchasePlan purchaseData, List<StorePurchasePlanDetail> detailList, String oper, String storeName) throws Exception {
+	public int save(StorePurchasePlan purchaseData, List<StorePurchasePlanDetail> detailList, String oper, String storeName) throws Exception {
 		
 		if( null == purchaseData ){
 			throw new RuntimeException("采购计划信息为空");
@@ -100,6 +100,8 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 				storePurchasePlanDetailMapper.insert(detail);			
 			}
 		}
+		
+		return purchaseNo;
 	}
 
 	@Override

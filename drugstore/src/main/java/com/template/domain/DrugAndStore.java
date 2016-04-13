@@ -36,7 +36,7 @@ public class DrugAndStore {
 	private String storeIds;
 	private String expenseClass;
 	private String storeClass;
-	private String drugForm;
+	private String drugFrom;
 	private String drugFunction;
 	private int amountLowLimit;//库存下限
 	private int validDateWarnDays;//有效期报警天数
@@ -60,11 +60,11 @@ public class DrugAndStore {
 	public void setExpenseClass(String expenseClass) {
 		this.expenseClass = expenseClass;
 	}
-	public String getDrugForm() {
-		return drugForm;
+	public String getDrugFrom() {
+		return drugFrom;
 	}
-	public void setDrugForm(String drugForm) {
-		this.drugForm = drugForm;
+	public void setDrugFrom(String drugFrom) {
+		this.drugFrom = drugFrom;
 	}
 	public String getDrugFunction() {
 		return drugFunction;

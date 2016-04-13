@@ -123,7 +123,9 @@ public class BreakageController {
 			
 			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			breakageService.save(inOut, detailList, billOper, storeName);
+			int billNo = breakageService.save(inOut, detailList, billOper, storeName);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -147,7 +149,7 @@ public class BreakageController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo")int billNo
+			@RequestBody StoreInOut inOut
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -155,7 +157,16 @@ public class BreakageController {
 		result.put("msg", "提交失败");
 		
 		try{
+			//详细信息
+			List<StoreInOutDetail> detailList = inOut.getDetailList();
+			
+			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			int billNo = breakageService.save(inOut, detailList, billOper, storeName);
+			
 			breakageService.submit(billNo);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

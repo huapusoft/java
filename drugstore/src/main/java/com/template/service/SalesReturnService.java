@@ -23,7 +23,7 @@ public interface SalesReturnService {
 	  * @return void
 	  * @throws
 	  */
-	public void save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName)  throws Exception;
+	public int save(StoreInOut inOut, List<StoreInOutDetail> detailList, String billOper, String storeName)  throws Exception;
 	
 	/**
 	  * 提交草稿

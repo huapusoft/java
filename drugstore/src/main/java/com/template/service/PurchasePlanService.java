@@ -19,7 +19,7 @@ public interface PurchasePlanService {
 	* @parameter  purchaseData-采购计划主表数据，detailList-采购计划明细表数据，oper-操作员，storeName-库房名称
 	* @return
 	 */
-	public void save(StorePurchasePlan purchaseData, List<StorePurchasePlanDetail> detailList, String oper, String storeName) throws Exception;
+	public int save(StorePurchasePlan purchaseData, List<StorePurchasePlanDetail> detailList, String oper, String storeName) throws Exception;
 
 	/**
 	 * 提交采购计划

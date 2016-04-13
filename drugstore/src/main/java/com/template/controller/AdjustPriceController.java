@@ -110,7 +110,9 @@ public class AdjustPriceController {
 			
 			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			adjustPriceService.save(inOut, detailList, billOper, storeName);
+			int billNo = adjustPriceService.save(inOut, detailList, billOper, storeName);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
@@ -126,13 +128,13 @@ public class AdjustPriceController {
 	 * 提交调价草稿
 	* @author  fengql 
 	* @date 2016年4月7日 下午3:14:49 
-	* @parameter  billNo-票据号
+	* @parameter  
 	* @return
 	 */
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("billNo") int billNo
+			@RequestBody StoreInOut inOut
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -140,7 +142,16 @@ public class AdjustPriceController {
 		result.put("msg", "提交失败");
 		
 		try{
+			//详细信息
+			List<StoreInOutDetail> detailList = inOut.getDetailList();
+			
+			String billOper = CommonUtil.getUserNameFromSession(request);//操作员
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			int billNo = adjustPriceService.save(inOut, detailList, billOper, storeName);
+			
 			adjustPriceService.submit(billNo);
+			
+			result.put("data", billNo);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			
