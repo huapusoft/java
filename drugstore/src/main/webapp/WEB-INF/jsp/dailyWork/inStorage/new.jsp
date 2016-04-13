@@ -37,10 +37,44 @@
 					//alert(param);
 					$(this).datagrid('beginEdit', param.index);
                     var ed = $(this).datagrid('getEditor', param);
-                    //alert(param.field);
                     if (ed){
                         if ($(ed.target).hasClass('textbox-f')){
                             $(ed.target).textbox('textbox').focus();//获得焦点
+                            $(ed.target).textbox('textbox').bind('blur',function(){
+                            	var amount = 0;
+                            	var price1 = 0;
+                            	var eds = $('#mytable').datagrid('getRows');
+                            	if(param.field == "amount")//列名等于名称
+                                {
+                            		amount = $(this).val().trim();
+                            		price1 = eds[param.index]['price1'];
+                            		//console.info(amount*price1);
+                            		$('#mytable').datagrid('updateRow',{
+       									index: param.index,
+       									row: {
+       										amount:amount,
+       										total1: (price1*amount).toFixed(2)
+       									}
+       								});
+                                }
+                            	if(param.field == "price1")
+                            	{
+                            		price1 = $(this).val().trim();
+                            		amount = eds[param.index]['amount'];
+                            		$('#mytable').datagrid('updateRow',{
+       									index: param.index,
+       									row: {
+       										price1:price1,
+       										total1: (price1*amount).toFixed(2)
+       									}
+       								});
+                            	}
+                            	/*
+                            	var td=$('.datagrid-body td[field="total1"]')[param.index];
+                        		var div = $(td).find('div')[0];
+                        		$(div).text((price1*amount).toFixed(2));*/
+                        		
+                            });
                         } else {
                            $(ed.target).focus();
                            if(param.field == "itemName")//列名等于名称
@@ -233,9 +267,24 @@
                         });
                         opts.editIndex = index;
                         opts.oldOnClickCell.call(this, index, field);
+                        
                     }
+                    
+                    $(document).click(function(event) {
+            			//console.info("event:"+event.target.getAttribute("field"));
+            			if (event.target.getAttribute("field") != "itemName") 
+            			{
+            				rowNo = 0;
+            				$("#selectItem").hide();
+            			}
+            		});
+                    $("#selectItem").click(function(e) {
+            			e.stopPropagation(); //  阻止冒泡
+            		});
                 });
+                
             }
+			
 		});
 		
 		function keyCheck(){
@@ -413,6 +462,7 @@
 		    	}
 				
 		    	selectedData.splice(0,selectedData.length);//清空
+		    	rowNo = 0;
 		    	clickIndex.splice(0,clickIndex.length);
 		    	$("#selectItem").hide();
 		    	/*
@@ -441,6 +491,35 @@
 		
 		$(function(){
 			$('#mytable').datagrid().datagrid('enableCellEditing');
+			
+			$.ajax({
+					type : "post",
+    				url : "/inStorage/getEnabledDicProviderList",
+    				data : {
+    					providerName : ''
+    				},
+    				dataType : "json",
+    				success: function(data){
+    					//alert(JSON.stringify(data.data));
+    					$('#typeData').combobox({
+    						data : data.data,
+    						method:'post',
+    						valueField:'id',
+    						textField:'providerName'
+    						});
+    				}
+				});
+				/*
+			//var url = "${pageContext.request.contextPath}/inStorage/getEnabledDicProviderList?providerName= ";
+			$.getJSON("/inStorage/getEnabledDicProviderList?providerName= ", function(json) {
+				alert("aa");
+			$('#typeData').combobox({
+			data : json.data,
+			method:'post',
+			valueField:'id',
+			textField:'providerName'
+			});
+			}); */
 		})
 		</script>
 <style type="text/css">
@@ -488,7 +567,8 @@
 	<body onkeydown="keyCheck()">
 	<div style="margin:20px 0;">
 	</div>
-	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-searchbox" data-options="prompt:'Please Input Value'" style="width:200px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-combobox" style="width:230px" data-options="
+	"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" precision="2" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">零售价总金额：</font><input id="sum2" class="easyui-numberbox" precision="2" style="width:200px;;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -496,6 +576,7 @@
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px">提交</a>
+
 	<div id="tb" style="padding:10px 0px;">
 	<table class="easyui-datagrid" style="width:100%;height:600px;" id="mytable"
 			data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
@@ -526,7 +607,7 @@
 				<td ></td>
 				<td>eeee</td>
 				<td ></td>
-				<td ></td>
+				<td >jjjjj</td>
 				<td>kkk</td>
 				<td>lll</td>
 				<td>mmm</td>
