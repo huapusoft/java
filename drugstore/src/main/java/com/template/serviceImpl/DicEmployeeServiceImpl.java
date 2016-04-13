@@ -66,4 +66,17 @@ public class DicEmployeeServiceImpl implements DicEmployeeService {
 		
 	}
 
+	@Override
+	public void update(DictEmployee bean) {
+		try {
+			dicEmployeeMapper.update(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+		
+		
+	}
+
 }

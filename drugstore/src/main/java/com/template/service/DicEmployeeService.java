@@ -30,4 +30,13 @@ public interface DicEmployeeService {
 	 */
 	public void test(String name1, String name2);
 
+	/**
+	  * 更新用户
+	  * 
+	  * @Description: 更新用户
+	  * @author army.liu
+	  * @date 2016年4月13日 下午2:21:16
+	 */
+	public void update(DictEmployee bean);
+
 }

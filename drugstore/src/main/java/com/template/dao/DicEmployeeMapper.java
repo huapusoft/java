@@ -15,4 +15,6 @@ public interface DicEmployeeMapper {
 	public List<DictEmployee> getByConditions(Map<String, Object> params)  throws Exception;
 
 	public void add(DictEmployee bean)  throws Exception;
+
+	public void update(DictEmployee bean) throws Exception;
 }

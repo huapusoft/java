@@ -25,9 +25,9 @@
 	
 	<insert id="insert" parameterType="com.template.domain.DicStoreClass">
 		insert into dic_storeClass
-		( id,  name )
+		( name )
 		values
-		( #{id}, #{name} )
+		( #{name} )
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicStoreClass">
