@@ -15,6 +15,8 @@ public interface DicDepartmentMapper {
 	public DicDepartment getById(int departmentId) throws Exception ;
 
 	public List<DicDepartment> getByConditions(Map<String, Object> params)  throws Exception;
+	
+	public DicDepartment getByParentCode(String parentCode)  throws Exception;
 
 	public void insert(DicDepartment bean)  throws Exception;
 	

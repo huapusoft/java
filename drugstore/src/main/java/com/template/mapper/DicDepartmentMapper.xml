@@ -6,7 +6,8 @@
 		<id column="departmentId" property="departmentId"  />
 		<result column="departmentCode" property="departmentCode" />
 		<result column="departmentName" property="departmentName" />
-		<result column="parentId" property="parentId" />
+		<result column="parentCode" property="parentCode" />
+		<result column="parentName" property="parentName" />
 	</resultMap>
 
 	<select id="getById" resultMap="BaseResultMap" parameterType="int">
@@ -16,8 +17,8 @@
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
-		select *
-		from dic_department
+		select a.*,(select departmentName from dic_department b where b.departmentCode=a.parentCode) parentName
+		from dic_department a
 		<where>
 			<if test="departmentCode != null and departmentCode != ''">
 				departmentCode = #{departmentCode} 
@@ -25,17 +26,24 @@
 			<if test="departmentName != null and departmentName != ''">
 				and departmentName like CONCAT('%',#{departmentName},'%')
 			</if>
-			<if test="parentId != null and parentId != ''">
-				parentId = #{parentId} 
+			<if test="parentCode != null and parentCode != ''">
+				parentCode = #{parentCode} 
 			</if>
 		</where>
 	</select>
 	
+	<select id="getByParentCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select top(1) a.*
+		from dic_department a
+		where parentCode = #{parentCode}
+		order by departmentCode desc
+	</select>
+	
 	<insert id="insert" parameterType="com.template.domain.DicDepartment">
 		insert into dic_department
-		( departmentId, departmentCode, departmentName, parentId )
+		( departmentCode, departmentName, parentCode )
 		values
-		( #{departmentId}, #{departmentCode}, #{departmentName}, #{parentId} )
+		( #{departmentCode}, #{departmentName}, #{parentCode} )
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicDepartment">
@@ -47,8 +55,8 @@
 			<if test="departmentName != null and departmentName != ''">
 				departmentName = #{departmentName},
 			</if>
-			<if test="parentId != null and parentId != ''">
-				parentId = #{parentId},
+			<if test="parentCode != null and parentCode != ''">
+				parentCode = #{parentCode},
 			</if>
 		</set>
 		where departmentId = #{departmentId}

@@ -30,11 +30,18 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 	public void save(DicDepartment bean) throws Exception {
 		int departmentId = bean.getDepartmentId();
 		if( 0 == departmentId ){
+			//获取当前部门code
+			String departmentCode="";
+			DicDepartment dicDepartment=dicDepartmentMapper.getByParentCode(bean.getParentCode());
+			if(null == dicDepartment){
+				departmentCode=bean.getParentCode()+"10";
+			}else{
+				departmentCode = String.valueOf( Integer.parseInt( dicDepartment.getDepartmentCode()) + 1 );
+			}
+			bean.setDepartmentCode(departmentCode);
 			dicDepartmentMapper.insert(bean);
-			
 		}else{
 			dicDepartmentMapper.update(bean);
-			
 		}
 		
 	}
@@ -57,6 +64,11 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 	public List<DicDepartment> getAllDicDepartmentList() throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		return dicDepartmentMapper.getByConditions(params);
+	}
+
+	@Override
+	public DicDepartment getByDepartmentId(int departmentId) throws Exception {
+		return dicDepartmentMapper.getById(departmentId);
 	}
 
 }

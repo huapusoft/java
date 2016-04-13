@@ -10,7 +10,8 @@ public class DicDepartment {
 	private int departmentId;
 	private String departmentCode;
 	private String departmentName;
-	private int parentId;
+	private String parentCode;
+	private String parentName;
 	
 	public int getDepartmentId() {
 		return departmentId;
@@ -30,11 +31,17 @@ public class DicDepartment {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	public int getParentId() {
-		return parentId;
+	public String getParentCode() {
+		return parentCode;
 	}
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
+	}
+	public String getParentName() {
+		return parentName;
+	}
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 	
 }

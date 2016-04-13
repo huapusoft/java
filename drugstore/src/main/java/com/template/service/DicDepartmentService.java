@@ -52,5 +52,14 @@ public interface DicDepartmentService {
 	 */
 	public List<DicDepartment> getAllDicDepartmentList() throws Exception;
 	
+	/**
+	 * 获取领药部门详细信息
+	* @author  fengql 
+	* @date 2016年4月13日 上午11:19:17 
+	* @parameter  
+	* @return
+	 */
+	public DicDepartment getByDepartmentId(int departmentId) throws Exception;
+	
 	
 }
