@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
+import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
@@ -173,6 +174,11 @@ public class StoreServiceImpl implements StoreService {
 			}
 			
 		}
+	}
+
+	@Override
+	public List<DrugAndStore> getByConditionsForQuery(Map<String, Object> params) throws Exception {
+		return storeMapper.getDrugAndStoreDataList(params);
 	}
 
 }

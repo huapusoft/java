@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.template.domain.DrugAndCheckDetail;
-import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 
@@ -14,15 +13,6 @@ import com.template.domain.StoreCheckDetail;
 * @date 2016年4月7日 下午4:15:42
  */
 public interface StoreCheckService {
-	
-	/**
-	 * 新建盘点获取库存表中的数据
-	* @author  fengql 
-	* @date 2016年4月8日 上午8:48:25 
-	* @parameter  
-	* @return
-	 */
-	public List<DrugAndStore> getStoreDrugList(Map<String, Object> params) throws Exception;
 	
 	/**
 	 * 打开盘点单

@@ -8,10 +8,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.template.dao.DicDrugFunctionMapper;
+import com.template.dao.DicDrugMapper;
 import com.template.dao.DicDrugStoreMapper;
 import com.template.dao.DicEmployeeMapper;
 import com.template.dao.DicHzylContrastMapper;
@@ -21,6 +24,8 @@ import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
+import com.template.domain.DicDrug;
+import com.template.domain.DicDrugFunction;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DicHzylContrast;
 import com.template.domain.DicMiContrast;
@@ -75,6 +80,12 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private DicMiContrastMapper dicMiContrastMapper;
+	
+	@Resource
+	private DicDrugMapper dicDrugMapper;
+	
+	@Resource
+	private DicDrugFunctionMapper dicDrugFunctionMapper;
 	
 	@Resource
 	private StoreService storeService;
@@ -583,6 +594,52 @@ public class CommonServiceImpl implements CommonService {
 	public List<DicMiContrast> getDicMiContrast(Map<String, Object> params)
 			throws Exception {
 		return dicMiContrastMapper.getByConditions(params);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public void saveStoreDrugSetting(DrugAndStore bean) throws Exception {
+		//保存字段：库存分类，功能代码，自定义排序号，位置1，库存下限报警，有效期报警
+		String storeIds = bean.getStoreIds();
+		if( StringUtils.isNotEmpty(storeIds) ){
+			String[] idArr = storeIds.split(";");
+			for(int i=0; i<idArr.length; i++){
+				int storeId = Integer.parseInt(idArr[i]);
+				int customOrderCode = bean.getCustomOrderCode();
+				String place1 = bean.getPlace1();
+				int validDateWarnDays = bean.getValidDateWarnDays();
+				int amountLowLimit = bean.getAmountLowLimit();
+				String storeClass = bean.getStoreClass();
+				String drugFunction = bean.getDrugFunction();
+				
+				//更新库存表
+				Store store = storeMapper.getById(storeId);
+				if( null != store ){
+					store.setCustomOrderCode(customOrderCode);
+					store.setPlace1(place1);
+					store.setValidDateWarnDays(validDateWarnDays);
+					store.setAmountLowLimit(amountLowLimit);
+					storeMapper.update(store);
+					
+					//更新药品基础信息表
+					int drugId = store.getDrugId();
+					DicDrug drug = dicDrugMapper.getById(drugId);
+					if( null != drug){
+						drug.setStoreClass(storeClass);
+						drug.setDrugFunction(drugFunction);
+						dicDrugMapper.update(drug);
+						
+					}
+				}
+				
+			}
+		}
+	}
+
+	@Override
+	public List<DicDrugFunction> getDrugFunctionList(Map<String, Object> params)
+			throws Exception {
+		return dicDrugFunctionMapper.getByConditions(params);
 	}
 
 }

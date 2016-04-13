@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.template.domain.Store;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DrugAndStore;
 import com.template.service.CommonService;
-import com.template.service.StoreCheckService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 
 /**
@@ -33,7 +34,7 @@ import com.template.util.CommonUtil;
 public class StoreQueryController {
 	
 	@Resource  
-	private StoreCheckService storeCheckService;
+	private StoreService storeService;
 	
 	@Resource  
 	private CommonService commonService;
@@ -146,7 +147,7 @@ public class StoreQueryController {
 			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
 			params.put("storeName", storeName);
 			
-			List<DrugAndStore> list = storeCheckService.getStoreDrugList(params);
+			List<DrugAndStore> list = storeService.getByConditionsForQuery(params);
 			result.put("data", list);
 			result.put("code", "200");
 			result.put("msg", "成功");

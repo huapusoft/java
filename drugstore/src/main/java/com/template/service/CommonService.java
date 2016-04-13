@@ -3,6 +3,7 @@ package com.template.service;
 import java.util.List;
 import java.util.Map;
 
+import com.template.domain.DicDrugFunction;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DicHzylContrast;
 import com.template.domain.DicMiContrast;
@@ -277,5 +278,25 @@ public interface CommonService {
 	 * @throws
 	 */
 	public List<DicMiContrast> getDicMiContrast(Map<String, Object> params) throws Exception;
+
+	/**
+	 * 保存库存药品配置信息
+	 * @Description: 保存库存药品配置信息
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public void saveStoreDrugSetting(DrugAndStore bean) throws Exception;
+
+	/**
+	 * 获取功能代码的列表数据
+	 * @Description: 根据参数，查询功能代码表，获取功能代码数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DicDrugFunction> getDrugFunctionList(Map<String, Object> params) throws Exception;
 	
 }

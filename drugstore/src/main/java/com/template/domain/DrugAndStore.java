@@ -32,7 +32,64 @@ public class DrugAndStore {
 	private double realAmount;//实际数量
 	private double realPrice;//实际金额
 	
+	//以下为药品设置时需要
+	private String storeIds;
+	private String expenseClass;
+	private String storeClass;
+	private String drugForm;
+	private String drugFunction;
+	private int amountLowLimit;//库存下限
+	private int validDateWarnDays;//有效期报警天数
+	private int customOrderCode;//自定义顺序码
 	
+	public String getStoreClass() {
+		return storeClass;
+	}
+	public void setStoreClass(String storeClass) {
+		this.storeClass = storeClass;
+	}
+	public String getStoreIds() {
+		return storeIds;
+	}
+	public void setStoreIds(String storeIds) {
+		this.storeIds = storeIds;
+	}
+	public String getExpenseClass() {
+		return expenseClass;
+	}
+	public void setExpenseClass(String expenseClass) {
+		this.expenseClass = expenseClass;
+	}
+	public String getDrugForm() {
+		return drugForm;
+	}
+	public void setDrugForm(String drugForm) {
+		this.drugForm = drugForm;
+	}
+	public String getDrugFunction() {
+		return drugFunction;
+	}
+	public void setDrugFunction(String drugFunction) {
+		this.drugFunction = drugFunction;
+	}
+	public int getAmountLowLimit() {
+		return amountLowLimit;
+	}
+	public void setAmountLowLimit(int amountLowLimit) {
+		this.amountLowLimit = amountLowLimit;
+	}
+	public int getValidDateWarnDays() {
+		return validDateWarnDays;
+	}
+	public void setValidDateWarnDays(int validDateWarnDays) {
+		this.validDateWarnDays = validDateWarnDays;
+	}
+	public int getCustomOrderCode() {
+		return customOrderCode;
+	}
+	public void setCustomOrderCode(int customOrderCode) {
+		this.customOrderCode = customOrderCode;
+	}
 	public String getPlace1() {
 		return place1;
 	}

@@ -3,6 +3,7 @@ package com.template.service;
 import java.util.List;
 import java.util.Map;
 
+import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 
 /**
@@ -29,5 +30,15 @@ public interface StoreService {
 	 * @throws
 	 */
 	public void verifySuccess(int billNo, String currStoreName) throws Exception;
+
+	/**
+	 * 获取库存药品设置列表数据
+	 * @Description: 获取库存药品设置列表数据
+	 * @author army.liu
+	 * @param  
+	 * @return 
+	 * @throws
+	 */
+	public List<DrugAndStore> getByConditionsForQuery(Map<String, Object> params)throws Exception;
 	
 }

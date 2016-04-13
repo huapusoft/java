@@ -26,6 +26,7 @@ import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 
 /**
@@ -36,6 +37,9 @@ import com.template.util.CommonUtil;
 @Controller
 @RequestMapping("/storeCheck")
 public class StoreCheckController {
+	
+	@Resource  
+	private StoreService storeService;
 	
 	@Resource  
 	private StoreCheckService storeCheckService;
@@ -108,7 +112,7 @@ public class StoreCheckController {
 		
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
-			List<DrugAndStore>  drugAndStore= storeCheckService.getStoreDrugList(params);
+			List<DrugAndStore>  drugAndStore= storeService.getByConditionsForQuery(params);
 			result.put("code", "200");
 			result.put("data", drugAndStore);
 			result.put("msg", "成功");

@@ -11,7 +11,6 @@ import com.template.dao.StoreCheckDetailMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreMapper;
 import com.template.domain.DrugAndCheckDetail;
-import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
@@ -37,11 +36,6 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	@Resource
 	private CommonService commonService;
 
-	@Override
-	public List<DrugAndStore> getStoreDrugList(Map<String, Object> params) throws Exception {
-		return storeMapper.getDrugAndStoreDataList(params);
-	}
-	
 	@Override
 	public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception {
 		

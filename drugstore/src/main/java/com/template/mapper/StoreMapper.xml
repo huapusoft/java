@@ -159,17 +159,28 @@
 		<result column="storePrice" property="storePrice" />
 		<result column="realAmount" property="realAmount" />
 		<result column="realPrice" property="realPrice" />
+		
+		<result column="storeClass" property="storeClass" />
+		<result column="expenseClass" property="expenseClass" />
+		<result column="drugForm" property="drugForm" />
+		<result column="drugFunction" property="drugFunction" />
+		<result column="amountLowLimit" property="amountLowLimit" />
+		<result column="validDateWarnDays" property="validDateWarnDays" />
+		<result column="customOrderCode" property="customOrderCode" />
+		<result column="storeId" property="storeId" />
 	</resultMap>
 	<select id="getDrugAndStoreDataList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
-		select d.id,d.itemName,d.spec,d.unit,d.vendor,s.batchNo,s.inPrice,s.price,s.validDate,s.place1,
-				s.amount,s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
+		select 
+			d.id,d.itemName,d.spec,d.unit,d.vendor,d.storeClass,d.expenseClass,d.drugForm,d.drugFunction,
+			s.amount,s.batchNo,s.inPrice,s.price,s.validDate,s.place1,s.amountLowLimit,s.validDateWarnDays,s.customOrderCode,s.id as storeId,
+			s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
 		from store s
 		inner join dic_drug d
 		on d.id = s.drugId
 		where
 			d.enabled = 1
 			<if test="storeName != null and storeName != ''">
-				and storeName = #{storeName}
+				and s.storeName = #{storeName}
 			</if>
 			<if test="batchNo != null and batchNo != ''">
 				and s.batchNo = #{batchNo}
@@ -177,6 +188,14 @@
 			<if test="itemName != null and itemName != ''">
 				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
 			</if>
+			
+			<if test="expenseClass != null and expenseClass != ''">
+				and d.expenseClass = #{expenseClass}
+			</if>
+			<if test="drugForm != null and drugForm != ''">
+				and d.drugForm = #{drugForm}
+			</if>
+			
 		order by d.itemName asc
 	</select>
 	

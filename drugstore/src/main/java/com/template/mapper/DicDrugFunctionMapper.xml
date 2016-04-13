@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDrugFunctionMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicDrugFunction">
+		<id column="id" property="id"  />
+		<result column="functionCode" property="functionCode" />
+		<result column="functionName" property="functionName" />
+		<result column="wb" property="wb" />
+		<result column="py" property="py" />
+		<result column="parentCode" property="parentCode" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_drugFunction
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_drugFunction
+		<where>
+			<if test="functionCode != null and functionCode != ''">
+				functionCode = #{functionCode} 
+			</if>
+			<if test="functionName != null and functionName != ''">
+				and functionName like CONCAT('%',#{functionName},'%')
+			</if>
+			<if test="parentCode != null and parentCode != ''">
+				parentCode = #{parentCode} 
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicDrugFunction">
+		insert into dic_drugFunction
+		( id, functionCode, functionName,wb,py, parentCode )
+		values
+		( #{id}, #{functionCode}, #{functionName},#{wb},#{py}, #{parentCode} )
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicDrugFunction">
+		update dic_drugFunction
+		<set>
+			<if test="functionCode != null and functionCode != ''">
+				functionCode = #{functionCode},
+			</if>
+			<if test="functionName != null and functionName != ''">
+				functionName = #{functionName},
+			</if>
+			<if test="wb != null and wb != ''">
+				wb = #{wb},
+			</if>
+			<if test="py != null and py != ''">
+				py = #{py},
+			</if>
+			<if test="parentCode != null and parentCode != ''">
+				parentCode = #{parentCode},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_drugFunction
+		where id = #{id}
+	</delete>
+	
+</mapper>

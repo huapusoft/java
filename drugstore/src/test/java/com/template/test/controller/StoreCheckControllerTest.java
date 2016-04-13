@@ -16,6 +16,7 @@ import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 import com.template.service.CommonService;
 import com.template.service.StoreCheckService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 
 /**
@@ -52,9 +53,9 @@ public class StoreCheckControllerTest {
 	@Test
 	public void testgetStoreDrugList() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
+		StoreService storeService = (StoreService) context.getBean("storeService");
 		Map<String, Object> params = new HashMap<String, Object>();
-		List<DrugAndStore> list = storeCheckService.getStoreDrugList(params);
+		List<DrugAndStore> list = storeService.getByConditionsForQuery(params);
 		System.out.println( list.size());
 		
 	}

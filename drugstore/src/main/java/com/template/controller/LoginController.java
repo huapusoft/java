@@ -46,6 +46,22 @@ public class LoginController {
 	  * @return
 	  * @throws
 	  */
+	@RequestMapping(value = "/",method=RequestMethod.GET)		
+	public ModelAndView rootlogin(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
+		ModelAndView mv = new ModelAndView("login");
+		
+		return mv;
+		
+	}
+	
+	/**
+	 * 登录页面
+	 * @Description: 打开登录页面
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
 	@RequestMapping(value = "/login",method=RequestMethod.GET)		
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
 		ModelAndView mv = new ModelAndView("login");
