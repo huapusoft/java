@@ -59,7 +59,7 @@
 	
 	<insert id="insert" parameterType="com.template.domain.DicDrug">
 		insert into dic_drug (
-		  id, expenseClass, storeClass, 
+		  expenseClass, storeClass, 
 	      itemName, spec, vendor, unit, 
 	      clinicUnit, clinicUnitRatio, inhosUnit, 
 	      inhosUnitRatio, adviceUnit, adviceUnitValue, 
@@ -72,7 +72,7 @@
 	      ybCode, ybClinicSelfRatio, ybInhosSelfRatio
 	    )
 	    values (
-	      #{id}, #{expenseClass}, #{storeClass}, 
+	      #{expenseClass}, #{storeClass}, 
 	      #{itemName}, #{spec}, #{vendor}, #{unit}, 
 	      #{clinicUnit}, #{clinicUnitRatio}, #{inhosUnit}, 
 	      #{inhosUnitRatio}, #{adviceUnit}, #{adviceUnitValue}, 
