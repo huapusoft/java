@@ -165,5 +165,42 @@ public class DrugSettingControllerTest {
 		dicDrugService.delete(13219);
 	}
 	
+	/**
+	 * 获取拼音码
+	 * @Description: 
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@Test
+	public void testgetPyCode() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		CommonService commonService = (CommonService) context.getBean("commonService");
+		
+		String name = "阿莫西林颗粒";
+		String codes = commonService.getPyCode(name);
+		System.out.println(codes);
+		
+	}
+	
+	/**
+	 * 获取五笔码
+	 * @Description: 
+	 * @author army.liu
+	 * @param  
+	 * @return
+	 * @throws
+	 */
+	@Test
+	public void testgetWbCode() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		CommonService commonService = (CommonService) context.getBean("commonService");
+		
+		String name = "阿莫西林颗粒";
+		String codes = commonService.getWbCode(name);
+		System.out.println(codes);
+		
+	}
 }
 

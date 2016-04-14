@@ -227,6 +227,78 @@ public class DrugSettingController {
 	}
 	
 	/**
+	  * 获取中文的拼音码
+	  * @Description: 获取中文的拼音码
+	  * @author army.liu
+	  * @param  name-中文
+	  * @return 
+	  * @throws
+	  */
+	@RequestMapping(value = "/getPyCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPyCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("name") String name
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String py = commonService.getPyCode(name);
+			result.put("data", py);
+			
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 获取中文的五笔码
+	 * @Description: 获取中文的五笔码
+	 * @author army.liu
+	 * @param  name-中文
+	 * @return 
+	 * @throws
+	 */
+	@RequestMapping(value = "/getWbCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getWbCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("name") String name
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String wb = commonService.getWbCode(name);
+			result.put("data", wb);
+			
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
+	}
+	
+	/**
 	  * 获取药品详细信息
 	  * @Description: 获取药品详细信息
 	  * @author army.liu

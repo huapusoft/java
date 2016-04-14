@@ -298,5 +298,25 @@ public interface CommonService {
 	 * @throws
 	 */
 	public List<DicDrugFunction> getDrugFunctionList(Map<String, Object> params) throws Exception;
+
+	/**
+	 * 获取中文的五笔码
+	 * @Description: 获取中文的五笔码
+	 * @author army.liu
+	 * @param  name-中文
+	 * @return 
+	 * @throws
+	 */
+	public String getWbCode(String name) throws Exception;
+
+	/**
+	  * 获取中文的拼音码
+	  * @Description: 获取中文的拼音码
+	  * @author army.liu
+	  * @param  name-中文
+	  * @return 
+	  * @throws
+	  */
+	public String getPyCode(String name) throws Exception;
 	
 }

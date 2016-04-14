@@ -19,6 +19,8 @@ import com.template.dao.DicDrugStoreMapper;
 import com.template.dao.DicEmployeeMapper;
 import com.template.dao.DicHzylContrastMapper;
 import com.template.dao.DicMiContrastMapper;
+import com.template.dao.DicPyMapper;
+import com.template.dao.DicWbMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
@@ -29,6 +31,8 @@ import com.template.domain.DicDrugFunction;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DicHzylContrast;
 import com.template.domain.DicMiContrast;
+import com.template.domain.DicPy;
+import com.template.domain.DicWb;
 import com.template.domain.DictEmployee;
 import com.template.domain.DrugAndInOutStatistics;
 import com.template.domain.DrugAndReports;
@@ -86,6 +90,12 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private DicDrugFunctionMapper dicDrugFunctionMapper;
+	
+	@Resource
+	private DicPyMapper dicPyMapper;
+	
+	@Resource
+	private DicWbMapper dicWbMapper;
 	
 	@Resource
 	private StoreService storeService;
@@ -641,6 +651,33 @@ public class CommonServiceImpl implements CommonService {
 	public List<DicDrugFunction> getDrugFunctionList(Map<String, Object> params)
 			throws Exception {
 		return dicDrugFunctionMapper.getByConditions(params);
+	}
+
+	@Override
+	public String getWbCode(String name) throws Exception {
+		String result = "";
+		for(int i=0; i<name.length();i++){
+			String c = name.substring(i,i+1);
+			DicWb bean = dicWbMapper.getByChn(c);
+			if( null != bean ){
+				result += bean.getWb().trim();
+			}
+			
+		}
+		return result;
+	}
+
+	@Override
+	public String getPyCode(String name) throws Exception {
+		String result = "";
+		for(int i=0; i<name.length();i++){
+			String c = name.substring(i,i+1);
+			DicPy py = dicPyMapper.getByChn(c);
+			if( null != py ){
+				result += py.getPy().trim();
+			}
+		}
+		return result;
 	}
 
 }
