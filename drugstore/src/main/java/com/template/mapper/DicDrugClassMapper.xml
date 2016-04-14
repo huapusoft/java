@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDrugFunctionMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicDrugClass">
+		<id column="id" property="id"  />
+		<result column="name" property="name" />
+		<result column="functionCode" property="functionCode" />
+		<result column="functionName" property="functionName" />
+		<result column="wb" property="wb" />
+		<result column="py" property="py" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_drugClass
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_drugClass
+		<where>
+			<if test="functionCode != null and functionCode != ''">
+				functionCode = #{functionCode} 
+			</if>
+			<if test="functionName != null and functionName != ''">
+				and functionName like CONCAT('%',#{functionName},'%')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicDrugClass">
+		insert into dic_drugClass
+		( name, functionCode, functionName,wb,py )
+		values
+		( #{name}, #{functionCode}, #{functionName},#{wb},#{py})
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicDrugClass">
+		update dic_drugClass
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="functionCode != null and functionCode != ''">
+				functionCode = #{functionCode},
+			</if>
+			<if test="functionName != null and functionName != ''">
+				functionName = #{functionName},
+			</if>
+			<if test="wb != null and wb != ''">
+				wb = #{wb},
+			</if>
+			<if test="py != null and py != ''">
+				py = #{py},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_drugClass
+		where id = #{id}
+	</delete>
+	
+</mapper>
