@@ -2,6 +2,8 @@ package com.template.util;
 
 /**
  * 公共常量类
+ * @Description: POI工具类
+ * @author army.liu
  */
 public abstract  class Constants {
 

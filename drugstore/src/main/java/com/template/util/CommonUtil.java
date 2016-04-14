@@ -1,12 +1,10 @@
 package com.template.util;
 
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -17,40 +15,6 @@ import com.template.domain.DictEmployee;
  * 公用工具类
  */
 public abstract  class CommonUtil {
-
-	/**
-	 * 设置文件下载头信息
-	 * 
-	 * @param request
-	 * @param response
-	 * @param fileName 文件名: test
-	 * @param fileExtend 文件类型 ：xls
-	 * @throws Exception
-	 */
-	@SuppressWarnings("static-access")
-	public static void addDownloadHeader(HttpServletRequest request, 
-											HttpServletResponse response,
-											String fileName, 
-											String fileExtend) throws Exception{
-		
-		response.setContentType("application/octet-stream");
-		response.setStatus(response.SC_OK);
-		
-		String agent = request.getHeader( "USER-AGENT");
-		if (null != agent && -1 != agent.indexOf("MSIE")) { // IE
-			response.setHeader(
-					"Content-Disposition",
-					"attachment; filename="
-							+ URLEncoder.encode(fileName, "UTF-8") + "." + fileExtend);
-			
-		} else if (null != agent && -1 != agent.indexOf( "Mozilla")) { // FireFox,Chrome,360
-			 String codedFileName = new String(fileName.getBytes("UTF-8"),
-                             									"ISO8859-1");
-			response.setHeader( "Content-Disposition",
-					"attachment; filename=" + codedFileName + "." + fileExtend);
-		} 
-		
-	}
 
 	/**
 	 * 用户登录时，将用户存入session
