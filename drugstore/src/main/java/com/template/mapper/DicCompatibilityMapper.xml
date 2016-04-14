@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicDrugFunctionMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicCompatibility">
+		<id column="id" property="id"  />
+		<result column="comTypeA" property="comTypeA" />
+		<result column="functionCodeA" property="functionCodeA" />
+		<result column="drugClassIdA" property="drugClassIdA" />
+		<result column="comTypeB" property="comTypeB" />
+		<result column="functionCodeB" property="functionCodeB" />
+		<result column="drugClassIdB" property="drugClassIdB" />
+		<result column="result" property="result" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_compatibility
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_compatibility
+		<where>
+			<if test="functionCodeA != null and functionCodeA != ''">
+				functionCodeA = #{functionCodeA} 
+			</if>
+			<if test="drugClassIdA != null and drugClassIdA != ''">
+				drugClassIdA = #{drugClassIdA} 
+			</if>
+			<if test="functionCodeB != null and functionCodeB != ''">
+				functionCodeB = #{functionCodeB} 
+			</if>
+			<if test="drugClassIdB != null and drugClassIdB != ''">
+				drugClassIdB = #{drugClassIdB} 
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicCompatibility">
+		insert into dic_compatibility
+		( comTypeA, functionCodeA, drugClassIdA, comTypeB, functionCodeB, drugClassIdB, result)
+		values
+		( #{comTypeA}, #{functionCodeA}, #{drugClassIdA}, #{comTypeB}, #{functionCodeB}, #{drugClassIdB}, #{result})
+	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DicCompatibility">
+		update dic_compatibility
+		<set>
+			<if test="comTypeA != null and comTypeA != ''">
+				comTypeA = #{comTypeA},
+			</if>
+			<if test="functionCodeA != null and functionCodeA != ''">
+				functionCodeA = #{functionCodeA},
+			</if>
+			<if test="drugClassIdA != null and drugClassIdA != ''">
+				drugClassIdA = #{drugClassIdA},
+			</if>
+			<if test="comTypeB != null and comTypeB != ''">
+				comTypeB = #{comTypeB},
+			</if>
+			<if test="functionCodeB != null and functionCodeB != ''">
+				functionCodeB = #{functionCodeB},
+			</if>
+			<if test="drugClassIdB != null and drugClassIdB != ''">
+				drugClassIdB = #{drugClassIdB},
+			</if>
+			<if test="result != null and result != ''">
+				result = #{result},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_compatibility
+		where id = #{id}
+	</delete>
+	
+</mapper>
