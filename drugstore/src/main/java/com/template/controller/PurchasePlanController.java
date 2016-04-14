@@ -90,6 +90,9 @@ public class PurchasePlanController {
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("stockOutFlag", "Y");
+			
+			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+			params.put("storeName", storeName);
 			List<DrugAndStore> list = storeService.getByConditionsForQuery(params);
 			result.put("data", list);
 			result.put("code", "200");		

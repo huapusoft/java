@@ -18,6 +18,7 @@ import com.template.domain.DrugAndStore;
 import com.template.domain.Store;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.InStorageService;
 import com.template.service.StoreService;
 import com.template.util.Constants;
 
@@ -37,6 +38,9 @@ public class StoreServiceImpl implements StoreService {
 	
 	@Resource
 	private StoreInOutDetailMapper storeInOutDetailMapper;
+	
+	@Resource
+	private InStorageService inStorageService;	
 	
 	@Override
 	public List<Store> getByConditions(Map<String, Object> params)
@@ -178,7 +182,16 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public List<DrugAndStore> getByConditionsForQuery(Map<String, Object> params) throws Exception {
-		return storeMapper.getDrugAndStoreDataList(params);
+		List<DrugAndStore> detailList=storeMapper.getDrugAndStoreDataList(params);
+		for(int i=0;i<detailList.size();i++){
+			DrugAndStore drugAndStore=detailList.get(i);
+			String storeName=(String) params.get("storeName");
+			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, drugAndStore.getDrugId());
+			drugAndStore.setInPriceNew((Double)data.get("price1"));
+			drugAndStore.setPriceNew((Double)data.get("price2"));
+			detailList.set(i, drugAndStore);
+		}
+		return detailList;
 	}
 
 }

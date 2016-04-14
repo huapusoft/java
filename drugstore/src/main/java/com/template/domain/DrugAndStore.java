@@ -42,6 +42,22 @@ public class DrugAndStore {
 	private int validDateWarnDays;//有效期报警天数
 	private int customOrderCode;//自定义顺序码
 	
+	//以下为采购计划用到
+	private double inPriceNew;//最近一次进价
+	private double priceNew;//最近一次零售价
+	
+	public double getInPriceNew() {
+		return inPriceNew;
+	}
+	public void setInPriceNew(double inPriceNew) {
+		this.inPriceNew = inPriceNew;
+	}
+	public double getPriceNew() {
+		return priceNew;
+	}
+	public void setPriceNew(double priceNew) {
+		this.priceNew = priceNew;
+	}
 	public int getDrugId() {
 		return drugId;
 	}
