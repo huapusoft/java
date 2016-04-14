@@ -112,26 +112,25 @@
   border-color: #ddd;/*ww*/
 }
 .panel-header {
-  /*background-color: #E0ECFF;*//*gllxg*/
-  /*background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background-color: #E0ECFF;
+  background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
   background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
   background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);*//*gllxg*/
-  background: url('images/bigmenuebg.png');/*gllxg*/
+  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
 }
 .panel-body {
-  /*background-color: #ffffff;*//*gllxg*/
+  background-color: #ffffff;
   color: #000000;
-  font-size: 22px;
+  font-size: 12px;
 }
-.panel-title {/*gllxg*/
-  font-size: 18px;
+.panel-title {
+  font-size: 12px;
   font-weight: bold;
-  color: #ffffff;
-  height: 26px;
-  line-height: 26px;
+  color: #0E2D5F;
+  height: 16px;
+  line-height: 16px;
 }
 .panel-footer {
   border: 1px solid #95B8E7;
@@ -163,26 +162,24 @@
   border-width: 0 0 1px;
 }
 .accordion-collapse {
- /* background: url('images/accordion_arrows.png') no-repeat 0 0;*/
- background: url('images/arrow-dow.png') no-repeat center center;/*gllxg*/
+  background: url('images/accordion_arrows.png') no-repeat 0 0;
 }
 .accordion-expand {
-	background: url('images/arrow-right.png') no-repeat center center;/*gllxg*/
- /* background: url('images/accordion_arrows.png') no-repeat -16px 0;*/
+  background: url('images/accordion_arrows.png') no-repeat -16px 0;
 }
 .accordion {
-  /*background: #ffffff; *//*gllxg*/
+  background: #ffffff;
   border-color: #95B8E7;
 }
 .accordion .accordion-header {
-  /*background: #E0ECFF;*//*gllxg*/
+  background: #E0ECFF;
   filter: none;
 }
 .accordion .accordion-header-selected {
- /* background: #ffe48d;*//*gllxg*/
+  background: #ffe48d;
 }
 .accordion .accordion-header-selected .panel-title {
-  color: #ffffff;/*gllxg*/
+  color: #000000;
 }
 .window {
   overflow: hidden;
@@ -771,7 +768,7 @@
 }
 .layout-expand .panel-header,
 .layout-expand .panel-body {
-  /*background: transparent;*/ /*gllxg*/
+  background: transparent;
   filter: none;
   overflow: hidden;
 }
@@ -864,7 +861,7 @@
   border-left: 5px solid #E6EEF8;
 }
 .layout-split-west {
-  border-right: 3px solid #eee;
+  border-right: 5px solid #E6EEF8;
 }
 .layout-expand {
   background-color: #E0ECFF;
@@ -1199,8 +1196,8 @@
   filter: none;
 }
 .tabs li.tabs-selected a.tabs-inner {
-  background-color:#eee;
-  color: #eee;
+  background-color: #ffffff;
+  color: #0E2D5F;
   background: -webkit-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
   background: -moz-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
   background: -o-linear-gradient(top,#EFF5FF 0,#ffffff 100%);
@@ -1235,16 +1232,16 @@
 .tabs li a.tabs-inner {
   color: #0E2D5F;
   background-color: #E0ECFF;
-  background: -webkit-linear-gradient(top,#bddde1 0,#E0ECFF 100%);
-  background: -moz-linear-gradient(top,#bddde1 0,#E0ECFF 100%);
-  background: -o-linear-gradient(top,#bddde1 0,#E0ECFF 100%);
-  background: linear-gradient(to bottom,#bddde1 0,#E0ECFF 100%);
+  background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
 }
 .tabs-header,
 .tabs-tool {
-  background-color: #bddde1;
+  background-color: #E0ECFF;
 }
 .tabs-header-plain {
   background: transparent;
