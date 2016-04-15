@@ -30,6 +30,7 @@ import com.template.service.DicDepartmentService;
 import com.template.service.DicDrugService;
 import com.template.service.OutStorageService;
 import com.template.util.CommonUtil;
+import com.template.util.Constants;
 
 /**
  * 出库controller
@@ -403,6 +404,20 @@ public class OutStorageController {
 		
 		try{
 			StoreInOut bean = outStorageService.getDetailData( billNo );
+			if( null != bean ){
+				String status = bean.getStatus();
+				if( Constants.BusinessStatus.NEW.equals(status.trim())
+						|| Constants.BusinessStatus.VERIFY_FAIL.equals(status.trim()) ){
+					result.put("data", bean);
+					result.put("code", "200");
+					result.put("msg", "成功");
+					
+				}else{
+					result.put("msg", "当前数据已提交或已复核！");
+				}
+				
+			}
+			
 			result.put("data", bean);
 			result.put("code", "200");
 			result.put("msg", "成功");

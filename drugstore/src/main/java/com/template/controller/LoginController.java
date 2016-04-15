@@ -234,12 +234,12 @@ public class LoginController {
 			
 			//校验用户名密码
 			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("roleInfo", storeName);
 			params.put("name", name);
 			params.put("password", password);
 			List<DictEmployee> employee = dicEmployeeService.getByConditions(params);
 			if( null != employee && employee.size() > 0 ){
 				DictEmployee user = employee.get(0);
-				user.setRoleInfo(storeName);
 				CommonUtil.addUserToSession(request, user);
 				result.put("code", "200");
 			}

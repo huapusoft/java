@@ -18,6 +18,7 @@ import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.util.CommonUtil;
+import com.template.util.Constants;
 
 /**
  * 入库controller测试类
@@ -191,7 +192,18 @@ public class InStorageControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		InStorageService inStorageService = (InStorageService) context.getBean("inStorageService");
 		
-		StoreInOut detailData = inStorageService.getDetailData(2016041001);
+		StoreInOut detailData = inStorageService.getDetailData(2016041027);
+		if( null != detailData ){
+			String status = detailData.getStatus();
+			if( Constants.BusinessStatus.NEW.equals(status.trim())
+					|| Constants.BusinessStatus.VERIFY_FAIL.equals(status.trim()) ){
+				System.out.println("success");
+				
+			}else{
+				System.out.println("fail");
+			}
+			
+		}
 		System.out.println(detailData);
 	}
 	
