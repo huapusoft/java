@@ -36,8 +36,9 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	@Resource
 	private CommonService commonService;
 
-	@Override
-	public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception {
+	
+	/*@Override
+	 public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception {
 		
 		//判断盘点号的相关内容
 		if( 0 == checkNo ){
@@ -54,8 +55,19 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 		
 		//获取当前盘点号的明细数据	
 		return storeCheckDetailMapper.getCheckDetailList(checkNo);
-	}
+	}*/
 
+	@Override
+	public StoreCheck getDetailData(int checkNo) throws Exception {
+		StoreCheck checkData = storeCheckMapper.getByCheckNo(checkNo);
+		if( null != checkData ){
+			List<DrugAndCheckDetail> detailList = storeCheckDetailMapper.getCheckDetailList(checkNo);
+			checkData.setDetailAndDrugList(detailList);
+			return checkData;
+		}
+		return null;
+	}
+	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public int save(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {

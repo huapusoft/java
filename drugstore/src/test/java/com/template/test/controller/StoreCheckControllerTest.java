@@ -5,12 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
@@ -193,8 +190,8 @@ public class StoreCheckControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
 		
-		List<DrugAndCheckDetail> list = storeCheckService.getCheckDetailList(2016041000);
-		System.out.println(list);
+		StoreCheck bean =storeCheckService.getDetailData( 2016041000 );
+		System.out.println(bean);
 	}
 	
 	/**
@@ -209,8 +206,8 @@ public class StoreCheckControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
 		
-		List<DrugAndCheckDetail> detailData = storeCheckService.getCheckDetailList(2016041001);
-		System.out.println(detailData);
+		StoreCheck bean =storeCheckService.getDetailData( 2016041001 );
+		System.out.println(bean);
 	}
 	
 	/**

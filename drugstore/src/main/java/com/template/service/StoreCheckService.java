@@ -2,8 +2,6 @@ package com.template.service;
 
 import java.util.List;
 import java.util.Map;
-
-import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.StoreCheck;
 import com.template.domain.StoreCheckDetail;
 
@@ -21,7 +19,16 @@ public interface StoreCheckService {
 	* @parameter  
 	* @return
 	 */
-	public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception;
+	//public List<DrugAndCheckDetail> getCheckDetailList(int checkNo) throws Exception;
+	
+	/**
+	 * 打开盘点单-获取信息
+	* @author  fengql 
+	* @date 2016年4月15日 上午9:24:18 
+	* @parameter  
+	* @return
+	 */
+	public StoreCheck getDetailData(int checkNo) throws Exception;
 	
 	/**
 	 * 保存盘点草稿
