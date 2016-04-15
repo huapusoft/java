@@ -22,6 +22,6 @@ public interface DicDepartmentMapper {
 	
 	public void update(DicDepartment bean)  throws Exception;
 	
-	public void delete(int departmentId)  throws Exception;
+	public void delete(String departmentCode)  throws Exception;
 	
 }

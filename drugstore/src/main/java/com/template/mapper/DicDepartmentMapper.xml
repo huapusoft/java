@@ -21,7 +21,7 @@
 		from dic_department a
 		<where>
 			<if test="departmentCode != null and departmentCode != ''">
-				departmentCode = #{departmentCode} 
+				departmentCode like CONCAT('%',#{departmentCode},'%')
 			</if>
 			<if test="departmentName != null and departmentName != ''">
 				and departmentName like CONCAT('%',#{departmentName},'%')
@@ -62,8 +62,8 @@
 		where departmentId = #{departmentId}
 	</update>
 	
-	<delete id="delete" parameterType="int">
+	<delete id="delete" parameterType="java.lang.String">
 		delete from dic_department
-		where departmentId = #{departmentId}
+		where departmentCode = #{departmentCode}
 	</delete>
 </mapper>

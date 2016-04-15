@@ -48,8 +48,14 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
-	public void delete(int departmentId) throws Exception {
-		dicDepartmentMapper.delete(departmentId);
+	public void delete(String departmentCode) throws Exception {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("departmentCode", departmentCode);
+		List<DicDepartment> department = dicDepartmentMapper.getByConditions(params);
+		if(department.size()>1){
+			throw new RuntimeException("当前部门存在子部门，不可以删除！");
+		}
+		dicDepartmentMapper.delete(departmentCode);
 		
 	}
 

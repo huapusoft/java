@@ -155,13 +155,13 @@ public class DepartmentSettingController {
 	 * 删除
 	* @author  fengql 
 	* @date 2016年4月13日 上午9:46:52 
-	* @parameter  领药部门id-departmentId
+	* @parameter  领药部门Code-departmentCode
 	* @return
 	 */
 	@RequestMapping(value = "/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> delete(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("departmentId")int departmentId
+			@RequestParam("departmentCode")String departmentCode
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -169,7 +169,7 @@ public class DepartmentSettingController {
 		result.put("msg", "删除失败");
 		
 		try{
-			dicDepartmentService.delete(departmentId);
+			dicDepartmentService.delete(departmentCode);
 			result.put("code", "200");
 			result.put("msg", "成功");
 			

@@ -26,11 +26,11 @@ public interface DicDepartmentService {
 	 * 删除
 	 * @Description: 删除部门，若存在子部门，提示不可以直接删除
 	 * @author army.liu
-	 * @param  departmentId-部门编号
+	 * @param  departmentCode-部门Code
 	 * @return void
 	 * @throws
 	 */
-	public void delete(int departmentId) throws Exception;
+	public void delete(String departmentId) throws Exception;
 	
 	/**
 	 * 条件查询
