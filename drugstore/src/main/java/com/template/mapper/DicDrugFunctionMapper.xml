@@ -28,7 +28,7 @@
 				and functionName like CONCAT('%',#{functionName},'%')
 			</if>
 			<if test="parentCode != null and parentCode != ''">
-				parentCode = #{parentCode} 
+				and parentCode = #{parentCode} 
 			</if>
 		</where>
 	</select>

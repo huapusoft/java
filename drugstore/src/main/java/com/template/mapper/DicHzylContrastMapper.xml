@@ -19,7 +19,7 @@
 				and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="jx != null and jx != ''">
-				jx = #{jx} 
+				and jx = #{jx} 
 			</if>
 		</where>
 	</select>

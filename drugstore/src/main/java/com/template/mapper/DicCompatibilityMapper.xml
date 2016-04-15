@@ -27,13 +27,16 @@
 				functionCodeA = #{functionCodeA} 
 			</if>
 			<if test="drugClassIdA != null and drugClassIdA != ''">
-				drugClassIdA = #{drugClassIdA} 
+				and drugClassIdA = #{drugClassIdA} 
 			</if>
 			<if test="functionCodeB != null and functionCodeB != ''">
-				functionCodeB = #{functionCodeB} 
+				and functionCodeB = #{functionCodeB} 
 			</if>
 			<if test="drugClassIdB != null and drugClassIdB != ''">
-				drugClassIdB = #{drugClassIdB} 
+				and drugClassIdB = #{drugClassIdB} 
+			</if>
+			<if test="result != null and result != ''">
+				and result like CONCAT('%',#{result},'%')
 			</if>
 		</where>
 	</select>

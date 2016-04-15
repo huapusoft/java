@@ -26,7 +26,7 @@
 		from dic_provider
 		<where>
 			<if test="providerName != null and providerName != ''">
-				and  ( providerName like CONCAT('%',#{providerName},'%') ) OR ( wb like CONCAT('%',#{providerName},'%') ) OR ( py like CONCAT('%',#{providerName},'%') )
+				( providerName like CONCAT('%',#{providerName},'%') ) OR ( wb like CONCAT('%',#{providerName},'%') ) OR ( py like CONCAT('%',#{providerName},'%') )
 			</if>
 			<if test="status != null and status != ''">
 				and  enabled = #{status}

@@ -27,7 +27,7 @@
 				and departmentName like CONCAT('%',#{departmentName},'%')
 			</if>
 			<if test="parentCode != null and parentCode != ''">
-				parentCode = #{parentCode} 
+				and parentCode = #{parentCode} 
 			</if>
 		</where>
 	</select>

@@ -21,13 +21,13 @@
 				and name like CONCAT('%',#{name},'%')
 			</if>
 			<if test="fyClass != null and fyClass != ''">
-				fyClass = #{fyClass} 
+				and fyClass = #{fyClass} 
 			</if>
 			<if test="clinicSelf != null and clinicSelf != ''">
-				clinicSelf = #{clinicSelf} 
+				and clinicSelf = #{clinicSelf} 
 			</if>
 			<if test="inhoSelf != null and inhoSelf != ''">
-				inhoSelf = #{inhoSelf} 
+				and inhoSelf = #{inhoSelf} 
 			</if>
 		</where>
 	</select>

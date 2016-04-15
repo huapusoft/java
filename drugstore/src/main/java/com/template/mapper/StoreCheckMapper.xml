@@ -25,7 +25,7 @@
 		from storeCheck
 		<where>
 			<if test="storeName != null and storeName != ''">
-				and storeName = #{storeName}
+				storeName = #{storeName}
 			</if>
 			<if test="checkOper != null and checkOper != ''">
 				and checkOper = #{checkOper}
