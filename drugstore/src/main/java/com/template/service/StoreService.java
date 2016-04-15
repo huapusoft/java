@@ -41,4 +41,13 @@ public interface StoreService {
 	 */
 	public List<DrugAndStore> getByConditionsForQuery(Map<String, Object> params)throws Exception;
 	
+	/**
+	 * 导出数据
+	* @author  fengql 
+	* @date 2016年4月15日 上午10:34:14 
+	* @parameter  
+	* @return
+	 */
+	public Map<String, Object> getExportData(Map<String, Object> params)throws Exception;
+	
 }

@@ -187,7 +187,7 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.GET)
 	@ResponseBody
-	public void exprot(HttpServletRequest request,
+	public void export(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws Exception {
 		Map<String, Object> formatData = new HashMap<String, Object>();
 		// sheet

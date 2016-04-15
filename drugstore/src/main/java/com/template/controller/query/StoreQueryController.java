@@ -4,25 +4,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.template.domain.Store;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.template.domain.DrugAndStore;
 import com.template.service.CommonService;
 import com.template.service.StoreService;
 import com.template.util.CommonUtil;
+import com.template.util.POIUtil;
 
 /**
  * 查询统计-库存查询Controller
@@ -158,6 +155,36 @@ public class StoreQueryController {
 		}
 		 
 		return result;
+	}
+	
+	/**
+	 * 导出数据
+	* @author  fengql 
+	* @date 2016年4月15日 上午10:23:14 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/export", method = RequestMethod.GET)
+	@ResponseBody
+	public void export(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session,
+			@RequestParam("itemName") String itemName,
+			@RequestParam("batchNo") String batchNo
+			) throws Exception {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("itemName", itemName);
+		params.put("batchNo", batchNo);
+		String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+		params.put("storeName", storeName);
+		
+		Map<String, Object> formatData = storeService.getExportData(params);
+
+		String fileName = "库存查询导出Excel";
+		String fileExtend = "xls";
+		POIUtil.exportToExcel(request, response, formatData, fileName,
+				fileExtend);
+
 	}
 	
 }

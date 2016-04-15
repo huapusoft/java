@@ -1,5 +1,7 @@
 package com.template.serviceImpl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -183,6 +185,8 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public List<DrugAndStore> getByConditionsForQuery(Map<String, Object> params) throws Exception {
 		List<DrugAndStore> detailList=storeMapper.getDrugAndStoreDataList(params);
+		
+		//以下为采购时用到，取得最近一次进价、零售价
 		for(int i=0;i<detailList.size();i++){
 			DrugAndStore drugAndStore=detailList.get(i);
 			String storeName=(String) params.get("storeName");
@@ -191,7 +195,69 @@ public class StoreServiceImpl implements StoreService {
 			drugAndStore.setPriceNew((Double)data.get("price2"));
 			detailList.set(i, drugAndStore);
 		}
+		
 		return detailList;
+	}
+
+	@Override
+	public Map<String, Object> getExportData(Map<String, Object> params)
+			throws Exception {
+		//得到库存数据
+		List<DrugAndStore> detailList=storeMapper.getDrugAndStoreDataList(params);
+		
+		//构造导出表格
+		Map<String, Object> formatData = new HashMap<String, Object>();
+		// sheet
+		List<String> sheetList = new ArrayList<String>();
+		sheetList.add("sheet");
+		formatData.put("sheetList", sheetList);//
+
+		// 标题
+		Map<String, Object> sheetData = new HashMap<String, Object>();
+		sheetData.put("title", "当前药品库存数据");//
+		sheetData.put("titleMergeSize", 11);//导出数据的列数
+
+		// 表头
+		List<String> tableHeadList = new ArrayList<String>();
+		tableHeadList.add("序号");
+		tableHeadList.add("名称");
+		tableHeadList.add("规格");
+		tableHeadList.add("厂家");
+		tableHeadList.add("数量");
+		tableHeadList.add("单位");
+		tableHeadList.add("进价");
+		tableHeadList.add("零售价");
+		tableHeadList.add("批号");
+		tableHeadList.add("有效期");
+		tableHeadList.add("摆放位置");
+		sheetData.put("tableHeader", tableHeadList);
+
+		// 表数据
+		List<List<String>> tableData = new ArrayList<List<String>>();
+		for(int i=0;i<detailList.size();i++){
+			//获取每一行数据
+			DrugAndStore drugAndStore = detailList.get(i);
+			
+			//加载数据
+			List<String> rowData = new ArrayList<String>();
+			rowData.add(String.valueOf(i+1));
+			rowData.add(drugAndStore.getItemName());
+			rowData.add(drugAndStore.getSpec());
+			rowData.add(drugAndStore.getVendor());
+			rowData.add(String.valueOf(drugAndStore.getAmount()));
+			rowData.add(drugAndStore.getUnit());
+			rowData.add(String.valueOf(drugAndStore.getInPrice()));
+			rowData.add(String.valueOf(drugAndStore.getPrice()));
+			rowData.add(drugAndStore.getBatchNo());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			rowData.add( sdf.format(drugAndStore.getValidDate()) );
+			rowData.add(drugAndStore.getPlace1());
+			tableData.add(rowData);
+		}
+		sheetData.put("tableData", tableData);
+		formatData.put("sheetData", sheetData);
+		
+		return formatData;
 	}
 
 }
