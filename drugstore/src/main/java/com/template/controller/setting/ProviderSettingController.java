@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.template.domain.DicProvider;
+import com.template.service.CommonService;
 import com.template.service.DicProviderService;
 
 /**
@@ -29,6 +33,9 @@ public class ProviderSettingController {
 	
 	@Resource  
 	private DicProviderService dicProviderService;
+	
+	@Resource  
+	private CommonService commonService;
 	
 	/**
 	 * 查询页面
@@ -128,6 +135,78 @@ public class ProviderSettingController {
 	public ModelAndView savenew(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws IOException {
 		ModelAndView mv = new ModelAndView("systemSetting/providerSetting/new");
 		return mv;		
+	}
+	
+	/**
+	  * 获取中文的拼音码
+	  * @Description: 获取中文的拼音码
+	  * @author army.liu
+	  * @param  name-中文
+	  * @return 
+	  * @throws
+	  */
+	@RequestMapping(value = "/getPyCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getPyCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("name") String name
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String py = commonService.getPyCode(name);
+			result.put("data", py);
+			
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		 
+		return result;
+	}
+	
+	/**
+	 * 获取中文的五笔码
+	 * @Description: 获取中文的五笔码
+	 * @author army.liu
+	 * @param  name-中文
+	 * @return 
+	 * @throws
+	 */
+	@RequestMapping(value = "/getWbCode",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getWbCode(HttpServletRequest request, 
+			HttpServletResponse response,
+			HttpSession session,
+			@RequestParam("name") String name
+			) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "获取失败");
+		
+		try{
+			String wb = commonService.getWbCode(name);
+			result.put("data", wb);
+			
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "获取失败："+e.getMessage());
+			
+		}
+		
+		return result;
 	}
 
 	/**
