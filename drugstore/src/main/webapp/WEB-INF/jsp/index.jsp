@@ -181,7 +181,7 @@
 		
 		<li class="item hand" onclick="javascript:addTab('药品出库','/outStorage/new')"><a >药品出库</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('药品退货','test13.jsp')"><a >药品退货</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品退货','/salesReturn/new')"><a >药品退货</a></li>
 		
 		<li class="item hand" onclick="javascript:addTab('药品报损','test13.jsp')"><a >药品报损</a></li>
 		
