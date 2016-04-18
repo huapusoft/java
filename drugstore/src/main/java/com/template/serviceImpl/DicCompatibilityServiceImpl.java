@@ -54,18 +54,9 @@ public class DicCompatibilityServiceImpl implements DicCompatibilityService {
 		int id=bean.getId();
 		if(0 == id){//新增
 			
-			//获取配伍关联id
-			int comId;
-			List<DicCompatibility> comList=dicCompatibilityMapper.getByConditions(null);
-			if( null != comList && comList.size() > 0 ){
-				comId=comList.get(0).getComId()+1;
-			}else{
-				comId=1;
-			}
-			bean.setComId(comId);
-			
 			//插入主表
 			dicCompatibilityMapper.insert(bean);
+			int comId=bean.getId();
 			
 			//插入明细
 			List<DicCompatibilityDetail> detailList=bean.getDetailList();
@@ -83,7 +74,7 @@ public class DicCompatibilityServiceImpl implements DicCompatibilityService {
 			//更新配伍主表
 			dicCompatibilityMapper.update(bean);
 			
-			int comId=bean.getComId();
+			int comId=bean.getId();
 			//删除配伍明细表
 			dicCompatibilityDetailMapper.delete(comId);
 			
@@ -104,13 +95,8 @@ public class DicCompatibilityServiceImpl implements DicCompatibilityService {
 	public void delete(int id) throws Exception {
 		//删除配伍主表
 		dicCompatibilityMapper.delete(id);
-		
 		//删除配伍明细表
-		DicCompatibility com = dicCompatibilityMapper.getById(id);
-		if( null != com){
-			int comId=com.getComId();
-			dicCompatibilityDetailMapper.delete(comId);
-		}
+		dicCompatibilityDetailMapper.delete(id);
 	}
 
 	@Override
