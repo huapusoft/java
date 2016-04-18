@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.template.domain.DicCompatibility;
 import com.template.domain.DicDrugClass;
 import com.template.domain.DicDrugFunction;
@@ -52,7 +49,7 @@ public class CompatibilitySettingController {
 	 * 获取配伍信息
 	* @author  fengql 
 	* @date 2016年4月14日 上午10:46:35 
-	* @parameter  结果-result
+	* @parameter  关键字-keyWords
 	* @return
 	 */
 	@RequestMapping(value = "/getListData",method=RequestMethod.POST)
@@ -60,7 +57,7 @@ public class CompatibilitySettingController {
 	public Map<String, Object> getListData(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestParam("resultName") String resultName
+			@RequestParam("keyWords") String keyWords
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -69,7 +66,7 @@ public class CompatibilitySettingController {
 		
 		try{
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("result", resultName);
+			params.put("keyWords", keyWords);
 			List<DicCompatibility> list = dicCompatibilityService.getByConditions(params);
 			result.put("data", list);
 			

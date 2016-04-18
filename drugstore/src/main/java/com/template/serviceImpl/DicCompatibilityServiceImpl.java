@@ -2,15 +2,14 @@ package com.template.serviceImpl;
 
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
+import com.template.dao.DicCompatibilityDetailMapper;
 import com.template.dao.DicCompatibilityMapper;
 import com.template.dao.DicDrugClassMapper;
 import com.template.dao.DicDrugFunctionMapper;
 import com.template.domain.DicCompatibility;
+import com.template.domain.DicCompatibilityDetail;
 import com.template.domain.DicDrugClass;
 import com.template.domain.DicDrugFunction;
 import com.template.service.DicCompatibilityService;
@@ -31,6 +30,9 @@ public class DicCompatibilityServiceImpl implements DicCompatibilityService {
 	
 	@Resource
 	private DicCompatibilityMapper dicCompatibilityMapper;
+	
+	@Resource
+	private DicCompatibilityDetailMapper dicCompatibilityDetailMapper;
 
 	@Override
 	public List<DicDrugFunction> getfunctionCode() throws Exception {
@@ -44,19 +46,71 @@ public class DicCompatibilityServiceImpl implements DicCompatibilityService {
 
 	@Override
 	public void save(DicCompatibility bean) throws Exception {
+		
+		if( null == bean ){
+			throw new RuntimeException("配伍信息为空");
+		}
+		
 		int id=bean.getId();
-		if(0 == id){
-			//新增
+		if(0 == id){//新增
+			
+			//获取配伍关联id
+			int comId;
+			List<DicCompatibility> comList=dicCompatibilityMapper.getByConditions(null);
+			if( null != comList && comList.size() > 0 ){
+				comId=comList.get(0).getComId()+1;
+			}else{
+				comId=1;
+			}
+			bean.setComId(comId);
+			
+			//插入主表
 			dicCompatibilityMapper.insert(bean);
-		}else{
-			//更新
+			
+			//插入明细
+			List<DicCompatibilityDetail> detailList=bean.getDetailList();
+			if( null == detailList ){
+				throw new RuntimeException("配伍明细信息为空");
+			}
+			for(int i=0; i<detailList.size(); i++){
+				DicCompatibilityDetail detail = detailList.get(i);
+				detail.setComId(comId);
+				dicCompatibilityDetailMapper.insert(detail);
+			}
+			
+		}else{//更新
+			
+			//更新配伍主表
 			dicCompatibilityMapper.update(bean);
+			
+			int comId=bean.getComId();
+			//删除配伍明细表
+			dicCompatibilityDetailMapper.delete(comId);
+			
+			//重新插入配伍明细表
+			List<DicCompatibilityDetail> detailList=bean.getDetailList();
+			if( null == detailList ){
+				throw new RuntimeException("配伍明细信息为空");
+			}
+			for(int i=0; i<detailList.size(); i++){
+				DicCompatibilityDetail detail = detailList.get(i);
+				detail.setComId(comId);
+				dicCompatibilityDetailMapper.insert(detail);
+			}
 		}
 	}
 
 	@Override
 	public void delete(int id) throws Exception {
+		//删除配伍主表
 		dicCompatibilityMapper.delete(id);
+		
+		//删除配伍明细表
+		DicCompatibility com = dicCompatibilityMapper.getById(id);
+		if( null != com){
+			int comId=com.getComId();
+			dicCompatibilityDetailMapper.delete(comId);
+		}
 	}
 
 	@Override

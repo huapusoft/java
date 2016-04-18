@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.template.dao.DicCompatibilityDetailMapper">
+
+	<resultMap id="BaseResultMap" type="com.template.domain.DicCompatibilityDetail">
+		<id column="id" property="id"  />
+		<result column="comId" property="comId" />
+		<result column="comTypeA" property="comTypeA" />
+		<result column="functionCodeA" property="functionCodeA" />
+		<result column="drugClassIdA" property="drugClassIdA" />
+		<result column="comTypeB" property="comTypeB" />
+		<result column="functionCodeB" property="functionCodeB" />
+		<result column="drugClassIdB" property="drugClassIdB" />
+	</resultMap>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
+		select *
+		from dic_compatibilityDetail
+		where id = #{id}
+	</select>
+	
+	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select *
+		from dic_compatibilityDetail
+		<where>
+			<if test="comId != null and comId != ''">
+				comId = #{comId} 
+			</if>
+			<if test="functionCodeA != null and functionCodeA != ''">
+				functionCodeA = #{functionCodeA} 
+			</if>
+			<if test="drugClassIdA != null and drugClassIdA != ''">
+				and drugClassIdA = #{drugClassIdA} 
+			</if>
+			<if test="functionCodeB != null and functionCodeB != ''">
+				and functionCodeB = #{functionCodeB} 
+			</if>
+			<if test="drugClassIdB != null and drugClassIdB != ''">
+				and drugClassIdB = #{drugClassIdB} 
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.template.domain.DicCompatibilityDetail">
+		insert into dic_compatibilityDetail
+		( comId, comTypeA, functionCodeA, drugClassIdA, comTypeB, functionCodeB, drugClassIdB)
+		values
+		( #{comId}, #{comTypeA}, #{functionCodeA}, #{drugClassIdA}, #{comTypeB}, #{functionCodeB}, #{drugClassIdB})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from dic_compatibilityDetail
+		where comId = #{comId}
+	</delete>
+	
+</mapper>

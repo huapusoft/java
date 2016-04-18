@@ -5,7 +5,7 @@ import java.util.Map;
 import com.template.domain.DicCompatibility;
 
 /**
- * 配伍表dao
+ * 配伍主表dao
 * @author  fengql 
 * @date 2016年4月14日 上午9:50:12
  */

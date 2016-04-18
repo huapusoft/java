@@ -4,12 +4,9 @@
 
 	<resultMap id="BaseResultMap" type="com.template.domain.DicCompatibility">
 		<id column="id" property="id"  />
-		<result column="comTypeA" property="comTypeA" />
-		<result column="functionCodeA" property="functionCodeA" />
-		<result column="drugClassIdA" property="drugClassIdA" />
-		<result column="comTypeB" property="comTypeB" />
-		<result column="functionCodeB" property="functionCodeB" />
-		<result column="drugClassIdB" property="drugClassIdB" />
+		<result column="comId" property="comId" />
+		<result column="contentA" property="contentA" />
+		<result column="contentB" property="contentB" />
 		<result column="result" property="result" />
 	</resultMap>
 
@@ -23,51 +20,28 @@
 		select *
 		from dic_compatibility
 		<where>
-			<if test="functionCodeA != null and functionCodeA != ''">
-				functionCodeA = #{functionCodeA} 
-			</if>
-			<if test="drugClassIdA != null and drugClassIdA != ''">
-				and drugClassIdA = #{drugClassIdA} 
-			</if>
-			<if test="functionCodeB != null and functionCodeB != ''">
-				and functionCodeB = #{functionCodeB} 
-			</if>
-			<if test="drugClassIdB != null and drugClassIdB != ''">
-				and drugClassIdB = #{drugClassIdB} 
-			</if>
-			<if test="result != null and result != ''">
-				and result like CONCAT('%',#{result},'%')
+			<if test="keyWords != null and keyWords != ''">
+				( contentA like CONCAT('%',#{keyWords},'%') ) or ( contentB like CONCAT('%',#{keyWords},'%') )
 			</if>
 		</where>
+		order by comId desc
 	</select>
 	
 	<insert id="insert" parameterType="com.template.domain.DicCompatibility">
 		insert into dic_compatibility
-		( comTypeA, functionCodeA, drugClassIdA, comTypeB, functionCodeB, drugClassIdB, result)
+		( comId, contentA, contentB, result)
 		values
-		( #{comTypeA}, #{functionCodeA}, #{drugClassIdA}, #{comTypeB}, #{functionCodeB}, #{drugClassIdB}, #{result})
+		( #{comId}, #{contentA}, #{contentB}, #{result})
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicCompatibility">
 		update dic_compatibility
 		<set>
-			<if test="comTypeA != null and comTypeA != ''">
-				comTypeA = #{comTypeA},
+			<if test="contentA != null and contentA != ''">
+				contentA = #{contentA},
 			</if>
-			<if test="functionCodeA != null and functionCodeA != ''">
-				functionCodeA = #{functionCodeA},
-			</if>
-			<if test="drugClassIdA != null and drugClassIdA != ''">
-				drugClassIdA = #{drugClassIdA},
-			</if>
-			<if test="comTypeB != null and comTypeB != ''">
-				comTypeB = #{comTypeB},
-			</if>
-			<if test="functionCodeB != null and functionCodeB != ''">
-				functionCodeB = #{functionCodeB},
-			</if>
-			<if test="drugClassIdB != null and drugClassIdB != ''">
-				drugClassIdB = #{drugClassIdB},
+			<if test="contentB != null and contentB != ''">
+				contentB = #{contentB},
 			</if>
 			<if test="result != null and result != ''">
 				result = #{result},
