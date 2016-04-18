@@ -7,16 +7,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <script type="text/javascript" src="/staticPublic/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/material/easyui.css"/>
+		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/default/easyui.css"/>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"/>
 		<script src="/staticPublic/js/easyui-lang-zh_CN.js"></script>
 <title>出库页面</title>
 <style type="text/css">
 .ipt {
 	border: 1px solid #d3d3d3;
-	padding: 10px 10px;
-	width: 200px;
-	font-size: 16px;
+	padding: 7px 7px;
+	width: 115px;
+	font-size: 13px;
+ }
+ .ipts {	
+	margin-left: 17px ;	
  }
  .selectItemcont {
 	padding: 0px;
@@ -44,33 +47,62 @@
 .divtab th {
             border: 1px solid LightGray;
             font-weight:normal;
-            font-size: 12px;font-family: Microsoft HeiTi;
+            font-size: 13px;font-family: Microsoft HeiTi;
 }
 .divtab tbody tr td {
 	border: 1px solid LightGray;
-	font-size: 12px;font-family: Microsoft HeiTi;
+	font-size: 13px;font-family: Microsoft HeiTi;
 	white-space:nowrap;text-overflow: ellipsis; overflow:hidden;/*td内容过多 省略号*/
 }
 .on{
 	background-color: #3299ff;
 }	
+.fonttitle{
+	font-size: 13px;
+	/* font-family: Microsoft YaHei; */
+}
 </style>
+<script type="text/javascript">
+var editIndex = undefined;
+var fieldname = "";//选中单无格列名
+var columnarray = {};//列名集合
+var columnMap={};
+window.onload = function() {
+ columnarray = $('#mytable').datagrid('getColumnFields');
+ for(var i=0;i<columnarray.length;i++){
+  columnMap[columnarray[i]]=i;
+ }
+}
+function onClickCell(index, field){
+	fieldname = field;
+	$(this).focus();
+}
+/* function clickCell(rowIndex, field, value){//单击单元格事件,在定义datagrid时调用
+ fieldname = field;
+} */
+
+</script>
 </head>
 <body onkeydown="keyCheck()">
 <input type="hidden" name="billNo" id="billNo">
 <div class="box1">
-<table>
+<table >
 <tr>
-<td>领药部门</td>
-<td><input class="easyui-combotree"  name="departmentId" id="departmentId" style="width:200px; height:38px;panelWidth:200px;">   </td>
-<td>进价金额</td>
-<td><input type="text" name="sum1" id="sum1" class="ipt" > </td>
-<td>零售价总金额</td>
-<td> <input type="text" name="sum2" id="sum2" class="ipt" ></td>
+<td class="fonttitle">票据号：</td>
+<td><input type="text" class="textbox" name="billNos" id="billNos" data-options="prompt:'请选择领药部门'" style="width:115px;height:25px">   </td>
+<td> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:70px" onclick="doopen();">打开</a> 
+</tr>
+<tr>
+<td class="fonttitle">领药部门：</td>
+<td><input class="easyui-combotree"  name="departmentId" id="departmentId" data-options="prompt:'请选择领药部门'" style="width:115px; height:25px;">   </td>
+<td class="fonttitle">进价金额：</td>
+<td ><input id="sum1"  name="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px"></td>
+<td class="fonttitle">零售价总金额：</td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px" ></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px; height:38px;" onclick="dosave();">保存</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px; height:38px;">打印</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px; height:38px;" onclick="dosubmit();">提交</a></td>
+    <a href="#" class="easyui-linkbutton ipts" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:70px; height:25px;" onclick="dosubmit();">提交</a></td>
 
 </tr>
 </table>
@@ -78,7 +110,7 @@
 </div>
 <div class="maintable">
 	<table class="easyui-datagrid" style="width:100%;height:600px;" id="mytable"
-			data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
+			data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get',onClickCell: onClickCell">
 		<thead>
 			<tr>
 				<th data-options="field:'orderNo',width:80,align:'center'">序号</th>
@@ -88,9 +120,9 @@
 				<th data-options="field:'amount',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">数量</th>
 				<th data-options="field:'unit',width:80,align:'center'">单位</th>
 				<th data-options="field:'inPrice',width:100,align:'center'">进价</th>
-				<th data-options="field:'jj55',width:100,align:'center'">进价金额</th>
+				<th data-options="field:'total1',width:100,align:'center'">进价金额</th>
 				<th data-options="field:'price',width:100,align:'center'">零售价</th>
-				<th data-options="field:'ll77',width:100,align:'center'">零售价金额</th>
+				<th data-options="field:'total2',width:100,align:'center'">零售价金额</th>
 				<th data-options="field:'batchno',width:100,align:'center'">批号</th>
 				<th data-options="field:'validDate',width:100,align:'center'">有效期</th>
 				<th data-options="field:'id',width:100,align:'center'">id</th>
@@ -236,7 +268,8 @@ $(document).ready(function() {
 	});
 	$('#mytable').datagrid('hideColumn','id');
 	$('#mytable').datagrid('hideColumn','invoiceNo');
-	$('#mytable').datagrid().datagrid('enableCellEditing');
+	$('#mytable').datagrid().datagrid('enableCellEditing');	 
+	/* $("#mytable").datagrid().datagrid("keyCtr"); */
 	/* var ed = $('#mytable').datagrid('getEditor', {index:0,field:'attr1'});
     $(ed.target).datebox('setValue', '12'); */
 });
@@ -263,7 +296,7 @@ function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
 function fn(data, pid) {
     var result = [], temp;
     for (var i = 0; i < data.length; i++) {
-        if (data[i].parentId == pid) {
+        if (data[i].parentCode == pid) {
         	var src=data[i].departmentName.replace(/[ ]/g,"");
             var obj = {"text": data[i].departmentName.replace(/[ ]/g,""),"id": data[i].departmentId};            
             temp = fn(data, data[i].departmentId);
@@ -276,6 +309,75 @@ function fn(data, pid) {
     return result;
 }
 
+//WITHOUT Plugin
+var EventUtil = {
+
+    addHandler: function(element, type, handler){
+        if (element.addEventListener){
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent){
+            element.attachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = handler;
+        }
+    },
+	
+	removeHandler: function(element, type, handler){
+        if (element.removeEventListener){
+            element.removeEventListener(type, handler, false);
+        } else if (element.detachEvent){
+            element.detachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = null;
+        }
+    },
+	
+	getEvent: function(event) {
+        return event ? event : window.event;
+    },
+	
+	getTarget: function(event) {
+		return event.target || event.srcElement;    
+	},
+	
+	getWheelDelta: function(event) {
+        if (event.wheelDelta){
+            return event.wheelDelta;
+        } else {
+            return -event.detail * 40;
+        }
+    },
+	
+	preventDefault: function(event) {
+        if (event.preventDefault){
+            event.preventDefault();
+        } else {
+            event.returnValue = false;
+        }
+    }
+    
+};
+
+function onWheel(event) {
+
+	event = EventUtil.getEvent(event);
+	var curElem = EventUtil.getTarget(event);
+	var curVal = parseInt(curElem.value);
+	var delta = EventUtil.getWheelDelta(event);
+	
+	if (delta > 0) {
+		curElem.value = curVal + 1;
+	} else{ 
+		curElem.value = curVal - 1;
+	}
+	
+	EventUtil.preventDefault(event);
+	
+}
+/***字符串转换成float类型的数据***/
+function isNumber(n) {
+	  return !isNaN(parseFloat(n)) && isFinite(n);
+	}
 var rowNo= 0;
 var clickIndex = [];//单击行的索引数组
 var selectedData = [];//选中的数据集合
@@ -295,12 +397,66 @@ $.extend($.fn.datagrid.methods, {
 			}
 			//alert(param);
 			$(this).datagrid('beginEdit', param.index);
-            var ed = $(this).datagrid('getEditor', param);           
+            var ed = $(this).datagrid('getEditor', param);     
             if (ed){
             	
                 if ($(ed.target).hasClass('textbox-f')){
-                    $(ed.target).textbox('textbox').focus();//获得焦点
+                     $(ed.target).textbox('textbox').focus(); //获得焦点
+                    $(ed.target).textbox('textbox').hover(function(){
+                		EventUtil.addHandler(document,'mousewheel',onWheel);
+                		EventUtil.addHandler(document,'DOMMouseScroll',onWheel);
+                	},
+                	function(){
+                		EventUtil.removeHandler(document,'mousewheel',onWheel);
+                		EventUtil.removeHandler(document,'DOMMouseScroll',onWheel);
+                	});
+                    $(ed.target).textbox('textbox').bind('blur',function(){
+                    	var amount = 0;
+                    	var price1 = 0;
+                    	var price2 = 0;
+                    	var eds = $('#mytable').datagrid('getRows');
+                    	if(param.field == "amount")//列名等于名称
+                        {
+                    		amount = $(this).val().trim();
+                    		price1 = eds[param.index]['inPrice'];
+                    		price2 = eds[param.index]['price']; 
+                    		 var objGrid = $("#mytable");        // 表格对象
+                    	  /*   var invQtyEdt = objGrid.datagrid('getEditor', {index:param.index,field:'total1'});            // 数量对象
+                    	    $(invQtyEdt.target).numberbox("setValue",'89');  */
+                    		 $('#mytable').datagrid('updateRow',{
+								index: param.index,
+								row: {
+									amount:amount,
+									total1: (price1*amount).toFixed(2),
+									total2: (price2*amount).toFixed(2)
+								}
+							}).datagrid('beginEdit', param.index);  
+                    		  var sum1 = 0;
+                   		    var sum2 = 0;
+                      		for (var i = 0; i < eds.length; i++) {			
+                      		    var row = eds[i];                           		  
+                      		    if(eds[i].orderNo!=""&&eds[i].orderNo!=null&&eds[i].orderNo!="undefined"){
+                      		    	
+                      		    	/* alert(eds[i].inPrice); */
+                      		    	var qty = isNumber(amount) ? amount : 0;
+                      		    	/* alert(qty); */
+                      		        var inPrice = eds[i].inPrice;
+                      		        /* alert(inPrice); */
+                      		        var price = eds[i].price;
+                      		        sum1 += qty * inPrice;
+                      		        sum2 += qty * price;
+                      		        /* alert(sum1); */
+                      		      /* alert("tt"+amount);  */
+                      		    }	  
+                      		}
+                      		 /* alert(sum1); */
+                      		 $('#sum1').numberbox('setValue', sum1);
+                      		 $('#sum2').numberbox('setValue', sum2);
+                        }
+                    	
+                    });
                     
+                  
                 } else {
                    $(ed.target).focus();
                    if(param.field == "itemName")//列名等于名称
@@ -344,7 +500,7 @@ $.extend($.fn.datagrid.methods, {
                	 							        +"</td><td width='30px' height='22px' name='vendor' title='"+data.data[i].vendor+"' style=\"display:none\">"+data.data[i].vendor
                	 						            +"</td><td width='30px' height='22px' name='price' title='"+data.data[i].price+"'  style=\"display:none\">"+data.data[i].price
                	 					                +"</td><td width='30px' height='22px' name='inPrice' title='"+data.data[i].inPrice+"'  style=\"display:none\">"+data.data[i].inPrice
-               	 					                +"</td><td width='30px' height='22px' name='id' title='"+data.data[i].id+"'  style=\"display:none\">"+data.data[i].id
+               	 					                +"</td><td width='30px' height='22px' name='drugId' title='"+data.data[i].drugId+"'  style=\"display:none\">"+data.data[i].drugId
                	 									+"</td><td width='30px' height='22px' name='validDate' title='"+validDate+"'  style=\"display:none\">"+validDate+"</td></tr>");
                	 									$("#table1").append(_tr); 
                	   							}
@@ -372,8 +528,8 @@ $.extend($.fn.datagrid.methods, {
                	  							        var price= tablerow.find("[name='price']").text();
                	  						            var inPrice= tablerow.find("[name='inPrice']").text();
                	  					                var validDate= tablerow.find("[name='validDate']").text();
-               	  					                var id= tablerow.find("[name='id']").text();
-               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
+               	  					                var drugId= tablerow.find("[name='drugId']").text();
+               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
                										});
                								});
                								//单击checkbox
@@ -395,8 +551,8 @@ $.extend($.fn.datagrid.methods, {
             	  							        var price= tablerow.find("[name='price']").text();
             	  						            var inPrice= tablerow.find("[name='inPrice']").text();
             	  					                var validDate= tablerow.find("[name='validDate']").text();
-            	  					                var id= tablerow.find("[name='id']").text();
-               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
+            	  					                var drugId= tablerow.find("[name='drugId']").text();
+               	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
                										});
                									e.stopPropagation();//阻止tr冒泡
                								});
@@ -431,7 +587,7 @@ $.extend($.fn.datagrid.methods, {
                	    										price: '',
                	    										inPrice: '',
                	    										validDate: '',
-               	    										id:''
+               	    										drugId:''
                	    									});
                	    								}
                	    								$('#mytable').datagrid('updateRow',{
@@ -446,7 +602,7 @@ $.extend($.fn.datagrid.methods, {
                	    										price: selectedData[i]['Price'],
                	    										inPrice: selectedData[i]['InPrice'],
                	    										validDate: selectedData[i]['ValidDate'],
-               	    								         id:selectedData[i]['Id']
+               	    										drugId:selectedData[i]['DrugId']
                	    									}
                	    								});
                	 									inumber = i+1+rowindex;
@@ -463,7 +619,7 @@ $.extend($.fn.datagrid.methods, {
            	    										price: '',
            	    										inPrice: '',
            	    										validDate: '',
-           	    										id:''
+           	    										drugId:''
            	    									});
                	 											
                	    							}
@@ -515,7 +671,119 @@ $.extend($.fn.datagrid.methods, {
                 opts.oldOnClickCell.call(this, index, field);
             }
         });
-    }
+    }/* ,
+    keyCtr : function (jq,param) {
+        return jq.each(function () {         				  
+            var grid = $(this);             
+            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (e) {
+                switch (e.keyCode) {
+                case 38: // up
+                    var selected = grid.datagrid('getSelected');                   
+                    if (selected) {                    	 
+                    	var index = grid.datagrid('getRowIndex', selected);
+                        grid.datagrid('selectRow', index - 1);                       
+                      //单元格聚焦
+                        if(fieldname != ""){
+                         $('#mytable').datagrid('beginEdit', index-1);
+                        
+                         var ed = $('#mytable').datagrid('getEditor', {index:index-1,field:fieldname});
+                         $(ed.target).focus();
+                     }
+                    } else {
+                        var rows = grid.datagrid('getRows');
+                        grid.datagrid('selectRow', rows.length - 1);
+                      //单元格聚焦
+                       if(fieldname != ""){
+                         $('#mytable').datagrid('beginEdit', rows.length - 1);
+                         var ed = $('#mytable').datagrid('getEditor', {index:rows.length - 1,field:fieldname});
+                         $(ed.target).focus();
+                       }
+                    }
+                    break;
+                case 40: // down
+                    var selected = grid.datagrid('getSelected');
+                    if (selected) {
+                        var index = grid.datagrid('getRowIndex', selected);
+                        grid.datagrid('selectRow', index + 1);
+      //单元格聚焦
+      if(fieldname != ""){
+                         $('#mytable').datagrid('beginEdit', index+1);
+                         var ed = $('#mytable').datagrid('getEditor', {index:index+1,field:fieldname});
+                         $(ed.target).focus();
+      }
+                    } else {
+                        grid.datagrid('selectRow', 0);
+                      //单元格聚焦
+                       if(fieldname != ""){
+                         $('#mytable').datagrid('beginEdit', 0);
+                         var ed = $('#mytable').datagrid('getEditor', {index:0,field:fieldname});
+                         $(ed.target).focus();
+                       }
+                    }
+                    break;
+                case 37: // left
+                    var selected = grid.datagrid('getSelected');
+                    if (selected) {
+                        var index = grid.datagrid('getRowIndex', selected);
+                        //grid.datagrid('selectRow', index - 1);
+                       
+                        //单元格聚焦
+                        if(fieldname != ""){
+                        	
+                         $('#mytable').datagrid('beginEdit', index);
+                         if(columnMap[fieldname]-1 == 0) fieldname = columnarray[columnarray.length-1];//因本表格的第一列是不可编辑列，所以到了第二列时再向左直接到最后一列;
+                         else fieldname = columnarray[columnMap[fieldname]-1];
+                         var ed = $('#mytable').datagrid('getEditor', {index:index,field:fieldname});
+                         $(ed.target).focus();
+                     }
+                    } else {
+                        var rows = grid.datagrid('getRows');
+                      //单元格聚焦
+                       if(fieldname != ""){
+                         $('#mytable').datagrid('beginEdit', rows.length - 1);
+                         fieldname = columnarray[columnarray.length-1];
+                         var ed = $('#mytable').datagrid('getEditor', {index:rows.length - 1,field:fieldname});
+                         $(ed.target).focus();
+                       }
+                    }
+                    break;
+                case 39: // right
+                    var selected = grid.datagrid('getSelected');
+                    if (selected) {
+                        var index = grid.datagrid('getRowIndex', selected);                       
+      //单元格聚焦
+      if(fieldname != ""){
+    	 
+       if(columnMap[fieldname]+1 == columnarray.length){
+    	   fieldname = columnarray[1];  //因第一列为不可编辑列，所以在最右边时直接跳到第二列
+    	   }     	   
+       else {
+    	   
+    	   fieldname = columnarray[columnMap[fieldname]+1];
+    	   if(fieldname!="amount"){
+    		   fieldname = columnarray[columnMap[fieldname]+1];
+    	   }
+       }
+       onClickCell(0,'amount');
+                        $('#mytable').datagrid('beginEdit', 0);       
+                         var ed = $('#mytable').datagrid('getEditor', {index:0,field:'amount'});
+                         alert(ed);
+                         $(ed.target).focus();
+      }
+                    } else {
+                        grid.datagrid('selectRow', 0);
+                      //单元格聚焦
+                       if(fieldname != ""){
+                         fieldname = columnarray[1];//因第一列为不可编辑列，所以在最右边时直接跳到第二列x
+                         var ed = $('#mytable').datagrid('getEditor', {index:0,field:fieldname});
+                         $(ed.target).focus();
+                       }
+                    }
+                    break;
+                }
+            });
+        });
+    } */
 });
 
 function keyCheck(){
@@ -606,10 +874,10 @@ function keyCheck(){
 		        var price= $("#table1 tr:eq("+rowNo+")").find("[name='price']").text().trim(); 
 	            var inPrice= $("#table1 tr:eq("+rowNo+")").find("[name='inPrice']").text().trim(); 
               var validDate= $("#table1 tr:eq("+rowNo+")").find("[name='validDate']").text().trim(); 
-              var id= $("#table1 tr:eq("+rowNo+")").find("[name='id']").text().trim(); 
+              var drugId= $("#table1 tr:eq("+rowNo+")").find("[name='drugId']").text().trim(); 
 			if(matname != null && matname != "")
 			{
-				selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,Id:id});
+				selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
 			}
 		}
 		if(selectedData.length > 0)
@@ -628,7 +896,7 @@ function keyCheck(){
 							price: '',
 							inPrice: '',
 							validDate: '',
-							id:''
+							drugId:''
 						});
 	    		}	    	
 	 			$('#mytable').datagrid('updateRow',{
@@ -643,7 +911,7 @@ function keyCheck(){
 								price: selectedData[i]['Price'],
 								inPrice: selectedData[i]['InPrice'],
 								validDate: selectedData[i]['ValidDate'],
-								id: selectedData[i]['Id']
+								drugId: selectedData[i]['DrugId']
 						}
 					});
 	 			inumber = i+1+rowindex;
@@ -661,7 +929,7 @@ function keyCheck(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 	    	}
     	}
@@ -691,15 +959,16 @@ function dosave(){
 	var rows = $('#mytable').datagrid('getRows');
 	/* var typeData = $('#departmentId').val(); */
 	var typeData =$('#departmentId').combotree('getText'); 
-	var sum1 = $('#sum1').val();
-	var sum2 = $('#sum2').val();
-	
-	
+	var sum1 = $('#sum1').numberbox('getValue');
+	var sum2 = $('#sum2').numberbox('getValue');
 	 var obj = {};
 	 obj.billType = "出库";
 	 obj.typeData = typeData;
 	 obj.sum1 = sum1;
-	 obj.sum2 = sum2;
+	 obj.sum2 = sum2; 
+	 if($('#billNo').val()!=""&&$('#billNo').val()!=null&&$('#billNo').val()!="undefined"){
+		 obj.billNo = $('#billNo').val();
+	 }
 	 var newArray = [];
 	var json = '';
 	/* json= "{"+"\"billType\":\"出库\",\"typeData\":\""+typeData+"\",\"sum1\":"+sum1+",\"sum2\":"+sum2+",\"detailList\":["; */
@@ -709,7 +978,7 @@ function dosave(){
 	    	/* json+="{\"orderNo\":"+rows[i].orderNo+"\",\"amount\":"+rows[i].amount+",\"price1\":"+rows[i].inPrice+",\"price2\":"+rows[i].price+",\"validDate\":\""+rows[i].validDate+"\"},";	   */    	
 	    	var objes = {};
 	    	 objes.orderNo = rows[i].orderNo;
-	    	 objes.drugId = rows[i].id;
+	    	 objes.drugId = rows[i].drugId;
 	    	 objes.batchNo = rows[i].batchno;
 	    	 objes.amount = rows[i].amount;
 	    	 objes.price1 = rows[i].inPrice;
@@ -751,8 +1020,8 @@ function dosubmit(){
 	var rows = $('#mytable').datagrid('getRows');
 	/* var typeData = $('#departmentId').val(); */
 	var typeData =$('#departmentId').combotree('getText'); 
-	var sum1 = $('#sum1').val();
-	var sum2 = $('#sum2').val();		
+	var sum1 = $('#sum1').numberbox('getValue');
+	var sum2 = $('#sum2').numberbox('getValue');
 	 var obj = {};
 	 obj.billType = "出库";
 	 obj.typeData = typeData;
@@ -770,7 +1039,7 @@ function dosubmit(){
 	    	/* json+="{\"orderNo\":"+rows[i].orderNo+"\",\"amount\":"+rows[i].amount+",\"price1\":"+rows[i].inPrice+",\"price2\":"+rows[i].price+",\"validDate\":\""+rows[i].validDate+"\"},";	   */    	
 	    	var objes = {};
 	    	 objes.orderNo = rows[i].orderNo;
-	    	 objes.drugId = rows[i].id;
+	    	 objes.drugId = rows[i].drugId;
 	    	 objes.batchNo = rows[i].batchno;
 	    	 objes.amount = rows[i].amount;
 	    	 objes.price1 = rows[i].inPrice;
@@ -810,7 +1079,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 				$('#mytable').datagrid('appendRow',{
 	 				orderNo:'',
@@ -822,7 +1091,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 				$('#mytable').datagrid('appendRow',{
 	 				orderNo:'',
@@ -834,7 +1103,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 				$('#mytable').datagrid('appendRow',{
 	 				orderNo:'',
@@ -846,7 +1115,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 				$('#mytable').datagrid('appendRow',{
 	 				orderNo:'',
@@ -858,7 +1127,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 				$('#mytable').datagrid('appendRow',{
 	 				orderNo:'',
@@ -870,7 +1139,7 @@ function dosubmit(){
 						price: '',
 						inPrice: '',
 						validDate: '',
-						id:''
+						drugId:''
 					});
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
@@ -878,5 +1147,54 @@ function dosubmit(){
 		}
 	}); 
 }
+function doopen(){
+ var billNo=$('#billNos').val();
+ $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+	$.ajax({
+		type : 'POST',
+		url : "/outStorage/getDetailData",
+		data : {billNo:billNo},
+		dataType : 'JSON',
+		success : function(data) {						
+			if (data && data.code == 200) {										
+				var validDate=data.data.detailAndDrugList.validDate;				
+				for(var i=0;i<data.data.detailAndDrugList.length;i++){					
+					data.data.detailAndDrugList[i]["validDate"]=jsonDateFormat(data.data.detailAndDrugList[i]["validDate"]);
+					data.data.detailAndDrugList[i]["inPrice"]=data.data.detailAndDrugList[i]["price1"];
+					data.data.detailAndDrugList[i]["price"]=data.data.detailAndDrugList[i]["price2"];
+					data.data.detailAndDrugList[i]["total1"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
+					data.data.detailAndDrugList[i]["total2"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
+					
+					data.data.detailAndDrugList[i]["price1"] = undefined;
+					  data.data.detailAndDrugList[i]["price2"] = undefined;
+				}
+				   $('#mytable').datagrid('loadData',{"total" : data.data.detailAndDrugList.length,"rows" : data.data.detailAndDrugList});  
+				/*$('#mytable').datagrid({   
+				    url:data.data.detailAndDrugList  
+				}); */
+					$('#mytable').datagrid('appendRow',{
+		 				orderNo:'',
+							itemName: '',
+							spec: '',
+							unit: '',
+							vendor: '',
+							batchno:'',
+							price: '',
+							inPrice: '',
+							validDate: '',
+							drugId:''
+						});
+			} else {
+				jQuery.messager.alert('提示:',data.msg,'info'); 
+			}
+		}
+	});
+	 
+	
+	
+	
+} 
+
+	
 </script>
 </html>
