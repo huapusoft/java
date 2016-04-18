@@ -4,7 +4,6 @@
 
 	<resultMap id="BaseResultMap" type="com.template.domain.DicCompatibility">
 		<id column="id" property="id"  />
-		<result column="comId" property="comId" />
 		<result column="contentA" property="contentA" />
 		<result column="contentB" property="contentB" />
 		<result column="result" property="result" />
@@ -24,14 +23,13 @@
 				( contentA like CONCAT('%',#{keyWords},'%') ) or ( contentB like CONCAT('%',#{keyWords},'%') )
 			</if>
 		</where>
-		order by comId desc
 	</select>
 	
-	<insert id="insert" parameterType="com.template.domain.DicCompatibility">
+	<insert id="insert" parameterType="com.template.domain.DicCompatibility" useGeneratedKeys="true" keyProperty= "id">
 		insert into dic_compatibility
-		( comId, contentA, contentB, result)
+		( contentA, contentB, result)
 		values
-		( #{comId}, #{contentA}, #{contentB}, #{result})
+		( #{contentA}, #{contentB}, #{result})
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.DicCompatibility">
