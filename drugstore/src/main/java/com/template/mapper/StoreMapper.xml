@@ -168,12 +168,15 @@
 		<result column="validDateWarnDays" property="validDateWarnDays" />
 		<result column="customOrderCode" property="customOrderCode" />
 		<result column="storeIds" property="storeIds" />
+		
+		<result column="inPriceNew" property="inPriceNew" />
+		<result column="priceNew" property="priceNew" />
 	</resultMap>
 	<select id="getDrugAndStoreDataList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
 		select 
 			s.drugId,d.itemName,d.spec,d.unit,d.vendor,d.storeClass,d.expenseClass,d.drugFrom,d.drugFunction,
 			s.amount,s.batchNo,s.inPrice,s.price,s.validDate,s.place1,s.amountLowLimit,s.validDateWarnDays,s.customOrderCode,s.id as storeIds,
-			s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice
+			s.price*s.amount as storePrice,s.amount as realAmount,s.price*s.amount as realPrice,d.inPrice as inPriceNew, d.price as priceNew
 		from store s
 		inner join dic_drug d
 		on d.id = s.drugId
