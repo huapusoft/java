@@ -62,4 +62,24 @@ public interface DicDrugService {
 	 */
 	public DicDrug getById(int id) throws Exception;
 	
+	/**
+	 * 药品基础信息维护模板
+	* @author  fengql 
+	* @date 2016年4月18日 下午5:09:20 
+	* @parameter  
+	* @return
+	 */
+	public Map<String, Object> exportDrugBaseInfoTemplate() throws Exception;
+	
+	/**
+	 * 药品基础信息导入数据处理
+	* @author  fengql 
+	* @date 2016年4月18日 下午5:09:47 
+	* @parameter  
+	* @return
+	 */
+	public Map<String, Object> excelImport(Map<String, Object> result) throws Exception;
+	
+	
+	
 }
