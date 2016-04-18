@@ -72,6 +72,62 @@ public class DicDrug {
     private double ybClinicSelfRatio;//医疗保险门诊自理比例
 
     private double ybInhosSelfRatio;//医疗保险住院自理比例
+    
+    private double inPrice;//进价
+    private double price;//零售价
+    private double clinicInPrice;//门诊进价
+    private double clinicPrice;//门诊零售价
+    private double inhosInPrice;//住院进价
+    private double inhosPrice;//住院零售价
+    
+
+	public double getInPrice() {
+		return inPrice;
+	}
+
+	public void setInPrice(double inPrice) {
+		this.inPrice = inPrice;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getClinicInPrice() {
+		return clinicInPrice;
+	}
+
+	public void setClinicInPrice(double clinicInPrice) {
+		this.clinicInPrice = clinicInPrice;
+	}
+
+	public double getClinicPrice() {
+		return clinicPrice;
+	}
+
+	public void setClinicPrice(double clinicPrice) {
+		this.clinicPrice = clinicPrice;
+	}
+
+	public double getInhosInPrice() {
+		return inhosInPrice;
+	}
+
+	public void setInhosInPrice(double inhosInPrice) {
+		this.inhosInPrice = inhosInPrice;
+	}
+
+	public double getInhosPrice() {
+		return inhosPrice;
+	}
+
+	public void setInhosPrice(double inhosPrice) {
+		this.inhosPrice = inhosPrice;
+	}
 
 	public int getId() {
 		return id;

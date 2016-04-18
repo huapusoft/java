@@ -36,6 +36,13 @@
 	    <result column="ybCode" property="ybCode"  />
 	    <result column="ybClinicSelfRatio" property="ybClinicSelfRatio"  />
 	    <result column="ybInhosSelfRatio" property="ybInhosSelfRatio"  />
+	    
+	    <result column="inPrice" property="inPrice"  />
+	    <result column="price" property="price"  />
+	    <result column="clinicInPrice" property="clinicInPrice"  />
+	    <result column="clinicPrice" property="clinicPrice"  />
+	    <result column="inhosInPrice" property="inhosInPrice"  />
+	    <result column="inhosPrice" property="inhosPrice"  />
 	</resultMap>
 
 	<select id="getById" resultMap="BaseResultMap" parameterType="int">
@@ -69,7 +76,8 @@
 	      compositeItem, subItemSelect, partSelect, 
 	      changePrice, showInAdvice, enabled, 
 	      hzylCode, hzylVerify, hzylReimburse, 
-	      ybCode, ybClinicSelfRatio, ybInhosSelfRatio
+	      ybCode, ybClinicSelfRatio, ybInhosSelfRatio,
+	      inPrice, price, clinicInPrice, clinicPrice, inhosInPrice, inhosPrice
 	    )
 	    values (
 	      #{expenseClass}, #{storeClass}, 
@@ -82,7 +90,9 @@
 	      #{compositeItem}, #{subItemSelect}, #{partSelect}, 
 	      #{changePrice}, #{showInAdvice}, #{enabled}, 
 	      #{hzylCode}, #{hzylVerify}, #{hzylReimburse}, 
-	      #{ybCode}, #{ybClinicSelfRatio}, #{ybInhosSelfRatio} 
+	      #{ybCode}, #{ybClinicSelfRatio}, #{ybInhosSelfRatio},
+	      #{inPrice}, #{price}, #{clinicInPrice},
+	      #{clinicPrice}, #{inhosInPrice}, #{inhosPrice} 
 	    )
 	</insert>
 	
@@ -184,6 +194,25 @@
 	      </if>
 	      <if test="ybInhosSelfRatio != null" >
 	        ybInhosSelfRatio = #{ybInhosSelfRatio},
+	      </if>
+	      
+	      <if test="inPrice != null" >
+	        inPrice = #{inPrice},
+	      </if>
+	      <if test="price != null" >
+	        price = #{price},
+	      </if>
+	      <if test="clinicInPrice != null" >
+	        clinicInPrice = #{clinicInPrice},
+	      </if>
+	      <if test="clinicPrice != null" >
+	        clinicPrice = #{clinicPrice},
+	      </if>
+	      <if test="inhosInPrice != null" >
+	        inhosInPrice = #{inhosInPrice},
+	      </if>
+	      <if test="inhosPrice != null" >
+	        inhosPrice = #{inhosPrice},
 	      </if>
 	    </set>
 		where id = #{id}

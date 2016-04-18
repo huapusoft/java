@@ -20,6 +20,6 @@ public interface DicDrugMapper {
 	
 	public void update(DicDrug bean)  throws Exception;
 	
-	public void delete(int departmentId)  throws Exception;
+	public void delete(int id)  throws Exception;
 	
 }

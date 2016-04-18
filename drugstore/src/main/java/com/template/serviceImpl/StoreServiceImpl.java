@@ -187,14 +187,14 @@ public class StoreServiceImpl implements StoreService {
 		List<DrugAndStore> detailList=storeMapper.getDrugAndStoreDataList(params);
 		
 		//以下为采购时用到，取得最近一次进价、零售价
-		for(int i=0;i<detailList.size();i++){
+		/*for(int i=0;i<detailList.size();i++){
 			DrugAndStore drugAndStore=detailList.get(i);
 			String storeName=(String) params.get("storeName");
 			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, drugAndStore.getDrugId());
 			drugAndStore.setInPriceNew((Double)data.get("price1"));
 			drugAndStore.setPriceNew((Double)data.get("price2"));
 			detailList.set(i, drugAndStore);
-		}
+		}*/
 		
 		return detailList;
 	}
