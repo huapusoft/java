@@ -42,4 +42,36 @@
 		values
 		( #{jobNumber}, #{name}, #{age}, #{sex}, #{office}, #{role}, #{roleInfo}, #{password}, #{highLevel} )
 	</insert>
+	
+	<update id="update" parameterType="com.template.domain.DictEmployee">
+		update dic_employee
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="age != null and age != ''">
+				age = #{age},
+			</if>
+			<if test="sex != null and sex != ''">
+				sex = #{sex},
+			</if>
+			<if test="office != null and office != ''">
+				office = #{office},
+			</if>
+			<if test="role != null and role != ''">
+				role = #{role},
+			</if>
+			<if test="roleInfo != null and roleInfo != ''">
+				roleInfo = #{roleInfo},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="highLevel != null and highLevel != ''">
+				highLevel = #{highLevel},
+			</if>
+		</set>
+		where jobNumber = #{jobNumber}
+	</update>
+	
 </mapper>
