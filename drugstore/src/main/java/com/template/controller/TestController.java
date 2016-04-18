@@ -282,16 +282,142 @@ public class TestController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 
-		Map<String, Object> importData = POIUtil.importByExcel(request, 2, 5);
+		Map<String, Object> importResult = POIUtil.importByExcel(request, 2, 5);
 
-		String code = (String) importData.get("code");
-		result = importData;
+		String code = (String) importResult.get("code");
+		result = importResult;
 		if ("200".equals(code)) {
 			// TODO 数据处理
-
+			Map<String, Object> sheetDatas=	(Map<String, Object>) importResult.get("data");
+			List<List<String>> importData=(List<List<String>>) sheetDatas.get("sheetIndex");
+			for(int i=0;i<importData.size();i++){
+				List<String> data=importData.get(i);
+			}
 		}
 
 		return result;
 	}
+	
+	/**
+	 * 测试导出药品基础信息表模板
+	 * 
+	 * @Description:
+	 * @author army.liu
+	 * @param
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/exportDrugBaseInfoTemplate", method = RequestMethod.GET)
+	@ResponseBody
+	public void exportDrugBaseInfoTemplate(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws Exception {
+		Map<String, Object> formatData = new HashMap<String, Object>();
+		// sheet
+		List<String> sheetList = new ArrayList<String>();
+		sheetList.add("药品基础信息数据");
+		formatData.put("sheetList", sheetList);//
+
+		// 标题
+		Map<String, Object> sheetData = new HashMap<String, Object>();
+		sheetData.put("title", "药品基础信息数据模板");//
+		sheetData.put("titleMergeSize", 39);//
+
+		// 表头
+		List<String> tableHeadList = new ArrayList<String>();
+		tableHeadList.add("序号");
+		tableHeadList.add("收费类别");
+		tableHeadList.add("库存类别");
+		tableHeadList.add("名称");
+		tableHeadList.add("规格");
+		tableHeadList.add("生产商");
+		tableHeadList.add("进价");
+		tableHeadList.add("零售价");
+		tableHeadList.add("单位");
+		tableHeadList.add("门诊进价");
+		tableHeadList.add("门诊零售价");
+		tableHeadList.add("门诊零售单位");
+		tableHeadList.add("门诊零售单位比率");
+		tableHeadList.add("住院进价");
+		tableHeadList.add("住院零售价");
+		tableHeadList.add("住院零售单位");
+		tableHeadList.add("住院零售单位比率");
+		tableHeadList.add("医嘱单位");
+		tableHeadList.add("医嘱单位数值");
+		tableHeadList.add("医嘱单位数值单位");
+		tableHeadList.add("医嘱单位门诊比率");
+		tableHeadList.add("医嘱单位住院比率");
+		tableHeadList.add("五笔码");
+		tableHeadList.add("拼音码");
+		tableHeadList.add("药品功能代码");
+		tableHeadList.add("药品类别");
+		tableHeadList.add("药品剂型");
+		tableHeadList.add("是否为复合项目");
+		tableHeadList.add("是否有自选子项目");
+		tableHeadList.add("是否自选部位（专指检查项目）");
+		tableHeadList.add("是否可以更改价格");
+		tableHeadList.add("是否在医嘱中显示");
+		tableHeadList.add("是否启用");
+		tableHeadList.add("合作医疗对应码");
+		tableHeadList.add("合作医疗审批标志");
+		tableHeadList.add("合作医疗是否报销");
+		tableHeadList.add("医疗保险对应码");
+		tableHeadList.add("医疗保险门诊自理比例");
+		tableHeadList.add("医疗保险住院自理比例");
+		sheetData.put("tableHeader", tableHeadList);//
+	
+		// 表数据
+		List<List<Object>> tableData = new ArrayList<List<Object>>();
+		List<Object> rowData = new ArrayList<Object>();
+		rowData.add("10001");
+		rowData.add("1");
+		rowData.add("1");
+		rowData.add("红花注射液");
+		rowData.add("20ml");
+		rowData.add(".");
+		rowData.add("10");
+		rowData.add("15");
+		rowData.add("支");
+		rowData.add("10");
+		rowData.add("15");
+		rowData.add("支");
+		rowData.add("1");
+		rowData.add("10");
+		rowData.add("15");
+		rowData.add("支");
+		rowData.add("1");
+		rowData.add("支");
+		rowData.add("20");
+		rowData.add("ml");
+		rowData.add("1");
+		rowData.add("1");
+		rowData.add("xaiti");
+		rowData.add("hhzsy");
+		rowData.add("1");
+		rowData.add("1");
+		rowData.add("1");
+		rowData.add("0");
+		rowData.add("0");
+		rowData.add("0");
+		rowData.add("0");
+		rowData.add("0");
+		rowData.add("1");
+		rowData.add("");
+		rowData.add("0");
+		rowData.add("0");
+		rowData.add("");
+		rowData.add("0");
+		rowData.add("0");
+		
+		tableData.add(rowData);
+		sheetData.put("tableData", tableData);
+		formatData.put("sheetData", sheetData);//
+
+		String fileName = "药品基础信息维护模板";
+		String fileExtend = "xls";
+		POIUtil.exportToExcel(request, response, formatData, fileName,
+				fileExtend);
+
+	}
+
 
 }
