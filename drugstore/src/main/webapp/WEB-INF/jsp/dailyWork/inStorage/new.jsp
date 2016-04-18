@@ -702,7 +702,103 @@
 	                	 $("#sum1").numberbox("disable");
 	                	 $("#sum2").numberbox("disable");
 	                	 $("#typeData").combobox("disable");
-	                	 
+	                	 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+	     				$('#mytable').datagrid('appendRow',{
+	     	 					xh:'',
+	     	 					invoiceNo:'',
+	     						itemName: '',
+	     						spec: '',
+	     						vendor: '',
+	     						unit: '',
+	     						amount:'',
+	     						price1:'',
+	     						total1:'',
+	     						price2:'',
+	     						total2:'',
+	     						batchNo:'',
+	     						validDate: '',
+	     						drugId:''
+	     					});
+	     				$('#mytable').datagrid('appendRow',{
+	     					xh:'',
+     	 					invoiceNo:'',
+     						itemName: '',
+     						spec: '',
+     						vendor: '',
+     						unit: '',
+     						amount:'',
+     						price1:'',
+     						total1:'',
+     						price2:'',
+     						total2:'',
+     						batchNo:'',
+     						validDate: '',
+     						drugId:''
+	     					});
+	     				$('#mytable').datagrid('appendRow',{
+	     					xh:'',
+     	 					invoiceNo:'',
+     						itemName: '',
+     						spec: '',
+     						vendor: '',
+     						unit: '',
+     						amount:'',
+     						price1:'',
+     						total1:'',
+     						price2:'',
+     						total2:'',
+     						batchNo:'',
+     						validDate: '',
+     						drugId:''
+	     					});
+	     				$('#mytable').datagrid('appendRow',{
+	     					xh:'',
+     	 					invoiceNo:'',
+     						itemName: '',
+     						spec: '',
+     						vendor: '',
+     						unit: '',
+     						amount:'',
+     						price1:'',
+     						total1:'',
+     						price2:'',
+     						total2:'',
+     						batchNo:'',
+     						validDate: '',
+     						drugId:''
+	     					});
+	     				$('#mytable').datagrid('appendRow',{
+	     					xh:'',
+     	 					invoiceNo:'',
+     						itemName: '',
+     						spec: '',
+     						vendor: '',
+     						unit: '',
+     						amount:'',
+     						price1:'',
+     						total1:'',
+     						price2:'',
+     						total2:'',
+     						batchNo:'',
+     						validDate: '',
+     						drugId:''
+	     					});
+	     				$('#mytable').datagrid('appendRow',{
+	     					xh:'',
+     	 					invoiceNo:'',
+     						itemName: '',
+     						spec: '',
+     						vendor: '',
+     						unit: '',
+     						amount:'',
+     						price1:'',
+     						total1:'',
+     						price2:'',
+     						total2:'',
+     						batchNo:'',
+     						validDate: '',
+     						drugId:''
+	     					});
 	                	 $.messager.show({
 	                         title:'提示',
 	                         msg:'提交'+data.msg+'!',
