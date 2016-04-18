@@ -1141,6 +1141,7 @@ function dosubmit(){
 						validDate: '',
 						drugId:''
 					});
+				$('#billNo').val('');
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
 			}
