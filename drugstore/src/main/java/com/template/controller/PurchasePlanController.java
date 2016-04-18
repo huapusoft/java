@@ -138,7 +138,7 @@ public class PurchasePlanController {
 	}
 	
 	/**
-	 * 获取药品下拉数据
+	 * 获取药品下拉数据 从药品基础信息表中，读取已启用的药品数据
 	* @author  fengql 
 	* @date 2016年4月11日 上午9:14:41 
 	* @parameter  itemName-药品名称输入
@@ -170,39 +170,39 @@ public class PurchasePlanController {
 		return result;
 	}
 
-	/**
-	 * 获取选中药品的最近一次进价，零售价
-	* @author  fengql 
-	* @date 2016年4月11日 上午10:04:55 
-	* @parameter  
-	* @return
-	 */
-	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
-			HttpServletResponse response,
-			HttpSession session,
-			@RequestParam("id") int id
-			) throws Exception {
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("code", "300");
-		result.put("msg", "获取失败");
-		
-		try{
-			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id);
-			result.put("data", data);
-			result.put("code", "200");
-			result.put("msg", "成功");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());	
-		}
-		
-		return result;
-	}
+//	/**暂时不用，直接从在在库表中获取
+//	 * 获取选中药品的最近一次进价，零售价
+//	* @author  fengql 
+//	* @date 2016年4月11日 上午10:04:55 
+//	* @parameter  
+//	* @return
+//	 */
+//	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
+//			HttpServletResponse response,
+//			HttpSession session,
+//			@RequestParam("id") int id
+//			) throws Exception {
+//		
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		result.put("code", "300");
+//		result.put("msg", "获取失败");
+//		
+//		try{
+//			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+//			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id);
+//			result.put("data", data);
+//			result.put("code", "200");
+//			result.put("msg", "成功");
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			result.put("msg", "获取失败："+e.getMessage());	
+//		}
+//		
+//		return result;
+//	}
 	
 	/**
 	 * 保存采购计划草稿

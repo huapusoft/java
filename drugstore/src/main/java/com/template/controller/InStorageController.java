@@ -135,41 +135,41 @@ public class InStorageController {
 		return result;
 	}
 	
-	/**
-	 * 获取选中药品的最近一次进价，零售价
-	 * @Description: 获取选中药品的最近一次进价，零售价，用于添加某个药品后，自动回显进价和零售价
-	 * @author army.liu
-	 * @param  
-	 * @return
-	 * @throws
-	 */
-	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
-			HttpServletResponse response,
-			HttpSession session,
-			@RequestParam("id") int id
-			) throws Exception {
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("code", "300");
-		result.put("msg", "获取失败");
-		
-		try{
-			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
-			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id);
-			result.put("data", data);
-			result.put("code", "200");
-			result.put("msg", "成功");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			result.put("msg", "获取失败："+e.getMessage());
-			
-		}
-		
-		return result;
-	}
+//	/**暂时不用，直接从在在库表中获取
+//	 * 获取选中药品的最近一次进价，零售价
+//	 * @Description: 获取选中药品的最近一次进价，零售价，用于添加某个药品后，自动回显进价和零售价
+//	 * @author army.liu
+//	 * @param  
+//	 * @return
+//	 * @throws
+//	 */
+//	@RequestMapping(value = "/getDrugLatestPrice",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> getDrugLatestPrice(HttpServletRequest request, 
+//			HttpServletResponse response,
+//			HttpSession session,
+//			@RequestParam("id") int id
+//			) throws Exception {
+//		
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		result.put("code", "300");
+//		result.put("msg", "获取失败");
+//		
+//		try{
+//			String storeName = CommonUtil.getStoreNameFromSession(request);//药库名称
+//			Map<String, Object> data = inStorageService.getDrugLatestPrice( storeName, id);
+//			result.put("data", data);
+//			result.put("code", "200");
+//			result.put("msg", "成功");
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			result.put("msg", "获取失败："+e.getMessage());
+//			
+//		}
+//		
+//		return result;
+//	}
 	
 	/**
 	  * 保存入库草稿
