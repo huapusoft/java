@@ -8,7 +8,7 @@ package com.template.domain;
 public class DicCompatibilityDetail {
 
 	private int id;//唯一，自增长
-	private int comId;//配伍关联id
+	private int comId;//配伍主表id
 	private int comTypeA;//A类：0功能代码,1药类id
 	private String functionCodeA;//A类功能代码
 	private int drugClassIdA;//A类药类id

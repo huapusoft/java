@@ -10,7 +10,6 @@ import java.util.List;
 public class DicCompatibility {
 
 	private int id;//唯一，自增长
-	private int comId;//配伍关联id
 	private String contentA;//A类内容
 	private String contentB;//B类内容
 	private String result;//配伍结果
@@ -28,12 +27,6 @@ public class DicCompatibility {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getComId() {
-		return comId;
-	}
-	public void setComId(int comId) {
-		this.comId = comId;
 	}
 	public String getContentA() {
 		return contentA;
