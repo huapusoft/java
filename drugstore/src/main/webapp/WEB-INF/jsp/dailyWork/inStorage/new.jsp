@@ -16,7 +16,11 @@
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"></link>
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="/staticPublic/locale/easyui-lang-zh_CN.js"></script> 
 		<script type="text/javascript">
+		var maincurRow = "";//主页面表格行索引
+		var selectRow = "";//选择行
+		var saveclick  = 0;
 		var rowNo= 0;
 		var clickIndex = [];//单击行的索引数组
 		var selectedData = [];//选中的数据集合
@@ -90,7 +94,7 @@
                             	   var A_top = $(this).offset().top + $(this).outerHeight(true); //  1
                            		   var A_left = $(this).offset().left;
                             	   var val = $(this).val().trim();
-                            	   //alert(val);
+                            	   //console.info(val);
                             	   $("#table1  tr:not(:first)").remove();
                             	   rowNo= 0;
                             	   if(val != "" && val != null)
@@ -107,10 +111,14 @@
                        								//alert(data.data.length);
                        								for(var i = 0;i< data.data.length;i++)
                        	 							{
-                       									//alert(data[i].itemName);
+                       									//alert(data.data[i].vendor);
+                       									//alert(data.data[i].id);
                        	 								var _tr = $("<tr><td class='nametd' width='300px' height='22px' name ='matname' title='"+data.data[i].itemName+"'><input style='padding-right: 10px;' type='checkbox' name='cr01' id='cr01' value='"+data.data[i].itemName+"'/>"+data.data[i].itemName
                        	 									+"</td><td width='70px' height='22px' name='spec' title='"+data.data[i].spec+"'>"+data.data[i].spec
-                       	 									+"</td><td width='30px' height='22px' name='unitname' title='"+data.data[i].unit+"'>"+data.data[i].unit+"</td></tr>");
+                       	 									+"</td><td width='30px' height='22px' name='unitname' title='"+data.data[i].unit+"'>"+data.data[i].unit
+                       	 									+"</td><td width='30px' height='22px' name='vendor' style='display:none' title='"+data.data[i].vendor+"'>"+data.data[i].vendor
+                       	 									+"</td><td width='30px' height='22px' name='drugid' style='display:none' title='"+data.data[i].id+"'>"+data.data[i].id
+                       	 									+"</td></tr>");
                        	 									$("#table1").append(_tr); 
                        	   							}
                        								$("#selectItem").show().css({
@@ -132,7 +140,9 @@
                        	  									var matname = tablerow.find("[name='matname']").text();
                        	  									var spec= tablerow.find("[name='spec']").text();
                        	  									var unitname= tablerow.find("[name='unitname']").text();
-                       	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname});
+                       	  									var vendor = tablerow.find("[name='vendor']").text();
+                       	  									var drugid = tablerow.find("[name='drugid']").text();
+                       	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Vendor:vendor,Drugid:drugid});
                        										});
                        								/*
                        	    						alert(selectedData.length);
@@ -157,12 +167,15 @@
                        	  									var matname = tablerow.find("[name='matname']").text();
                        	  									var spec= tablerow.find("[name='spec']").text();
                        	  									var unitname= tablerow.find("[name='unitname']").text();
-                       	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname});
+                       	  									var vendor = tablerow.find("[name='vendor']").text();
+                   	  										var drugid = tablerow.find("[name='drugid']").text();
+                       	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Vendor:vendor,Drugid:drugid});
                        										});
                        									e.stopPropagation();//阻止tr冒泡
                        								});
                        								//双击行  防止执行多次
                        								$("#table1 tr").unbind("dblclick").dblclick(function() {
+                       									//alert(maincurRow);
                        									var rowindex = "";
                        									var inumber = "";//有数据的行数
                        									//var tb = document.getElementById("tbody");
@@ -177,31 +190,52 @@
                      								 			rowindex = i+1;
                      								 		}
                        							        }
-                       									//alert(selectedData.length);
-                       									for(var i = 0;i<selectedData.length;i++)
+                       	    							//alert(rows[maincurRow].xh);
+                       	    							if(rows[maincurRow].xh != "" && rows[maincurRow].xh != null)//序号不为空 表示要修改
                        	    							{
-                       	    								//alert(selectedData[i]['Name']);
-                       	    								//alert(selectedData[i]['Spec']);
-                       	    								//alert(selectedData[i]['UnitName']);
-                       	    								if(i+rowindex > rows.length-1)
-                       	    								{
-                       	    									$('#mytable').datagrid('appendRow',{
-                       	    										xh:'',
-                       	    										itemName: '',
-                       	    										spec: '',
-                       	    										unit: ''
-                       	    									});
+                       	    								for(var i = 0;i<selectedData.length;i++)
+	                           	    						{
+	                       	    								//alert(rows[maincurRow].xh.trim());
+	                       	    								$('#mytable').datagrid('updateRow',{
+	                           	    							index: maincurRow,
+	                           	    							row: {
+	                           	    								itemName: selectedData[i]['Name'],
+	                           	    								spec: selectedData[i]['Spec'],
+	                           	    								unit: selectedData[i]['UnitName'],
+	                           	    								vendor:selectedData[i]['Vendore'],
+	                           	    								drugid:selectedData[i]['Drugid'],
+	                           	    								}
+	                           	    							});
+	                       	    							 }
+                       	    							}
+                       	    							else
+                       	    							{
+                       	    								for(var i = 0;i<selectedData.length;i++)
+                               	    						{
+	                       	    								if(i+rowindex > rows.length-1)
+	                           	    							{
+	                           	    								$('#mytable').datagrid('appendRow',{
+	                           	    									xh:'',
+	                           	    									itemName: '',
+	                           	    									spec: '',
+	                           	    									unit: '',
+	                           	    									vendor:'',
+	                           	    									drugid:''
+	                           	    									});
+	                           	    							}
+	                       	    								$('#mytable').datagrid('updateRow',{
+	                           	    								index: i+rowindex,
+	                           	    								row: {
+	                           	    									xh:1+i+rowindex,
+	                           	    									itemName: selectedData[i]['Name'],
+	                           	    									spec: selectedData[i]['Spec'],
+	                           	    									unit: selectedData[i]['UnitName'],
+	                           	    									vendor:selectedData[i]['Vendore'],
+	                           	    									drugid:selectedData[i]['Drugid'],
+	                           	    								}
+	                           	    							});
+	                           	 								inumber = i+1+rowindex;
                        	    								}
-                       	    								$('#mytable').datagrid('updateRow',{
-                       	    									index: i+rowindex,
-                       	    									row: {
-                       	    										xh:1+i+rowindex,
-                       	    										itemName: selectedData[i]['Name'],
-                       	    										spec: selectedData[i]['Spec'],
-                       	    										unit: selectedData[i]['UnitName']
-                       	    									}
-                       	    								});
-                       	 									inumber = i+1+rowindex;
                        	    							}
                        	    							if(inumber == rows.length)//有数据的行和添加行后的页面的行相等就在添加一行
                        	    							{
@@ -209,18 +243,12 @@
                    	    										xh:'',
                    	    										itemName: '',
                    	    										spec: '',
-                   	    										unit: ''
+                   	    										unit: '',
+                   	    										vendor:'',
+                   	    										drugid:''
                    	    									});
                        	 											
                        	    							}
-                       	    							/*
-                       	 								$("#mytable tr").mouseover(function(){ 
-                       										$(this).find("td").css("background-color","#e4effd"); 
-                       									});
-                       									$("#mytable tr").mouseout(function(){ 
-                       										$(this).find("td").css("background-color","#FFFFFF"); 
-                       									});
-                       									*/
                        									$("#selectItem").hide();
                        									
                        								});
@@ -250,6 +278,8 @@
                     var opts = dg.datagrid('options');
                     opts.oldOnClickCell = opts.onClickCell;
                     opts.onClickCell = function(index, field){
+                    	maincurRow = index;//点击加入当前行索引
+                    	//alert("maincurRow:"+maincurRow);
                     	//alert(opts.editIndex);
                         if (opts.editIndex != undefined){//editIndex为编辑的索引值,这里仅为引用
                             if (dg.datagrid('validateRow', opts.editIndex)){
@@ -265,6 +295,7 @@
                             index: index,
                             field: field
                         });
+                        
                         opts.editIndex = index;
                         opts.oldOnClickCell.call(this, index, field);
                         
@@ -277,6 +308,25 @@
             				rowNo = 0;
             				$("#selectItem").hide();
             			}
+            			
+            			//alert(event.target.getAttribute('class'));
+            			//alert($(event.target).text());
+            				if(event.target.getAttribute('class') != "" && event.target.getAttribute('class') != null)
+                			{
+                				if(event.target.getAttribute('class').indexOf('datagrid-cell') == -1)//是否点击表格cell 不包含
+                				{
+                					dg.datagrid('endEdit', opts.editIndex);
+                				}
+                			}
+                			else
+                			{
+                				if($(event.target).text().trim() != "")
+                    			{
+                					dg.datagrid('endEdit', opts.editIndex);
+                    			}
+                			}
+            			
+            			
             		});
                     $("#selectItem").click(function(e) {
             			e.stopPropagation(); //  阻止冒泡
@@ -285,6 +335,18 @@
                 
             }
 			
+		});
+		
+		//数量校验不为0
+		$.extend($.fn.validatebox.defaults.rules, {
+			notLing: {
+				validator: function(value, param){
+					console.info("value"+value);
+					console.info("value.length"+value.length);
+					return value != param[0];
+				},
+				message: '不能为 {0}.'
+		    }
 		});
 		
 		function keyCheck(){
@@ -365,7 +427,7 @@
 		  	//enter事件
 			if(window.event.keyCode== 13)
 			{
-				//alert("enter");
+				//alert(maincurRow);
 				var flag = false;
 				var rowindex = 0;
 				var inumber = "";//有数据的行数
@@ -395,9 +457,11 @@
 					var matname = $("#table1 tr:eq("+rowNo+")").find("[name='matname']").text().trim();
 					var spec = $("#table1 tr:eq("+rowNo+")").find("[name='spec']").text().trim();
 					var unitname = $("#table1 tr:eq("+rowNo+")").find("[name='unitname']").text().trim();
+					var vendor = $("#table1 tr:eq("+rowNo+")").find("[name='vendor']").text().trim();
+					var drugid = $("#table1 tr:eq("+rowNo+")").find("[name='drugid']").text().trim();
 					if(matname != null && matname != "")
 					{
-						selectedData.push({Name:matname,Spec:spec,UnitName:unitname});
+						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Vendor:vendor,Drugid:drugid});
 					}
 				}
 				
@@ -406,57 +470,62 @@
 				//alert(clickIndex.length);
 				if(selectedData.length > 0)
 				{
-					for(var i = 0;i<selectedData.length;i++)
-			    	{
-			    		if(i+rowindex > rows.length-1)
-			    		{
-			    			/*
-			    			var mytable_tr = $("<tr><td align='center'></td><td><input class='one_td' name='one_value' id='one_value' style='width: 100%;height: 100%;border: 0px;'></input></td>"
-			    			+"<td></td><td></td><td class='iq_pr' id='iqty' align='right'></td><td class='iq_pr' id='price' align='right'></td><td id='total' align='right'></td>"+"</tr>");
-			 				$("#tbody").append(mytable_tr);
-			 				$(".one_td").selectMats("#selectItem");
-			 				$(".iq_pr").click(tdClick);*/
-			    			$('#mytable').datagrid('appendRow',{
-									xh:'',
-									itemName: '',
-									spec: '',
-									unit: ''
-								});
-			    		}
-			    		//alert(i+rowindex);
-			    		//alert(selectedData[i]['Name']);
-			    		//alert(selectedData[i]['Spec']);
-			    		//alert(selectedData[i]['UnitName']);
-			    		/*
-			    		tb.rows[i+rowindex].cells[0].innerHTML = i+1+rowindex;
-			    		tb.rows[i+rowindex].cells[1].innerHTML = selectedData[i]['Name'];
-			 			tb.rows[i+rowindex].cells[2].innerHTML = selectedData[i]['Spec'];
-			 			tb.rows[i+rowindex].cells[3].innerHTML = selectedData[i]['UnitName'];*/
-			 			$('#mytable').datagrid('updateRow',{
-								index: i+rowindex,
-								row: {
-									xh:1+i+rowindex,
-									itemName: selectedData[i]['Name'],
-									spec: selectedData[i]['Spec'],
-									unit: selectedData[i]['UnitName']
-								}
-							});
-			 			inumber = i+1+rowindex;
-			    	}
+					if(rows[maincurRow].xh != "" && rows[maincurRow].xh != null)//序号不为空 表示要修改
+					{
+						for(var i = 0;i<selectedData.length;i++)
+   						{
+							//alert(rows[maincurRow].xh.trim());
+							$('#mytable').datagrid('updateRow',{
+   							index: maincurRow,
+   							row: {
+   								itemName: selectedData[i]['Name'],
+   								spec: selectedData[i]['Spec'],
+   								unit: selectedData[i]['UnitName'],
+   								vendor:selectedData[i]['Vendore'],
+   								drugid:selectedData[i]['Drugid'],
+   								}
+   							});
+						}
+					}
+					else
+					{
+						for(var i = 0;i<selectedData.length;i++)
+   						{
+							if(i+rowindex > rows.length-1)
+   							{
+   								$('#mytable').datagrid('appendRow',{
+   									xh:'',
+   									itemName: '',
+   									spec: '',
+   									unit: '',
+   									vendor:'',
+   									drugid:''
+   									});
+   							}
+								$('#mytable').datagrid('updateRow',{
+   								index: i+rowindex,
+   								row: {
+   									xh:1+i+rowindex,
+   									itemName: selectedData[i]['Name'],
+   									spec: selectedData[i]['Spec'],
+   									unit: selectedData[i]['UnitName'],
+   									vendor:selectedData[i]['Vendore'],
+   									drugid:selectedData[i]['Drugid'],
+   								}
+   							});
+							inumber = i+1+rowindex;
+						}
+					}
 					
 			    	if(inumber == rows.length)//有数据的行和添加行后的页面的行相等就在添加一行
 			    	{
-			    		/*
-			    		var mytable_othertr = $("<tr><td align='center'></td><td><input class='one_td' name='one_value' id='one_value' style='width: 100%;height: 100%;border: 0px;'></input></td>"
-			    		+"<td></td><td></td><td class='iq_pr' id='iqty' align='right'></td><td class='iq_pr' id='price' align='right'></td><td id='total' align='right'></td>"+"</tr>");
-			 			$("#tbody").append(mytable_othertr);
-			 			$(".one_td").selectMats("#selectItem");
-			 			$(".iq_pr").click(tdClick);*/
 			 			$('#mytable').datagrid('appendRow',{
 								xh:'',
 								itemName: '',
 								spec: '',
-								unit: ''
+								unit: '',
+								vendor:'',
+								drugid:''
 							});
 			    	}
 		    	}
@@ -465,13 +534,6 @@
 		    	rowNo = 0;
 		    	clickIndex.splice(0,clickIndex.length);
 		    	$("#selectItem").hide();
-		    	/*
-		    	$("#mytable tr").mouseover(function(){ 
-				$(this).find("td").css("background-color","#e4effd"); 
-				});
-				$("#mytable tr").mouseout(function(){ 
-				$(this).find("td").css("background-color","#FFFFFF"); 
-				});*/
 		 		
 			}
 			//esc事件
@@ -489,9 +551,181 @@
 	    	return this.replace(/(^\s*)|(\s*$)/g,'');
 		}
 		
+		function save(){
+			var detailList = {};
+			var rows = $('#mytable').datagrid('getRows');  
+			var typeData =$('#typeData').combobox('getText').trim();
+			if(typeData == "" || typeData == null)
+			{
+				$.messager.alert('提示:','请选择供应商！','info');
+				return false;
+			}
+			//alert(typeData);
+			var sum1 = $('#sum1').val();
+			var sum2 = $('#sum2').val();
+			//alert(sum1);
+			//alert(sum2);
+			if($('#billNo').val() != "" && $('#billNo').val() != null)
+			{
+				$.messager.alert('提示:','单据已经保存,不能重复保存！','info');
+				return false;
+			}
+			var obj = {};
+			 obj.billType = "入库";
+			 obj.typeData = typeData;
+			 obj.sum1 = sum1;
+			 obj.sum2 = sum2;
+			 var newArray = [];
+			 var json = '';
+			 //var entities = "";
+			 for(i = 0;i < rows.length;i++)  
+			 {  
+				if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
+				{
+					//entities = entities  + JSON.stringify(rows[i]);
+					if(parseInt(rows[i].amount.trim()) == 0 || rows[i].amount.trim() == "" || rows[i].amount.trim() == null)
+					{
+						$.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
+						return false;
+					}
+					var objes = {};
+			    	 objes.orderNo = rows[i].xh;
+			    	 objes.invoiceNo = rows[i].invoiceNo;
+			    	 objes.drugId = rows[i].drugid;
+			    	 objes.batchNo = rows[i].batchno;
+			    	 objes.amount = rows[i].amount;
+			    	 objes.price1 = rows[i].rice1;
+			    	 objes.price2 = rows[i].price2;
+			    	 objes.validDate = rows[i].validDate;
+				     newArray.push(objes);
+				}
+			 } 
+			 if(newArray.length ==0)
+			 {
+				 $.messager.alert('提示:',"请填写入库明细！",'info');
+				 return false;
+			 }
+			 obj.detailList = newArray;
+			 //alert(entities);
+			 $.ajax({  
+	             url: '/inStorage/save',  
+	             type: "post",  
+	             dataType: 'json',
+	             contentType:"application/json;charset=UTF-8",
+	             data: JSON.stringify(obj),
+	             success: function (data) {  
+	                 if(data.code == 200){  
+	                	 $('#billNo').val(data.data);
+	                	 
+	                	 //$("#saveBtn").linkbutton("disable");
+	                	 //$("#sum1").numberbox("disable");
+	                	 //$("#sum2").numberbox("disable");
+	                	 //$("#typeData").combobox("disable");
+	                	 //$('#mytable').datagrid('cancelEdit', 0);
+	                	 $.messager.show({
+	                         title:'提示',
+	                         msg:'保存'+data.msg+'!',
+	                         showType:'show',
+	                         style:{
+	                        	    left:'', // 与左边界的距离
+	                        	    top:0 ,// 与顶部的距离
+	                        	    right : 0,
+	                        	}
+	                     	});
+	                    }else
+	                    {  
+	                    	$.messager.alert(data.msg);  
+	                        return;  
+	                    }  
+	             }  
+	           });  
+	    }
+		
+		function submit()
+		{
+			var detailList = {};
+			var rows = $('#mytable').datagrid('getRows');  
+			var typeData =$('#typeData').combobox('getText').trim();
+			if(typeData == "" || typeData == null)
+			{
+				$.messager.alert('提示:','请选择供应商！','info');
+				return false;
+			}
+			//alert(typeData);
+			var sum1 = $('#sum1').val();
+			var sum2 = $('#sum2').val();
+			var obj = {};
+			 obj.billType = "入库";
+			 obj.typeData = typeData;
+			 obj.sum1 = sum1;
+			 obj.sum2 = sum2;
+			 var newArray = [];
+			 var json = '';
+			 //var entities = "";
+			 for(i = 0;i < rows.length;i++)  
+			 {  
+				if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
+				{
+					//entities = entities  + JSON.stringify(rows[i]);
+					if(parseInt(rows[i].amount.trim()) == 0 || rows[i].amount.trim() == "" || rows[i].amount.trim() == null)
+					{
+						$.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
+						return false;
+					}
+					var objes = {};
+			    	 objes.orderNo = rows[i].xh;
+			    	 objes.invoiceNo = rows[i].invoiceNo;
+			    	 objes.drugId = rows[i].drugid;
+			    	 objes.batchNo = rows[i].batchno;
+			    	 objes.amount = rows[i].amount;
+			    	 objes.price1 = rows[i].rice1;
+			    	 objes.price2 = rows[i].price2;
+			    	 objes.validDate = rows[i].validDate;
+				     newArray.push(objes);
+				}
+			 } 
+			 if(newArray.length ==0)
+			 {
+				 $.messager.alert('提示:',"请填写入库明细！",'info');
+				 return false;
+			 }
+			 obj.detailList = newArray;
+			 $.ajax({  
+	             url: '/inStorage/submit',  
+	             type: "post",  
+	             dataType: 'json',
+	             contentType:"application/json;charset=UTF-8",
+	             data: JSON.stringify(obj),
+	             success: function (data) {  
+	                 if(data.code == 200){  
+	                	 $('#billNo').val();
+	                	 $("#sum1").numberbox("disable");
+	                	 $("#sum2").numberbox("disable");
+	                	 $("#typeData").combobox("disable");
+	                	 
+	                	 $.messager.show({
+	                         title:'提示',
+	                         msg:'提交'+data.msg+'!',
+	                         showType:'show',
+	                         style:{
+	                        	    left:'', // 与左边界的距离
+	                        	    top:0 ,// 与顶部的距离
+	                        	    right : 0,
+	                        	}
+	                     	});
+	                    }else
+	                    {  
+	                    	$.messager.alert(data.msg);  
+	                        return;  
+	                    }  
+	             }  
+	           });  
+		}
+		
 		$(function(){
 			$('#mytable').datagrid().datagrid('enableCellEditing');
 			
+			$('#mytable').datagrid('options').onSelect = function(index, rowData){selectRow = index;}
 			$.ajax({
 					type : "post",
     				url : "/inStorage/getEnabledDicProviderList",
@@ -502,25 +736,61 @@
     				success: function(data){
     					//alert(JSON.stringify(data.data));
     					$('#typeData').combobox({
-    						data : data.data,
+    						data: data.data,
     						method:'post',
     						valueField:'id',
-    						textField:'providerName'
+    						textField:'providerName',
+    						loadFilter: function (data){
+    							var newData = [];
+    							for(var i = 0;i<data.length;i++)
+    							{
+    								newData.push({id:data[i].id,providerName:data[i].providerName.trim()});
+    							}
+    							/*
+    							for(var i = 0;i<newData.length;i++)
+								{
+									alert(newData[i].providerName);
+								}*/
+    							return newData;
+    						}
     						});
     				}
 				});
-				/*
-			//var url = "${pageContext.request.contextPath}/inStorage/getEnabledDicProviderList?providerName= ";
-			$.getJSON("/inStorage/getEnabledDicProviderList?providerName= ", function(json) {
-				alert("aa");
-			$('#typeData').combobox({
-			data : json.data,
-			method:'post',
-			valueField:'id',
-			textField:'providerName'
-			});
-			}); */
+			
 		})
+		var toolbar = [{
+            text:'插行',
+            iconCls:'icon-add',
+            handler:function(){
+            	alert(selectRow);
+            	if(selectRow >=0)
+            	{
+            		$('#mytable').datagrid('insertRow',{
+                		index: selectRow,
+                		row: {
+                			xh:'ch',//标准序号不为空
+        					itemName: '',
+        					spec: '',
+        					unit: '',
+        					vendor:'',
+        					drugid:''
+                		}
+    				});	
+            	}
+            	else
+            	{
+            		$.messager.alert('提示:',"请先选择一行!",'info');
+   				 	return false;
+            	}
+            }
+        },'-',{
+            text:'删行',
+            iconCls:'icon-cut',
+            handler:function(){
+            	alert(selectRow);
+            	$('#mytable').datagrid('deleteRow',selectRow);
+            }
+        }];
 		</script>
 <style type="text/css">
 .selectItemcont {
@@ -567,39 +837,41 @@
 	<body onkeydown="keyCheck()">
 	<div style="margin:20px 0;">
 	</div>
+	<input id="billNo" type="hidden" />
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-combobox" style="width:230px" data-options="
 	"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" precision="2" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">零售价总金额：</font><input id="sum2" class="easyui-numberbox" precision="2" style="width:200px;;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px">保存</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px">提交</a>
+	<a href="#" id="modifyBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a>
+    <a href="#" id="saveBtn" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px" onclick="save()">保存</a>
+    <a href="#" id="printBtn" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+    <a href="#" id="submitBtn" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px" onclick="submit()">提交</a>
 
 	<div id="tb" style="padding:10px 0px;">
 	<table class="easyui-datagrid" style="width:100%;height:600px;" id="mytable"
-			data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
+			data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get',toolbar:toolbar">
 		<thead>
 			<tr>
-				<th data-options="field:'xh',width:80,align:'center'">序号</th>
+				<th data-options="field:'xh',width:80,align:'center',hidden:'true'">序号</th>
 				<th data-options="field:'invoiceNo',width:200,align:'center',editor:'text'">发票号</th>
 				<th data-options="field:'itemName',width:200,align:'center',editor:'text'" >名称</th>
 				<th data-options="field:'spec',width:150,align:'center'">规格</th>
 				<th data-options="field:'vendor',width:200,align:'center'">厂家</th>
-				<th data-options="field:'amount',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">数量</th>
+				<th data-options="field:'amount',width:100,align:'center',editor:{type:'numberbox',options:{precision:2,validType:'notLing[0]'}}">数量</th>
 				<th data-options="field:'unit',width:80,align:'center'">单位</th>
 				<th data-options="field:'price1',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">进价</th>
 				<th data-options="field:'total1',width:100,align:'center'">进价金额</th>
 				<th data-options="field:'price2',width:100,align:'center'">零售价</th>
 				<th data-options="field:'total2',width:100,align:'center'">零售价金额</th>
 				<th data-options="field:'batchNo',width:100,align:'center'">批号</th>
-				<th data-options="field:'validDate',width:100,align:'center'">有效期</th>
+				<th data-options="field:'validDate',width:100,align:'center',editor:{ type:'datebox'}">有效期</th>
+				<th data-options="field:'drugid',hidden:'true'">drugid</th>
 			</tr>
 		</thead>
 		<tbody id="tbody">
 			<tr>
-				<td>aa</td>
+				<td></td>
 				<td>zzz</td>
 				<td></td>
 				<td>xxx</td>
@@ -608,42 +880,14 @@
 				<td>eeee</td>
 				<td ></td>
 				<td >jjjjj</td>
-				<td>kkk</td>
-				<td>lll</td>
+				<td></td>
+				<td></td>
 				<td>mmm</td>
-				<td>nnn</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
 				<td></td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -672,8 +916,42 @@
 				<td></td>
 				<td></td>
 				<td></td>
+				<td></td>
 			</tr>
 			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
