@@ -139,9 +139,9 @@ var toolbar = [{
 <td class="fonttitle">领药部门：</td>
 <td><input class="easyui-combotree"  name="departmentId" id="departmentId" data-options="prompt:'请选择领药部门'" style="width:115px; height:25px;">   </td>
 <td class="fonttitle">进价金额：</td>
-<td ><input id="sum1"  name="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px"></td>
+<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:100px;height:25px"></td>
 <td class="fonttitle">零售价总金额：</td>
-<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px" ></td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:100px;height:25px" ></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton ipts" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
@@ -1314,6 +1314,9 @@ function dosubmit(){
 						drugId:''
 					});
 				$('#billNo').val('');
+				$('#departmentId').combotree('setValue','');
+ 				$('#sum1').numberbox('setValue', '');
+ 				$('#sum2').numberbox('setValue', ''); 				
 				 var interval;  
  				 var time=1000;  
  				 var x=2;    //设置时间2s

@@ -182,13 +182,13 @@
 		
 		<li class="item hand" onclick="javascript:addTab('药品退货','/salesReturn/new')"><a >药品退货</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('药品报损','test13.jsp')"><a >药品报损</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品报损','/breakage/new')"><a >药品报损</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('药品调价','test13.jsp')"><a >药品调价</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品调价','/adjustPrice/new')"><a >药品调价</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('药品盘点','test13.jsp')"><a >药品盘点</a></li>
+		<li class="item hand" onclick="javascript:addTab('药品盘点','/storeCheck/new')"><a >药品盘点</a></li>
 		
-		<li class="item hand" onclick="javascript:addTab('采购计划','test13.jsp')"><a >采购计划</a></li>
+		<li class="item hand" onclick="javascript:addTab('采购计划','/purchasePlan/new')"><a >采购计划</a></li>
 		</ul>	
 		</div>
 			
