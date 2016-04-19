@@ -13,6 +13,9 @@
 <html>
 	<head>
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/staticPublic/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="/staticPublic/js/jquery.form.js"></script>
+		<script type="text/javascript" src="/staticPublic/js/formJson.js"></script>
 	</head>
 	<body>
 		<h4>保存入库登记</h4>
@@ -55,7 +58,81 @@
 			<br/>
 			返回结果：<textarea id="result" name="result" rows="10"  cols="150" ></textarea>
 			
-		
+			<br></br>
+			<br></br>
+			<br></br>
+			<br></br>
+			<form id="companyForm" method="post">
+			  <div class="table_group qydj">
+			    <table class="table">
+			      <tr>
+			        <td>企业名称</td>
+			        <td colspan="2"><input type="text" class="text" id="companyName" name="companyName" value="1111" /></td>
+			        <td>组织机构代码</td>
+			        <td colspan="2"><input type="text" class="text" id="orgCode" name="orgCode"  value="1111" /></td>
+			      </tr>
+			      <tr>
+			        <td>联系地址</td>
+			        <td colspan="3"><input type="text" class="text" id="linkAddress" name="linkAddress"  value="1111" /></td>
+			      </tr>
+			    </table>
+			    <table class="table addline">
+			      <tr class="editr">
+			        <td>
+			          <div class="tite">企业联系人</div>
+			          <input type="text" class="text" name="linkmanList[0].linkman"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">职务</div>
+			          <input type="text" class="text" name="linkmanList[0].position"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">固定电话</div>
+			          <input type="text" class="text" name="linkmanList[0].telephone"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">手机</div>
+			          <input type="text" class="text" name="linkmanList[0].mobile"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">QQ</div>
+			          <input type="text" class="text" name="linkmanList[0].qq"  value="1111" /></td>
+			        <td>
+			          <div class="tite">E-mail</div>
+			          <input type="text" class="text" name="linkmanList[0].email"  value="1111" />
+			        </td>
+			      </tr>
+			    </table>
+			    <table class="table addline">
+			      <tr class="editr">
+			        <td>
+			          <div class="tite">企业联系人</div>
+			          <input type="text" class="text" name="linkmanList[1].linkman"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">职务</div>
+			          <input type="text" class="text" name="linkmanList[1].position"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">固定电话</div>
+			          <input type="text" class="text" name="linkmanList[1].telephone"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">手机</div>
+			          <input type="text" class="text" name="linkmanList[1].mobile"  value="1111" />
+			        </td>
+			        <td>
+			          <div class="tite">QQ</div>
+			          <input type="text" class="text" name="linkmanList[1].qq"  value="1111" /></td>
+			        <td>
+			          <div class="tite">E-mail</div>
+			          <input type="text" class="text" name="linkmanList[1].email"  value="1111" />
+			        </td>
+			      </tr>
+			    </table>
+			  </div>
+			</form>
+			<button onclick="testGetJson()">测试</button>
 	</body>
 </html>
 
@@ -111,6 +188,12 @@ function save(){
 			$('#saveBtn').attr("disabled", false);
 		}
 	})
+	
+}
+
+function testGetJson(){
+	var $paramJson = $.formHelper.getObject($('#companyForm').serialize());
+	alert( JSON.stringify( $paramJson ) );
 	
 }
 </script>
