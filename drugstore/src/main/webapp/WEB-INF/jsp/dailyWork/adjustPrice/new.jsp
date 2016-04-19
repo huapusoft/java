@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/easyui-lang-zh_CN.js"></script> 
-		<title>退货页面</title>
+		<title>调价页面</title>
 		<script type="text/javascript">
 		//WITHOUT Plugin
 		var EventUtil = {
@@ -119,47 +119,53 @@
                         		EventUtil.removeHandler(document,'DOMMouseScroll',onWheel);
                         	});
                             $(ed.target).textbox('textbox').bind('blur',function(){
-                            	var amount = 0;
+                            	var num = 0;
                             	var price1 = 0;
+                            	var price2 = 0;
                             	var eds = $('#mytable').datagrid('getRows');
-                            	if(param.field == "amount")//列名等于名称
+                            	if(param.field == "newprice")//列名等于新价格
                                 {
-                            		amount = $(this).val().trim();                            		
-                            		price1 = eds[param.index]['inPrice'];
-                            		price2 = eds[param.index]['price']; 
+                            		num = isNumber(eds[param.index]['num']) ? eds[param.index]['num'] : 0;
+                            		
+                            		newprice = $(this).val().trim();
+                            		price1 = eds[param.index]['price'];
+                            		price2 = eds[param.index]['newprice']; 
+                            		//alert(newprice*num);
                             		//console.info(amount*price1);
                             		$('#mytable').datagrid('updateRow',{
        									index: param.index,
-       									row: {
-       										amount:amount,
-       										total1: (price1*amount).toFixed(2),
-       										total2: (price2*amount).toFixed(2)
+       									row: {  
+       										newprice: newprice,
+       										total2: (newprice*num).toFixed(2),
+       										diftotal: ((newprice*num)-(price1*num)).toFixed(2) 
        									}
        								});
                             	
                                 } 
                             	var sum1 = 0;
                        		    var sum2 = 0;
-                       		 
+                       		    var sum3 = 0;
                           		for (var i = 0; i < eds.length; i++) {			
                           		    var row = eds[i];                           		  
                           		    if(eds[i].itemName!=""&&eds[i].itemName!=null&&eds[i].itemName!="undefined"){
                           		    	 /* alert("tt"+amount);    */
                           		    	/* alert(eds[i].inPrice); */
-                          		    	var qty = isNumber(eds[i].amount) ? eds[i].amount : 0;
+                          		    	var qty = isNumber(eds[i].num) ? eds[i].num : 0;
                           		    	/* alert(qty); */
-                          		        var inPrice = eds[i].inPrice;
-                          		        /* alert(inPrice); */
                           		        var price = eds[i].price;
-                          		        sum1 += qty * inPrice;
-                          		        sum2 += qty * price;
+                          		        /* alert(inPrice); */
+                          		        var newprice = eds[i].newprice;
+                          		        sum1 += qty * price;
+                          		        sum2 += qty * newprice;
                           		        /* alert(sum1); */
                           		     
                           		    }	  
                           		}
+                          		 sum3=sum2-sum1; 
                           		 /* alert(sum1); */
                           		 $('#sum1').numberbox('setValue', sum1);
                           		 $('#sum2').numberbox('setValue', sum2);
+                          		 $('#sum3').numberbox('setValue', sum3); 
                             });
                         } else {
                            $(ed.target).focus();
@@ -184,7 +190,7 @@
                             		   var param = "itemName=" + val;
                             		   $.ajax({
                             			    type : "post",
-                       						url : "/salesReturn/getDrugListFromStore",
+                       						url : "/adjustPrice/getStoreDrugList",
                        						data : param,
                        						dataType : "json",
                        						success: function(data){
@@ -192,15 +198,15 @@
                        							{
                        								//alert(data.data.length);
                        								for(var i = 0;i< data.data.length;i++)
-                       	 							{
+                       	 							{/* alert(data.data[i].num); */
                        									var validDate= jsonDateFormat(data.data[i].validDate);
                        									var _tr = $("<tr><td class='nametd' width='300px' height='22px' name ='matname' title='"+data.data[i].itemName+"'><input style='padding-right: 10px;' type='checkbox' name='cr01' id='cr01' value='"+data.data[i].itemName+"'/>"+data.data[i].itemName
                            	 									+"</td><td width='70px' height='22px' name='spec' title='"+data.data[i].spec+"'>"+data.data[i].spec
                            	 								    +"</td><td width='30px' height='22px' name='unitname' title='"+data.data[i].unit+"'>"+data.data[i].unit
-                           	 								    +"</td><td width='40px' height='22px' name='batchno' title='"+data.data[i].batchNo+"'>"+data.data[i].batchNo
+                           	 								    +"</td><td width='40px' height='22px' name='batchno' title='"+data.data[i].batchNo+"'style=\"display:none\">"+data.data[i].batchNo
+                           	 								    +"</td><td width='30px' height='22px' name='num' title='"+data.data[i].num+"'style=\"display:none\">"+data.data[i].num
                            	 							        +"</td><td width='30px' height='22px' name='vendor' title='"+data.data[i].vendor+"' style=\"display:none\">"+data.data[i].vendor
                            	 						            +"</td><td width='30px' height='22px' name='price' title='"+data.data[i].price+"'  style=\"display:none\">"+data.data[i].price
-                           	 					                +"</td><td width='30px' height='22px' name='inPrice' title='"+data.data[i].inPrice+"'  style=\"display:none\">"+data.data[i].inPrice
                            	 					                +"</td><td width='30px' height='22px' name='drugId' title='"+data.data[i].drugId+"'  style=\"display:none\">"+data.data[i].drugId
                            	 									+"</td><td width='30px' height='22px' name='validDate' title='"+validDate+"'  style=\"display:none\">"+validDate+"</td></tr>");
                            	 									$("#table1").append(_tr); 
@@ -224,13 +230,14 @@
                        	  								var matname = tablerow.find("[name='matname']").text();
                    	  									var spec= tablerow.find("[name='spec']").text();
                    	  									var unitname= tablerow.find("[name='unitname']").text();
+                   	  								    var num=parseFloat(tablerow.find("[name='num']").text()) ;
                    	  								    var batchno= tablerow.find("[name='batchno']").text();
                    	  								    var vendor= tablerow.find("[name='vendor']").text();
-                   	  							        var price= tablerow.find("[name='price']").text();
-                   	  						            var inPrice= tablerow.find("[name='inPrice']").text();
+                   	  							        var price= tablerow.find("[name='price']").text().trim();                   	  							          
+                   	  							        var total1=(num*price).toFixed(2) ;
                    	  					                var validDate= tablerow.find("[name='validDate']").text();
                    	  					                var drugId= tablerow.find("[name='drugId']").text();
-                   	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
+                   	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Num:num,Vendor:vendor,Price:price,ValidDate:validDate,DrugId:drugId,Total1:total1,Batchno:batchno});
                    										});
                        							
                        								});
@@ -248,13 +255,14 @@
                        	  								var matname = tablerow.find("[name='matname']").text();
                    	  									var spec= tablerow.find("[name='spec']").text();
                    	  									var unitname= tablerow.find("[name='unitname']").text();
-                   	  								    var batchno= tablerow.find("[name='batchno']").text();
+                   	  								    var num= tablerow.find("[name='num']").text();
                 	  								    var vendor= tablerow.find("[name='vendor']").text();
-                	  							        var price= tablerow.find("[name='price']").text();
-                	  						            var inPrice= tablerow.find("[name='inPrice']").text();
+                	  							        var price= tablerow.find("[name='price']").text();                	  						          
                 	  					                var validDate= tablerow.find("[name='validDate']").text();
+                	  					              var batchno= tablerow.find("[name='batchno']").text();
                 	  					                var drugId= tablerow.find("[name='drugId']").text();
-                   	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
+                	  					                var total1=(num*price).toFixed(2) ;
+                	  					              selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Num:num,Vendor:vendor,Price:price,ValidDate:validDate,DrugId:drugId,Total1:total1,Batchno:batchno});
                    										});
                        									e.stopPropagation();//阻止tr冒泡
                        								});
@@ -288,10 +296,11 @@
 	                   	    										spec: selectedData[i]['Spec'],
 	                   	    										unit: selectedData[i]['UnitName'],
 	                   	    										vendor: selectedData[i]['Vendor'],
+	                   	    										num: selectedData[i]['Num'],
 	                   	    										batchno: selectedData[i]['BatchNo'],
 	                   	    										price: selectedData[i]['Price'],
-	                   	    										inPrice: selectedData[i]['InPrice'],
 	                   	    										validDate: selectedData[i]['ValidDate'],
+	                   	    										total1: selectedData[i]['Total1'],
 	                   	    										drugId:selectedData[i]['DrugId']
 	                           	    								}
 	                           	    							});
@@ -309,10 +318,11 @@
 	                       	    										spec: '',
 	                       	    										unit: '',
 	                       	    										vendor: '',
-	                       	    										batchno:'',
+	                       	    										num:'',
 	                       	    										price: '',
-	                       	    										inPrice: '',
+	                       	    										total1: '',
 	                       	    										validDate: '',
+	                       	    										batchno:'',
 	                       	    										drugId:''
 	                           	    									});
 	                           	    							}
@@ -321,14 +331,15 @@
 	                           	    								row: {
 	                           	    									orderNo:1+i+rowindex,
 	                           	    									itemName: selectedData[i]['Name'],
-	                       	    										spec: selectedData[i]['Spec'],
-	                       	    										unit: selectedData[i]['UnitName'],
-	                       	    										vendor: selectedData[i]['Vendor'],
-	                       	    										batchno: selectedData[i]['BatchNo'],
-	                       	    										price: selectedData[i]['Price'],
-	                       	    										inPrice: selectedData[i]['InPrice'],
-	                       	    										validDate: selectedData[i]['ValidDate'],
-	                       	    										drugId:selectedData[i]['DrugId']
+		                   	    										spec: selectedData[i]['Spec'],
+		                   	    										unit: selectedData[i]['UnitName'],
+		                   	    										vendor: selectedData[i]['Vendor'],
+		                   	    										num: selectedData[i]['Num'],
+		                   	    										batchno: selectedData[i]['BatchNo'],
+		                   	    										price: selectedData[i]['Price'],
+		                   	    										validDate: selectedData[i]['ValidDate'],
+		                   	    										total1: selectedData[i]['Total1'],
+		                   	    										drugId:selectedData[i]['DrugId']
 	                           	    								}
 	                           	    							});
 	                           	 								inumber = i+1+rowindex;
@@ -338,14 +349,15 @@
                        	    							{
                        	    								$('#mytable').datagrid('appendRow',{
                        	    									orderNo:'',
-                   	    										itemName: '',
+                       	    									itemName: '',
                    	    										spec: '',
                    	    										unit: '',
                    	    										vendor: '',
-                   	    										batchno:'',
+                   	    										num:'',
                    	    										price: '',
-                   	    										inPrice: '',
+                   	    										total1: '',
                    	    										validDate: '',
+                   	    										batchno:'',
                    	    										drugId:''
                    	    									});
                        	 											
@@ -556,17 +568,18 @@
 				{
 					//alert(flag);
 					var matname = $("#table1 tr:eq("+rowNo+")").find("[name='matname']").text().trim();
-			var spec = $("#table1 tr:eq("+rowNo+")").find("[name='spec']").text().trim();
-			var unitname = $("#table1 tr:eq("+rowNo+")").find("[name='unitname']").text().trim();
-			var batchno=$("#table1 tr:eq("+rowNo+")").find("[name='batchno']").text().trim(); 
-			    var vendor=$("#table1 tr:eq("+rowNo+")").find("[name='vendor']").text().trim(); 
-		        var price= $("#table1 tr:eq("+rowNo+")").find("[name='price']").text().trim(); 
-	            var inPrice= $("#table1 tr:eq("+rowNo+")").find("[name='inPrice']").text().trim(); 
-              var validDate= $("#table1 tr:eq("+rowNo+")").find("[name='validDate']").text().trim(); 
-              var drugId= $("#table1 tr:eq("+rowNo+")").find("[name='drugId']").text().trim(); 
+			        var spec = $("#table1 tr:eq("+rowNo+")").find("[name='spec']").text().trim();
+			        var unitname = $("#table1 tr:eq("+rowNo+")").find("[name='unitname']").text().trim();
+			        var batchno=$("#table1 tr:eq("+rowNo+")").find("[name='batchno']").text().trim(); 
+			        var num=$("#table1 tr:eq("+rowNo+")").find("[name='num']").text().trim(); 
+			        var vendor=$("#table1 tr:eq("+rowNo+")").find("[name='vendor']").text().trim(); 
+		            var price= $("#table1 tr:eq("+rowNo+")").find("[name='price']").text().trim(); 
+		            var total1=(num*price).toFixed(2) ;
+                    var validDate= $("#table1 tr:eq("+rowNo+")").find("[name='validDate']").text().trim(); 
+                    var drugId= $("#table1 tr:eq("+rowNo+")").find("[name='drugId']").text().trim(); 
 					if(matname != null && matname != "")
 					{
-						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
+						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Num:num,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId,Total1:total1,Batchno:batchno});
 
 					}
 				}
@@ -585,14 +598,15 @@
    							index: maincurRow,
    							row: {
    								itemName: selectedData[i]['Name'],
-   								spec: selectedData[i]['Spec'],
-   								unit: selectedData[i]['UnitName'],
-   								vendor: selectedData[i]['Vendor'],
-   								batchno: selectedData[i]['BatchNo'],
-   								price: selectedData[i]['Price'],
-   								inPrice: selectedData[i]['InPrice'],
-   								validDate: selectedData[i]['ValidDate'],
-   								drugId: selectedData[i]['DrugId'],
+									spec: selectedData[i]['Spec'],
+									unit: selectedData[i]['UnitName'],
+									vendor: selectedData[i]['Vendor'],
+									num: selectedData[i]['Num'],
+									price: selectedData[i]['Price'],
+									batchno: selectedData[i]['BatchNo'],
+									validDate: selectedData[i]['ValidDate'],
+									total1: selectedData[i]['Total1'],
+									drugId:selectedData[i]['DrugId']
    								}
    							});
 						}
@@ -609,9 +623,9 @@
    									spec: '',
    									unit: '',
    									vendor: '',
-   									batchno:'',
+   									num:'',
    									price: '',
-   									inPrice: '',
+   									total1: '',
    									validDate: '',
    									drugId:''
    									});
@@ -621,14 +635,15 @@
    								row: {
    									orderNo:1+i+rowindex,
    									itemName: selectedData[i]['Name'],
-   									spec: selectedData[i]['Spec'],
-   									unit: selectedData[i]['UnitName'],
-   									vendor: selectedData[i]['Vendor'],
-   									batchno: selectedData[i]['BatchNo'],
-   									price: selectedData[i]['Price'],
-   									inPrice: selectedData[i]['InPrice'],
-   									validDate: selectedData[i]['ValidDate'],
-   									drugId: selectedData[i]['DrugId']
+									spec: selectedData[i]['Spec'],
+									unit: selectedData[i]['UnitName'],
+									vendor: selectedData[i]['Vendor'],
+									num: selectedData[i]['Num'],
+									batchno: selectedData[i]['BatchNo'],
+									price: selectedData[i]['Price'],
+									validDate: selectedData[i]['ValidDate'],
+									total1: selectedData[i]['Total1'],
+									drugId:selectedData[i]['DrugId']
    								}
    							});
 							inumber = i+1+rowindex;
@@ -639,15 +654,15 @@
 			    	{
 			 			$('#mytable').datagrid('appendRow',{
 			 				orderNo:'',
-							itemName: '',
-							spec: '',
-							unit: '',
-							vendor: '',
-							batchno:'',
-							price: '',
-							inPrice: '',
-							validDate: '',
-							drugId:''
+			 				itemName: '',
+								spec: '',
+								unit: '',
+								vendor: '',
+								num:'',
+								price: '',
+								total1: '',
+								validDate: '',
+								drugId:''
 							});
 			    	}
 		    	}
@@ -708,13 +723,11 @@
 		    }
 		    return result;
 		}		
-		$(function(){
-			$('#mytable').datagrid('hideColumn','id');
-			$('#mytable').datagrid('hideColumn','invoiceNo');	
+		$(function(){			
 			$('#mytable').datagrid().datagrid('enableCellEditing');
 			
 			$('#mytable').datagrid('options').onSelect = function(index, rowData){selectRow = index;}
-			$.ajax({
+		/* 	$.ajax({
 					type : "post",
     				url : "/salesReturn/getEnabledDicProviderList",
     				data : {
@@ -734,16 +747,12 @@
     							{
     								newData.push({id:data[i].id,providerName:data[i].providerName.trim()});
     							}
-    							/*
-    							for(var i = 0;i<newData.length;i++)
-								{
-									alert(newData[i].providerName);
-								}*/
+    							
     							return newData;
     						}
     						});
     				}
-				});
+				}); */
 			
 		})
 		var toolbar = [{
@@ -757,15 +766,15 @@
                 		index: selectRow,
                 		row: {
                 			orderNo:'ch',//标准序号不为空
-        					itemName: '',
-        					spec: '',
-        					unit: '',
-        					vendor: '',
-        					batchno:'',
-        					price: '',
-        					inPrice: '',
-        					validDate: '',
-        					drugId:''
+                			itemName: '',
+								spec: '',
+								unit: '',
+								vendor: '',
+								num:'',
+								price: '',
+								total1: '',
+								validDate: '',
+								drugId:''
                 		}
     				});	
             	}
@@ -850,12 +859,14 @@
 <td class="ipts"> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:70px" onclick="doopen();">打开</a> </td>
 </tr>
 <tr>
-<td class="fonttitle">供应商：</td>
-<td><input id="typeData" class="easyui-combobox" style="width:230px;height:25px" data-options="prompt:'请选择供应商'"></input>  </td>
-<td class="fonttitle ipts">进价金额：</td>
-<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:120px;height:25px"/></td>
-<td class="fonttitle ipts">零售价总金额：</td>
-<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px" /></td>
+<td class="fonttitle">调价批文：</td>
+<td><input id="typeData" class="easyui-textbox" style="width:230px;height:25px" data-options="prompt:'请填写调价批文'"></input>  </td>
+<td class="fonttitle ipts">原总金额：</td>
+<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:100px;height:25px"/></td>
+<td class="fonttitle ipts">现总金额：</td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:100px;height:25px" /></td>
+<td class="fonttitle ipts">总差金额：</td>
+<td> <input  name="sum3" id="sum3" class="easyui-numberbox" precision="2" style="width:100px;height:25px" /></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton iptes" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
@@ -870,20 +881,20 @@
 			data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get',toolbar:toolbar">
 		<thead>
 			<tr>
-				<th data-options="field:'orderNo',width:80,align:'center',hidden:'true'">序号</th>
-				<th data-options="field:'itemName',width:200,align:'center',editor:'text'" >药品名称</th>
+				<th data-options="field:'orderNo',width:80,align:'center',hidden:'true'">序号</th>				
+				<th data-options="field:'itemName',width:200,align:'center',editor:'text'" >名称</th>
 				<th data-options="field:'spec',width:150,align:'center'">规格</th>
 				<th data-options="field:'vendor',width:200,align:'center'">厂家</th>
-				<th data-options="field:'amount',width:100,align:'center',editor:{type:'numberbox',options:{precision:2,validType:'notLing[0]'}}">数量</th>
+				<th data-options="field:'num',width:100,align:'center'">数量</th>
 				<th data-options="field:'unit',width:80,align:'center'">单位</th>
-				<th data-options="field:'inPrice',width:100,align:'center'">进价</th>
-				<th data-options="field:'total1',width:100,align:'center'">进价金额</th>
-				<th data-options="field:'price',width:100,align:'center'">零售价</th>
-				<th data-options="field:'total2',width:100,align:'center'">零售价金额</th>
-				<th data-options="field:'batchno',width:100,align:'center'">批号</th>
-				<th data-options="field:'validDate',width:100,align:'center'">有效期</th>
-				<th data-options="field:'id',width:100,align:'center'">id</th>
-				<th data-options="field:'invoiceNo',width:100,align:'center'">发票号</th>
+				<th data-options="field:'price',width:100,align:'center'">价格</th>
+				<th data-options="field:'total1',width:100,align:'center'">金额</th>
+				<th data-options="field:'newprice',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">新价格</th>
+				<th data-options="field:'total2',width:100,align:'center'">新价金额</th>
+				<th data-options="field:'diftotal',width:100,align:'center'">差额</th>
+				<th data-options="field:'validDate',width:100,align:'center',hidden:'true'">有效期</th>
+				<th data-options="field:'batchno',width:100,align:'center',hidden:'true'">batchno</th>
+				<th data-options="field:'drugid',hidden:'true'">drugid</th>
 			</tr>
 		</thead>
 		<tbody id="tbody">
@@ -1012,20 +1023,21 @@
 	function dosave(){
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').combobox('getText').trim();
+		var typeData =$('#typeData').val().trim();
 		if(typeData == "" || typeData == null)
 		{
-			$.messager.alert('提示:','请选择供应商！','info');
+			$.messager.alert('提示:','请填写调价批文！','info');
 			return false;
 		}
 		//alert(typeData);
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
+		var sum3 = $('#sum3').val();
 		//alert(sum1);
 		/* alert($('#billNo').val()); */
 		
 		var obj = {};
-		 obj.billType = "退货";
+		 obj.billType = "调价";
 		 obj.typeData = typeData;
 		 obj.sum1 = sum1;
 		 obj.sum2 = sum2;
@@ -1040,31 +1052,31 @@
 			if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
 			{
 				//entities = entities  + JSON.stringify(rows[i]);
-				if(parseInt(rows[i].amount.trim()) == 0 || rows[i].amount.trim() == "" || rows[i].amount.trim() == null)
+				if(parseInt(rows[i].newprice.trim()) == 0 || rows[i].newprice.trim() == "" || rows[i].newprice.trim() == null)
 				{
-					$.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
+					$.messager.alert('提示:',"第"+(i+1)+"行新价格异常！",'info');
 					return false;
 				}
 				var objes = {};
 				 objes.orderNo = rows[i].orderNo;
 		    	 objes.drugId = rows[i].drugId;
 		    	 objes.batchNo = rows[i].batchno;
-		    	 objes.amount = rows[i].amount;
-		    	 objes.price1 = rows[i].inPrice;
-		    	 objes.price2 = rows[i].price;
+		    	 objes.amount = rows[i].num;
+		    	 objes.price1 = rows[i].price;
+		    	 objes.price2 = rows[i].newprice;
 		    	 objes.validDate = rows[i].validDate;
 			     newArray.push(objes);
 			}
 		 } 
 		 if(newArray.length ==0)
 		 {
-			 $.messager.alert('提示:',"请填写退货明细！",'info');
+			 $.messager.alert('提示:',"请填写调价明细！",'info');
 			 return false;
 		 }
 		 obj.detailList = newArray;
 		 //alert(entities);
 		 $.ajax({  
-             url: '/salesReturn/save',  
+             url: '/adjustPrice/save',  
              type: "post",  
              dataType: 'json',
              contentType:"application/json;charset=UTF-8",
@@ -1098,17 +1110,17 @@
 	{
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').combobox('getText').trim();
+		var typeData =$('#typeData').val().trim();
 		if(typeData == "" || typeData == null)
 		{
-			jQuery.messager.alert('提示:',"请选择供应商！",'info'); 
+			jQuery.messager.alert('提示:',"请填写调价批文！",'info'); 
 			return false;
 		}
 		//alert(typeData);
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
 		var obj = {};
-		 obj.billType = "退货";
+		 obj.billType = "调价";
 		 obj.typeData = typeData;
 		 obj.sum1 = sum1;
 		 obj.sum2 = sum2;
@@ -1120,30 +1132,30 @@
 			if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
 			{
 				//entities = entities  + JSON.stringify(rows[i]);
-				if(parseInt(rows[i].amount.trim()) == 0 || rows[i].amount.trim() == "" || rows[i].amount.trim() == null)
+				if(parseInt(rows[i].newprice.trim()) == 0 || rows[i].newprice.trim() == "" || rows[i].newprice.trim() == null)
 				{
-					jQuery.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
+					jQuery.messager.alert('提示:',"第"+(i+1)+"行新价格异常！",'info');
 					return false;
 				}
 				var objes = {};
-				objes.orderNo = rows[i].orderNo;
+				 objes.orderNo = rows[i].orderNo;
 		    	 objes.drugId = rows[i].drugId;
 		    	 objes.batchNo = rows[i].batchno;
-		    	 objes.amount = rows[i].amount;
-		    	 objes.price1 = rows[i].inPrice;
-		    	 objes.price2 = rows[i].price;
+		    	 objes.amount = rows[i].num;
+		    	 objes.price1 = rows[i].price;
+		    	 objes.price2 = rows[i].newprice;
 		    	 objes.validDate = rows[i].validDate;
 			     newArray.push(objes);
 			}
 		 } 
 		 if(newArray.length ==0)
 		 {
-			 jQuery.messager.alert('提示:',"请填写退货明细！",'info');
+			 jQuery.messager.alert('提示:',"请填写调价明细！",'info');
 			 return false;
 		 }
 		 obj.detailList = newArray;
 		 $.ajax({  
-             url: '/salesReturn/submit',  
+             url: '/adjustPrice/submit',  
              type: "post",  
              dataType: 'json',
              contentType:"application/json;charset=UTF-8",
@@ -1228,6 +1240,10 @@
 						drugId:''
      					});
      				$('#billNo').val('');
+     				$('#typeData').textbox('setValue','');
+     				$('#sum1').numberbox('setValue', '');
+     				$('#sum2').numberbox('setValue', '');
+     				$('#sum3').numberbox('setValue', '');     				
      				 var interval;  
      				 var time=1000;  
      				 var x=2;    //设置时间2s
@@ -1263,7 +1279,7 @@
 		 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
 			$.ajax({
 				type : 'POST',
-				url : "/salesReturn/getDetailData",
+				url : "/breakage/getDetailData",
 				data : {billNo:billNo},
 				dataType : 'JSON',
 				success : function(data) {						

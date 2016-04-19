@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/easyui-lang-zh_CN.js"></script> 
-		<title>退货页面</title>
+		<title>报损页面</title>
 		<script type="text/javascript">
 		//WITHOUT Plugin
 		var EventUtil = {
@@ -184,7 +184,7 @@
                             		   var param = "itemName=" + val;
                             		   $.ajax({
                             			    type : "post",
-                       						url : "/salesReturn/getDrugListFromStore",
+                       						url : "/breakage/getDrugListFromStore",
                        						data : param,
                        						dataType : "json",
                        						success: function(data){
@@ -714,7 +714,7 @@
 			$('#mytable').datagrid().datagrid('enableCellEditing');
 			
 			$('#mytable').datagrid('options').onSelect = function(index, rowData){selectRow = index;}
-			$.ajax({
+		/* 	$.ajax({
 					type : "post",
     				url : "/salesReturn/getEnabledDicProviderList",
     				data : {
@@ -734,16 +734,12 @@
     							{
     								newData.push({id:data[i].id,providerName:data[i].providerName.trim()});
     							}
-    							/*
-    							for(var i = 0;i<newData.length;i++)
-								{
-									alert(newData[i].providerName);
-								}*/
+    							
     							return newData;
     						}
     						});
     				}
-				});
+				}); */
 			
 		})
 		var toolbar = [{
@@ -850,12 +846,12 @@
 <td class="ipts"> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:70px" onclick="doopen();">打开</a> </td>
 </tr>
 <tr>
-<td class="fonttitle">供应商：</td>
-<td><input id="typeData" class="easyui-combobox" style="width:230px;height:25px" data-options="prompt:'请选择供应商'"></input>  </td>
+<td class="fonttitle">原因：</td>
+<td><input id="typeData" class="easyui-textbox" style="width:230px;height:25px" data-options="prompt:'请填写原因'"></input>  </td>
 <td class="fonttitle ipts">进价金额：</td>
-<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:120px;height:25px"/></td>
+<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:100px;height:25px"/></td>
 <td class="fonttitle ipts">零售价总金额：</td>
-<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px" /></td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:100px;height:25px" /></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton iptes" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
@@ -1012,10 +1008,10 @@
 	function dosave(){
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').combobox('getText').trim();
+		var typeData =$('#typeData').val().trim();
 		if(typeData == "" || typeData == null)
 		{
-			$.messager.alert('提示:','请选择供应商！','info');
+			$.messager.alert('提示:','请填写报损原因！','info');
 			return false;
 		}
 		//alert(typeData);
@@ -1025,7 +1021,7 @@
 		/* alert($('#billNo').val()); */
 		
 		var obj = {};
-		 obj.billType = "退货";
+		 obj.billType = "报损";
 		 obj.typeData = typeData;
 		 obj.sum1 = sum1;
 		 obj.sum2 = sum2;
@@ -1058,13 +1054,13 @@
 		 } 
 		 if(newArray.length ==0)
 		 {
-			 $.messager.alert('提示:',"请填写退货明细！",'info');
+			 $.messager.alert('提示:',"请填写报损明细！",'info');
 			 return false;
 		 }
 		 obj.detailList = newArray;
 		 //alert(entities);
 		 $.ajax({  
-             url: '/salesReturn/save',  
+             url: '/breakage/save',  
              type: "post",  
              dataType: 'json',
              contentType:"application/json;charset=UTF-8",
@@ -1098,17 +1094,17 @@
 	{
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').combobox('getText').trim();
+		var typeData =$('#typeData').val().trim();
 		if(typeData == "" || typeData == null)
 		{
-			jQuery.messager.alert('提示:',"请选择供应商！",'info'); 
+			jQuery.messager.alert('提示:',"请填写报损原因！",'info'); 
 			return false;
 		}
 		//alert(typeData);
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
 		var obj = {};
-		 obj.billType = "退货";
+		 obj.billType = "报损";
 		 obj.typeData = typeData;
 		 obj.sum1 = sum1;
 		 obj.sum2 = sum2;
@@ -1138,12 +1134,12 @@
 		 } 
 		 if(newArray.length ==0)
 		 {
-			 jQuery.messager.alert('提示:',"请填写退货明细！",'info');
+			 jQuery.messager.alert('提示:',"请填写报损明细！",'info');
 			 return false;
 		 }
 		 obj.detailList = newArray;
 		 $.ajax({  
-             url: '/salesReturn/submit',  
+             url: '/breakage/submit',  
              type: "post",  
              dataType: 'json',
              contentType:"application/json;charset=UTF-8",
@@ -1228,6 +1224,10 @@
 						drugId:''
      					});
      				$('#billNo').val('');
+     				$('#typeData').textbox('setValue','');
+     				$('#sum1').numberbox('setValue', '');
+     				$('#sum2').numberbox('setValue', '');
+     				
      				 var interval;  
      				 var time=1000;  
      				 var x=2;    //设置时间2s
@@ -1263,7 +1263,7 @@
 		 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
 			$.ajax({
 				type : 'POST',
-				url : "/salesReturn/getDetailData",
+				url : "/breakage/getDetailData",
 				data : {billNo:billNo},
 				dataType : 'JSON',
 				success : function(data) {						
