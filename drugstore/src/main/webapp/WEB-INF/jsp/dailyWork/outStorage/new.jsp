@@ -623,7 +623,7 @@ $.extend($.fn.datagrid.methods, {
              								 		}
                							        }
                	    							//alert(rows[maincurRow].xh);
-               	    							if(rows[maincurRow].xh != "" && rows[maincurRow].xh != null)//序号不为空 表示要修改
+               	    							if(rows[maincurRow].orderNo != "" && rows[maincurRow].orderNo != null)//序号不为空 表示要修改
                	    							{
                	    								for(var i = 0;i<selectedData.length;i++)
                        	    						{
