@@ -208,7 +208,75 @@ public class DicDrugServiceImpl implements DicDrugService {
 			List<String> data=importData.get(i);
 			for(int j=0;j<data.size();j++){
 				//得到每一列的数据并解析
-				String num= data.get(j);//序号
+				switch(j)
+		        {
+					case 1://收费类别
+					;
+					case 2://库存类别
+						;
+					case 3://名称
+						;
+					case 4://规格
+						;
+					case 5://生产商
+						;
+					case 6://进价
+						;
+					case 7://零售价
+						;
+	
+					case 8://单位
+						;
+					case 9://门诊进价
+						;
+					case 10://门诊零售价
+						;
+					case 11://门诊零售单位
+						;
+					case 12://门诊零售单位比率
+						;
+					case 13://住院进价
+						;
+					case 14://住院零售价
+						;
+					case 15://
+						;
+					case 16://收费类别
+						;
+					case 17://收费类别
+						;
+					case 18://收费类别
+						;
+					case 19://收费类别
+						;
+					case 20://收费类别
+						;
+					case 21://收费类别
+						;
+					case 22://收费类别
+						;
+					case 23://收费类别
+						;
+					case 24://收费类别
+						;
+					case 25://收费类别
+						;
+					case 26://收费类别
+						;
+					case 27://收费类别
+						;
+					case 28://收费类别
+						;
+					case 29://收费类别
+						;
+					case 30://收费类别
+						;
+					case 31://收费类别
+						;
+						
+					default:
+		        	System.out.println("other");
+		        }
 			}
 		}
 		return null;

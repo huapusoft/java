@@ -42,6 +42,12 @@
 		<h4>excel导入</h4>
 		<a href="/test/excelImport" target="_blank">excel导入-->点击查看</a>
 		
+		
+		<br/>
+		<br/>
+		<h4>库存excel导出</h4>
+		<a href="/storeQuery/export" target="_blank">excel导出-->点击查看</a>
+		
 	</body>
 </html>
 
