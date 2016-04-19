@@ -474,30 +474,31 @@ $.extend($.fn.datagrid.methods, {
 									total2: (price2*amount).toFixed(2)
 								}
 							});
-                    		var sum1 = 0;
-                   		    var sum2 = 0;
-                      		for (var i = 0; i < eds.length; i++) {			
-                      		    var row = eds[i];                           		  
-                      		    if(eds[i].orderNo!=""&&eds[i].orderNo!=null&&eds[i].orderNo!="undefined"){
-                      		    	
-                      		    	/* alert(eds[i].inPrice); */
-                      		    	var qty = isNumber(amount) ? amount : 0;
-                      		    	/* alert(qty); */
-                      		        var inPrice = eds[i].inPrice;
-                      		        /* alert(inPrice); */
-                      		        var price = eds[i].price;
-                      		        sum1 += qty * inPrice;
-                      		        sum2 += qty * price;
-                      		        /* alert(sum1); */
-                      		      /* alert("tt"+amount);  */
-                      		    }	  
-                      		}
-                      		 /* alert(sum1); */
-                      		 $('#sum1').numberbox('setValue', sum1);
-                      		 $('#sum2').numberbox('setValue', sum2);
+                    		
                         }
                     	
-                		
+                    	var sum1 = 0;
+               		    var sum2 = 0;
+               		 
+                  		for (var i = 0; i < eds.length; i++) {			
+                  		    var row = eds[i];                           		  
+                  		    if(eds[i].itemName!=""&&eds[i].itemName!=null&&eds[i].itemName!="undefined"){
+                  		    	 alert("tt"+amount);   
+                  		    	/* alert(eds[i].inPrice); */
+                  		    	var qty = isNumber(eds[i].amount) ? eds[i].amount : 0;
+                  		    	/* alert(qty); */
+                  		        var inPrice = eds[i].inPrice;
+                  		        /* alert(inPrice); */
+                  		        var price = eds[i].price;
+                  		        sum1 += qty * inPrice;
+                  		        sum2 += qty * price;
+                  		        /* alert(sum1); */
+                  		     
+                  		    }	  
+                  		}
+                  		 /* alert(sum1); */
+                  		 $('#sum1').numberbox('setValue', sum1);
+                  		 $('#sum2').numberbox('setValue', sum2);
                     });
                 } else {
                    $(ed.target).focus();
@@ -1167,7 +1168,18 @@ function dosave(){
 		success : function(data) {			
 			if (data && data.code == 200) {										
 				$('#billNo').val(data.data);
-				jQuery.messager.alert('提示:',"保存成功！",'info'); 
+				 var interval;  
+ 				 var time=1000;  
+ 				 var x=2;    //设置时间2s
+ 				 jQuery.messager.alert('提示:','保存'+data.msg+'!','info',function(){});     				
+ 				 interval=setInterval(fun,time);  
+ 				        function fun(){  
+ 				      --x;  
+ 				      if(x==0){  
+ 				          clearInterval(interval);  
+ 				  $(".messager-body").window('close');    
+ 				       }  
+ 				}; 
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
 			}
@@ -1302,6 +1314,18 @@ function dosubmit(){
 						drugId:''
 					});
 				$('#billNo').val('');
+				 var interval;  
+ 				 var time=1000;  
+ 				 var x=2;    //设置时间2s
+ 				 jQuery.messager.alert('提示:','提交'+data.msg+'!','info',function(){});     				
+ 				 interval=setInterval(fun,time);  
+ 				        function fun(){  
+ 				      --x;  
+ 				      if(x==0){  
+ 				          clearInterval(interval);  
+ 				  $(".messager-body").window('close');    
+ 				       }  
+ 				}; 
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
 			}

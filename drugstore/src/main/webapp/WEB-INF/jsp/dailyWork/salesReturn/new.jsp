@@ -135,29 +135,30 @@
        										total2: (price2*amount).toFixed(2)
        									}
        								});
-                            		var sum1 = 0;
-                           		    var sum2 = 0;
-                           		 
-                              		for (var i = 0; i < eds.length; i++) {			
-                              		    var row = eds[i];                           		  
-                              		    if(eds[i].itemName!=""&&eds[i].itemName!=null&&eds[i].itemName!="undefined"){
-                              		    	/* alert("tt"+eds[i].itemName);   */
-                              		    	/* alert(eds[i].inPrice); */
-                              		    	var qty = isNumber(amount) ? amount : 0;
-                              		    	/* alert(qty); */
-                              		        var inPrice = eds[i].inPrice;
-                              		        /* alert(inPrice); */
-                              		        var price = eds[i].price;
-                              		        sum1 += qty * inPrice;
-                              		        sum2 += qty * price;
-                              		        /* alert(sum1); */
-                              		     
-                              		    }	  
-                              		}
-                              		 /* alert(sum1); */
-                              		 $('#sum1').numberbox('setValue', sum1);
-                              		 $('#sum2').numberbox('setValue', sum2);
-                                }                                                    		
+                            	
+                                } 
+                            	var sum1 = 0;
+                       		    var sum2 = 0;
+                       		 
+                          		for (var i = 0; i < eds.length; i++) {			
+                          		    var row = eds[i];                           		  
+                          		    if(eds[i].itemName!=""&&eds[i].itemName!=null&&eds[i].itemName!="undefined"){
+                          		    	 /* alert("tt"+amount);    */
+                          		    	/* alert(eds[i].inPrice); */
+                          		    	var qty = isNumber(eds[i].amount) ? eds[i].amount : 0;
+                          		    	/* alert(qty); */
+                          		        var inPrice = eds[i].inPrice;
+                          		        /* alert(inPrice); */
+                          		        var price = eds[i].price;
+                          		        sum1 += qty * inPrice;
+                          		        sum2 += qty * price;
+                          		        /* alert(sum1); */
+                          		     
+                          		    }	  
+                          		}
+                          		 /* alert(sum1); */
+                          		 $('#sum1').numberbox('setValue', sum1);
+                          		 $('#sum2').numberbox('setValue', sum2);
                             });
                         } else {
                            $(ed.target).focus();
@@ -1007,7 +1008,7 @@
 	function isNumber(n) {
 		  return !isNaN(parseFloat(n)) && isFinite(n);
 		}
-	function save(){
+	function dosave(){
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
 		var typeData =$('#typeData').combobox('getText').trim();
@@ -1020,10 +1021,8 @@
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
 		//alert(sum1);
-		//alert(sum2);
-		if($('#billNo').val()!=""&&$('#billNo').val()!=null&&$('#billNo').val()!="undefined"){
-			 obj.billNo = $('#billNo').val();
-		 }
+		/* alert($('#billNo').val()); */
+		
 		var obj = {};
 		 obj.billType = "退货";
 		 obj.typeData = typeData;
@@ -1031,6 +1030,9 @@
 		 obj.sum2 = sum2;
 		 var newArray = [];
 		 var json = '';
+		 if($('#billNo').val()!=""&&$('#billNo').val()!=null&&$('#billNo').val()!="undefined"){
+			 obj.billNo = $('#billNo').val();
+		 }
 		 //var entities = "";
 		 for(i = 0;i < rows.length;i++)  
 		 {  
@@ -1070,16 +1072,18 @@
                  if(data.code == 200){  
                 	 $('#billNo').val(data.data);
                 	
-                	 $.messager.show({
-                         title:'提示',
-                         msg:'保存'+data.msg+'!',
-                         showType:'show',
-                         style:{
-                        	    left:'', // 与左边界的距离
-                        	    top:0 ,// 与顶部的距离
-                        	    right : 0,
-                        	}
-                     	});
+                	 var interval;  
+     				 var time=1000;  
+     				 var x=2;    //设置时间2s
+     				 jQuery.messager.alert('提示:','保存'+data.msg+'!','info',function(){});     				
+     				 interval=setInterval(fun,time);  
+     				        function fun(){  
+     				      --x;  
+     				      if(x==0){  
+     				          clearInterval(interval);  
+     				  $(".messager-body").window('close');    
+     				       }  
+     				}; 
                     }else
                     {  
                     	$.messager.alert(data.msg);  
@@ -1089,14 +1093,14 @@
            });  
     }
 	
-	function submit()
+	function dosubmit()
 	{
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
 		var typeData =$('#typeData').combobox('getText').trim();
 		if(typeData == "" || typeData == null)
 		{
-			$.messager.alert('提示:','请选择供应商！','info');
+			jQuery.messager.alert('提示:',"请选择供应商！",'info'); 
 			return false;
 		}
 		//alert(typeData);
@@ -1117,7 +1121,7 @@
 				//entities = entities  + JSON.stringify(rows[i]);
 				if(parseInt(rows[i].amount.trim()) == 0 || rows[i].amount.trim() == "" || rows[i].amount.trim() == null)
 				{
-					$.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
+					jQuery.messager.alert('提示:',"第"+(i+1)+"行数量异常！",'info');
 					return false;
 				}
 				var objes = {};
@@ -1133,7 +1137,7 @@
 		 } 
 		 if(newArray.length ==0)
 		 {
-			 $.messager.alert('提示:',"请填写退货明细！",'info');
+			 jQuery.messager.alert('提示:',"请填写退货明细！",'info');
 			 return false;
 		 }
 		 obj.detailList = newArray;
@@ -1222,7 +1226,20 @@
 						validDate: '',
 						drugId:''
      					});
-                	 $.messager.show({
+     				$('#billNo').val('');
+     				 var interval;  
+     				 var time=1000;  
+     				 var x=2;    //设置时间2s
+     				 jQuery.messager.alert('提示:','提交'+data.msg+'!','info',function(){});     				
+     				 interval=setInterval(fun,time);  
+     				        function fun(){  
+     				      --x;  
+     				      if(x==0){  
+     				          clearInterval(interval);  
+     				  $(".messager-body").window('close');    
+     				       }  
+     				}; 
+            /*     	 $.messager.show({
                          title:'提示',
                          msg:'提交'+data.msg+'!',
                          showType:'show',
@@ -1231,7 +1248,7 @@
                         	    top:0 ,// 与顶部的距离
                         	    right : 0,
                         	}
-                     	});
+                     	}); */
                     }else
                     {  
                     	$.messager.alert(data.msg);  
@@ -1240,6 +1257,54 @@
              }  
            });  
 	}
+	function doopen(){
+		 var billNo=$('#billNos').val();
+		 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+			$.ajax({
+				type : 'POST',
+				url : "/salesReturn/getDetailData",
+				data : {billNo:billNo},
+				dataType : 'JSON',
+				success : function(data) {						
+					if (data && data.code == 200) {										
+						var validDate=data.data.detailAndDrugList.validDate;				
+						for(var i=0;i<data.data.detailAndDrugList.length;i++){					
+							data.data.detailAndDrugList[i]["validDate"]=jsonDateFormat(data.data.detailAndDrugList[i]["validDate"]);
+							data.data.detailAndDrugList[i]["inPrice"]=data.data.detailAndDrugList[i]["price1"];
+							data.data.detailAndDrugList[i]["price"]=data.data.detailAndDrugList[i]["price2"];
+							data.data.detailAndDrugList[i]["total1"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
+							data.data.detailAndDrugList[i]["total2"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
+							
+							data.data.detailAndDrugList[i]["price1"] = undefined;
+							  data.data.detailAndDrugList[i]["price2"] = undefined;
+						}
+						   $('#mytable').datagrid('loadData',{"total" : data.data.detailAndDrugList.length,"rows" : data.data.detailAndDrugList});  
+						/*$('#mytable').datagrid({   
+						    url:data.data.detailAndDrugList  
+						}); */
+							$('#mytable').datagrid('appendRow',{
+				 				orderNo:'',
+									itemName: '',
+									spec: '',
+									unit: '',
+									vendor: '',
+									batchno:'',
+									price: '',
+									inPrice: '',
+									validDate: '',
+									drugId:''
+								});
+					} else {
+						jQuery.messager.alert('提示:',data.msg,'info'); 
+					}
+				}
+			});
+			 
+			
+			
+			
+		} 
+
 	</script> 
 	</body>
 </html>
