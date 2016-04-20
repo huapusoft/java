@@ -25,6 +25,7 @@ import com.template.domain.DicStoreClass;
 import com.template.service.CommonService;
 import com.template.service.DicDrugService;
 import com.template.service.DicStoreClassService;
+import com.template.util.POIUtil;
 
 
 /**
@@ -395,6 +396,73 @@ public class DrugSettingController {
 			
 		}
 		
+		return result;
+	}
+	
+	/**
+	 * 药品基础信息维护模板
+	* @author  fengql 
+	* @date 2016年4月20日 上午10:03:07 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/exportDrugBaseInfoTemplate", method = RequestMethod.GET)
+	@ResponseBody
+	public void exportDrugBaseInfoTemplate(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws Exception {
+		
+		Map<String, Object> formatData=dicDrugService.exportDrugBaseInfoTemplate();
+		String fileName = "药品基础信息维护模板";
+		String fileExtend = "xls";
+		POIUtil.exportToExcel(request, response, formatData, fileName,
+				fileExtend);
+
+	}
+	
+	/**
+	 * excel导入页面
+	* @author  fengql 
+	* @date 2016年4月20日 上午10:03:46 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/excelImportPage", method = RequestMethod.GET)
+	public ModelAndView excelImportPage(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session)
+			throws IOException {
+		ModelAndView mv = new ModelAndView("systemSetting/drugSetting/excelImport");
+		return mv;
+
+	}
+	
+	/**
+	 * excel导入
+	* @author  fengql 
+	* @date 2016年4月20日 上午10:07:16 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/excelImport", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> excelImport(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session)
+			throws IOException {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+
+		Map<String, Object> importResult = POIUtil.importByExcel(request, 2, 39);
+
+		String code = (String) importResult.get("code");
+		if ("200".equals(code)) {
+			
+			// TODO 数据处理
+			try {
+				result=dicDrugService.excelImport(importResult);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
 		return result;
 	}
 	

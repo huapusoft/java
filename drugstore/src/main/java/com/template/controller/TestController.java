@@ -286,15 +286,15 @@ public class TestController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 
-		Map<String, Object> importResult = POIUtil.importByExcel(request, 2, 5);
+		Map<String, Object> importResult = POIUtil.importByExcel(request, 2, 39);
 
 		String code = (String) importResult.get("code");
-		result = importResult;
+		//result = importResult;
 		if ("200".equals(code)) {
 			
 			// TODO 数据处理
 			try {
-				result=dicDrugService.excelImport(result);
+				result=dicDrugService.excelImport(importResult);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

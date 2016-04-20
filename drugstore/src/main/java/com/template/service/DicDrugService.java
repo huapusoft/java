@@ -78,7 +78,7 @@ public interface DicDrugService {
 	* @parameter  
 	* @return
 	 */
-	public Map<String, Object> excelImport(Map<String, Object> result) throws Exception;
+	public Map<String, Object> excelImport(Map<String, Object> importResult) throws Exception;
 	
 	
 	

@@ -275,7 +275,7 @@ public abstract class POIUtil {
 	 */
 	public static Map<String, Object> importByExcel(HttpServletRequest request,
 			int rowStartIndex, int cellCount) {
-
+		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 
@@ -397,7 +397,7 @@ public abstract class POIUtil {
 										}
 
 									} else {
-										cellValue = new DecimalFormat(".##")
+										cellValue = new DecimalFormat(".####")
 												.format(cell
 														.getNumericCellValue());
 
