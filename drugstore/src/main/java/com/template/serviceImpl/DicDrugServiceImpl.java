@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.template.dao.DicDrugMapper;
 import com.template.dao.StoreMapper;
 import com.template.domain.DicDrug;
@@ -196,6 +199,7 @@ public class DicDrugServiceImpl implements DicDrugService {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public Map<String, Object> excelImport(Map<String, Object> importResult)
 			throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
