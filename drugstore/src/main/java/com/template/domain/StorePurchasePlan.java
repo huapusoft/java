@@ -3,6 +3,9 @@ package com.template.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
+
 /**
  * 采购计划信息表
 * @author  army.liu 
@@ -17,9 +20,16 @@ public class StorePurchasePlan {
 	private int purchaseNo;//采购号
 	private String storeName;//药库名称
 	private Date purchaseTime;//制定时间
+	
+	@Size(max=64,message="长度最大为64个汉字")
 	private String remark;//计划说明
+	
+	@Digits(fraction = 3, integer = 10)
 	private double inSum;//进价金额
+	
+	@Digits(fraction = 3, integer = 10)
 	private double retailSum;//零售价金额
+	
 	private String status;//状态，默认为0草稿，1已提交，2财务驳回，3财务已审批，4领导驳回，5领导已审批
 	private String oper;//操作员
 	private Date submitTime;//提交时间

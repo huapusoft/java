@@ -1,5 +1,9 @@
 package com.template.domain;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * 药库盘点明细表实体
 * @author  fengql 
@@ -12,12 +16,27 @@ public class StoreCheckDetail {
 	
     private int id;//唯一，自增长
     private int checkNo;//盘点号
+    
+    @NotNull(message="不能为空")
     private int orderNo;//顺序号
+    
+    @NotNull(message="不能为空")
     private int drugId;//药品id
+    
+    @NotNull(message="不能为空")
+    @Size(max=32,message="长度最大为32个汉字")
     private String batchNo;//批号
+    
+    @Digits(fraction = 2, integer = 10)
     private double amount;//数量
+    
+    @Digits(fraction = 2, integer = 10)
     private double realAmount;//实际数量
+    
+    @Digits(fraction = 3, integer = 10)
     private double inPrice;//进价
+    
+    @Digits(fraction = 3, integer = 10)
     private double price;//零售价
     
 	public int getId() {

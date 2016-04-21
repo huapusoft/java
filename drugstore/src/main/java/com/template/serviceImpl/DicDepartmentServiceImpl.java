@@ -32,6 +32,9 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 		if( 0 == departmentId ){
 			//获取当前部门code
 			String departmentCode="";
+			if(null == bean.getParentCode()){
+				bean.setParentCode("0");
+			}
 			DicDepartment dicDepartment=dicDepartmentMapper.getByParentCode(bean.getParentCode());
 			if(null == dicDepartment){
 				departmentCode=bean.getParentCode()+"10";

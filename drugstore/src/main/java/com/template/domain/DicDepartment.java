@@ -1,5 +1,7 @@
 package com.template.domain;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 部门实体
  * @Description: 部门实体
@@ -7,11 +9,14 @@ package com.template.domain;
  */
 public class DicDepartment {
 
-	private int departmentId;
-	private String departmentCode;
-	private String departmentName;
-	private String parentCode;
-	private String parentName;
+	private int departmentId;//部门号，自增长
+	private String departmentCode;//部门code
+	
+	@NotNull(message="不能为空")
+	private String departmentName;//部门名称
+	
+	private String parentCode;//上级部门的部门code
+	private String parentName;//上级部门的部门名称
 	
 	public int getDepartmentId() {
 		return departmentId;

@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -216,13 +219,21 @@ public class PurchasePlanController {
 	public Map<String, Object> save(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestBody StorePurchasePlan purchaseData
+			@RequestBody StorePurchasePlan purchaseData, BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "保存失败");
 		
+		//校验前台数据
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		if( null != allErrors && allErrors.size() > 0 ){
+			FieldError error = (FieldError)allErrors.get(0);
+			result.put("msg", error.getField()+error.getDefaultMessage());
+			return result;
+		}
+				
 		try{
 			//详细信息
 			List<StorePurchasePlanDetail> detailList = purchaseData.getDetailList();
@@ -253,13 +264,23 @@ public class PurchasePlanController {
 	 */
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestBody StorePurchasePlan purchaseData
+	public Map<String, Object> submit(HttpServletRequest request, 
+			HttpServletResponse response, 
+			HttpSession session,
+			@RequestBody StorePurchasePlan purchaseData, BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "提交失败");
+		
+		//校验前台数据
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		if( null != allErrors && allErrors.size() > 0 ){
+			FieldError error = (FieldError)allErrors.get(0);
+			result.put("msg", error.getField()+error.getDefaultMessage());
+			return result;
+		}
 		
 		try{
 			//详细信息

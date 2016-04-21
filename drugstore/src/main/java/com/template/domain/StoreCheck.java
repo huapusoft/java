@@ -3,6 +3,8 @@ package com.template.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Digits;
+
 /**
  * 药库盘点信息表
 * @author  army.liu 
@@ -17,9 +19,16 @@ public class StoreCheck {
 	private int checkNo;//盘点号
 	private String storeName;//药库名称
 	private Date checkTime;//时间
+	
+	@Digits(fraction = 3, integer = 10)
 	private double inSum;//进价金额
+	
+	@Digits(fraction = 3, integer = 10)
 	private double retailSum;//零售价金额
+	
+	@Digits(fraction = 3, integer = 10)
 	private double checkRetailSum;//盘点零售价金额
+	
 	private String checkOper;//操作员
 	private String sealOper;//封存操作员
 	private Date sealTime;//封存时间

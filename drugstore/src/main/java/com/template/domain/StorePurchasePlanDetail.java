@@ -2,6 +2,10 @@ package com.template.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * 采购计划明细表实体
 * @author  fengql 
@@ -14,13 +18,30 @@ public class StorePurchasePlanDetail {
 	
 	private int id;//唯一，自增长
 	private int purchaseNo;//采购号
+	
+	@NotNull(message="不能为空")
 	private int orderNo;//顺序
+	
+	@NotNull(message="不能为空")
+	@Size(max=32,message="长度最大为32个汉字")
 	private String provider;//供应商
+	
+	@NotNull(message="不能为空")
 	private Date arriveTime;//预计到货日期
+	
+	@NotNull(message="不能为空")
 	private int drugId;//药品id
+	
+	@Digits(fraction = 2, integer = 10)
 	private double amount;//数量
+	
+	@Digits(fraction = 3, integer = 10)
 	private double inPrice;//进价
+	
+	@Digits(fraction = 3, integer = 10)
 	private double price;//零售价
+	
+	@Size(max=64,message="长度最大为64个汉字")
 	private String remark;//说明
 	
 	public int getId() {
