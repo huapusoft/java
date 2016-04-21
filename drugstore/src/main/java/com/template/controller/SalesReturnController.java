@@ -10,9 +10,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -152,12 +156,20 @@ public class SalesReturnController {
 	@ResponseBody
 	public Map<String, Object> name(HttpServletRequest request, 
 			HttpServletResponse response,HttpSession session,
-			@RequestBody StoreInOut inOut
+			@Valid @RequestBody StoreInOut inOut,BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "保存失败");
+
+		//校验前台数据
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		if( null != allErrors && allErrors.size() > 0 ){
+			FieldError error = (FieldError)allErrors.get(0);
+			result.put("msg", error.getField()+error.getDefaultMessage());
+			return result;
+		}
 		
 		try{
 			//详细信息
@@ -190,12 +202,20 @@ public class SalesReturnController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestBody StoreInOut inOut
+			@Valid @RequestBody StoreInOut inOut,BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "提交失败");
+	
+		//校验前台数据
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		if( null != allErrors && allErrors.size() > 0 ){
+			FieldError error = (FieldError)allErrors.get(0);
+			result.put("msg", error.getField()+error.getDefaultMessage());
+			return result;
+		}
 		
 		try{
 			List<StoreInOutDetail> detailList = inOut.getDetailList();

@@ -1,5 +1,9 @@
 package com.template.domain;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * 药品基础信息实体
  * @Description: 药品基础信息实体
@@ -9,44 +13,64 @@ public class DicDrug {
 
 	private int id;//标识（唯一）
 
+	@Size(max=16,message="长度最大为16个字符")
     private String expenseClass;//收费类别（西药、中成药、中草药）
 
+	@Size(max=16,message="长度最大为16个字符")
     private String storeClass;//库存类别
 
+    @NotNull(message="不能为空")
+    @Size(max=64,message="长度最大为32个汉字")
     private String itemName;//名称
 
+    @NotNull(message="不能为空")
+    @Size(max=32,message="长度最大为32个字符")
     private String spec;//规格
 
+    @NotNull(message="不能为空")
+    @Size(max=32,message="长度最大为32个字符")
     private String vendor;//生产商
 
+    @NotNull(message="不能为空")
+    @Size(max=16,message="长度最大为16个字符")
     private String unit;//单位
 
+    @Size(max=16,message="长度最大为16个字符")
     private String clinicUnit;//门诊零售单位
 
     private int clinicUnitRatio;//门诊零售单位比率
 
+    @Size(max=16,message="长度最大为16个字符")
     private String inhosUnit;//住院零售单位
 
     private int inhosUnitRatio;//住院零售单位比率
 
+    @Size(max=16,message="长度最大为16个字符")
     private String adviceUnit;//医嘱单位
 
+    @Size(max=16,message="长度最大为16个字符")
     private String adviceUnitValue;//医嘱单位数值
 
+    @Size(max=16,message="长度最大为16个字符")
     private String adviceUnitValueUnit;//医嘱单位数值单位
 
     private int adviceUnitClinicRatio;//医嘱单位门诊比率
 
     private int adviceUnitInhosRatio;//	医嘱单位住院比率
 
+    @Size(max=64,message="长度最大为64个字符")
     private String wb;//五笔码
 
+    @Size(max=64,message="长度最大为64个字符")
     private String py;//拼音码
 
+    @Size(max=16,message="长度最大为16个字符")
     private String drugFunction;//药品功能代码
 
+    @Size(max=16,message="长度最大为16个字符")
     private String drugClass;//药品类别
 
+    @Size(max=16,message="长度最大为16个字符")
     private String drugFrom;//药品剂型
 
     private int compositeItem;//是否为复合项目
@@ -61,23 +85,36 @@ public class DicDrug {
 
     private int enabled;//是否启用
 
+    @Size(max=32,message="长度最大为32个字符")
     private String hzylCode;//合作医疗对应码
 
     private int hzylVerify;//合作医疗审批标志
 
     private int hzylReimburse;//合作医疗是否报销
 
+    @Size(max=32,message="长度最大为32个字符")
     private String ybCode;//医疗保险对应码
 
     private double ybClinicSelfRatio;//医疗保险门诊自理比例
 
     private double ybInhosSelfRatio;//医疗保险住院自理比例
     
+    @Digits(fraction = 3, integer = 10)
     private double inPrice;//进价
+    
+    @Digits(fraction = 3, integer = 10)
     private double price;//零售价
+    
+    @Digits(fraction = 3, integer = 10)
     private double clinicInPrice;//门诊进价
+    
+    @Digits(fraction = 3, integer = 10)
     private double clinicPrice;//门诊零售价
+    
+    @Digits(fraction = 3, integer = 10)
     private double inhosInPrice;//住院进价
+    
+    @Digits(fraction = 3, integer = 10)
     private double inhosPrice;//住院零售价
     
 

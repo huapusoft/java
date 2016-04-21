@@ -2,6 +2,9 @@ package com.template.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
+
 /**
  * 药库基础信息、库存表的部分实体
 * @author  fengql 
@@ -33,13 +36,33 @@ public class DrugAndStore {
 	private double realPrice;//实际金额
 	
 	//以下为药品设置时需要
+//	storeIds--支持多个
+//	  * 			drugFunction
+//	  * 			storeClass
+//	  * 			place1
+//	  * 			customOrderCode
+//	  * 			amountLowLimit
+//	  * 			validDateWarnDays
 	private String storeIds;
+	
+	@Size(max=16,message="长度最大为8个汉字")
 	private String expenseClass;
+	
+	@Size(max=16,message="长度最大为8个汉字")
 	private String storeClass;
+	
 	private String drugFrom;
+	
+	@Size(max=16,message="长度最大为8个汉字")
 	private String drugFunction;
+	
+	@Digits(fraction = 0, integer = 10)
 	private int amountLowLimit;//库存下限
+	
+	@Digits(fraction = 0, integer = 10)
 	private int validDateWarnDays;//有效期报警天数
+	
+	@Digits(fraction = 0, integer = 10)
 	private int customOrderCode;//自定义顺序码
 	
 	//以下为采购计划用到

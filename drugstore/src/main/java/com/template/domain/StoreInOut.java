@@ -27,7 +27,7 @@ public class StoreInOut {
 	private String billType;//单据类型，可用值为：（入库、出库、退货、报损、调价）
 	
 	@NotNull(message="不能为空")
-	@Size(max=32,message="长度最大为32个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String typeData;//与单据类型相关的数据。入库：供应商名称 出库：领药部门名称 退货：供应商名称 报损：报损原因 调价：调价批文
 	
 	private Date billTime;//插入时间
