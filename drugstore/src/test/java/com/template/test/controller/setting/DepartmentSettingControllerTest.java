@@ -44,8 +44,8 @@ public class DepartmentSettingControllerTest {
 		DicDepartmentService dicDepartmentService = (DicDepartmentService) context.getBean("dicDepartmentService");
 		
 		DicDepartment bean = new DicDepartment();
-		bean.setDepartmentName("外科");
-		bean.setParentCode("10");
+		bean.setDepartmentName("皮肤科");
+		bean.setParentCode("1022");
 		dicDepartmentService.save(bean);	
 		
 	}
