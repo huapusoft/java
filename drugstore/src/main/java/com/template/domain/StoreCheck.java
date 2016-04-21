@@ -20,13 +20,13 @@ public class StoreCheck {
 	private String storeName;//药库名称
 	private Date checkTime;//时间
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double inSum;//进价金额
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double retailSum;//零售价金额
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double checkRetailSum;//盘点零售价金额
 	
 	private String checkOper;//操作员

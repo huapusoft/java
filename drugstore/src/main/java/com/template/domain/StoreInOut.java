@@ -23,7 +23,7 @@ public class StoreInOut {
 	private String storeName;//药库名称
 	
 	@NotNull(message="不能为空")
-	@Size(max=2,message="长度最大为2个汉字")
+	@Size(max=4,message="长度最大为2个汉字")
 	private String billType;//单据类型，可用值为：（入库、出库、退货、报损、调价）
 	
 	@NotNull(message="不能为空")
@@ -32,10 +32,10 @@ public class StoreInOut {
 	
 	private Date billTime;//插入时间
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double sum1;//金额1，字段的值与billType相关 入库：进价金额 出库：进价金额 退货：进价金额 报损：进价金额 调价：现零售价金额
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double sum2;//金额2，字段的值与billType相关 入库：零售价金额 出库：零售价金额 退货：零售价金额 报损：零售价金额 调价：新零售价金额
 	
 	private String billOper;//操作员

@@ -23,7 +23,7 @@ public class StorePurchasePlanDetail {
 	private int orderNo;//顺序
 	
 	@NotNull(message="不能为空")
-	@Size(max=32,message="长度最大为32个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String provider;//供应商
 	
 	@NotNull(message="不能为空")
@@ -32,16 +32,16 @@ public class StorePurchasePlanDetail {
 	@NotNull(message="不能为空")
 	private int drugId;//药品id
 	
-	@Digits(fraction = 2, integer = 10)
+	@Digits(fraction = 2, integer = 8,message="格式错误，应为：最多包含2位小数的10位数值")
 	private double amount;//数量
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
 	private double inPrice;//进价
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
 	private double price;//零售价
 	
-	@Size(max=64,message="长度最大为64个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String remark;//说明
 	
 	public int getId() {

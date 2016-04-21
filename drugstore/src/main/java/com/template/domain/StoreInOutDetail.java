@@ -33,13 +33,13 @@ public class StoreInOutDetail {
 	@Size(max=32,message="长度最大为32个字符")
 	private String batchNo;//批号
 	
-	@Digits(fraction = 1, integer = 10)
+	@Digits(fraction = 2, integer = 8,message="格式错误，应为：最多包含2位小数的10位数值")
 	private double amount;//数量
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
 	private double price1;//价格1,与billType的值相关，billType为调价，字段值为现零售价。billType为其它值时，字段值为进价
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
 	private double price2;//价格2，与billType的值相关，billType为调价，字段值为新零售价。billType为其它值时，字段值为零售价
 	
 	private Date validDate;//有效期

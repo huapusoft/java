@@ -95,26 +95,29 @@ public class DicDrug {
     @Size(max=32,message="长度最大为32个字符")
     private String ybCode;//医疗保险对应码
 
+    @Digits(fraction = 2, integer = 6,message="格式错误，应为：最多包含2位小数的8位数值")
     private double ybClinicSelfRatio;//医疗保险门诊自理比例
 
+    @Digits(fraction = 2, integer = 6,message="格式错误，应为：最多包含2位小数的8位数值")
     private double ybInhosSelfRatio;//医疗保险住院自理比例
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
     private double inPrice;//进价
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
     private double price;//零售价
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
     private double clinicInPrice;//门诊进价
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
     private double clinicPrice;//门诊零售价
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
     private double inhosInPrice;//住院进价
     
-    @Digits(fraction = 3, integer = 8)
+    @Digits(fraction = 3, integer = 5,message="格式错误，应为：最多包含3位小数的8位数值")
+
     private double inhosPrice;//住院零售价
     
 

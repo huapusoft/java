@@ -24,19 +24,19 @@ public class StoreCheckDetail {
     private int drugId;//药品id
     
     @NotNull(message="不能为空")
-    @Size(max=32,message="长度最大为32个汉字")
+    @Size(max=32,message="长度最大为32个字符")
     private String batchNo;//批号
     
-    @Digits(fraction = 2, integer = 10)
+    @Digits(fraction = 2, integer = 8,message="格式错误，应为：最多包含2位小数的10位数值")
     private double amount;//数量
     
-    @Digits(fraction = 2, integer = 10)
+    @Digits(fraction = 2, integer = 8,message="格式错误，应为：最多包含2位小数的10位数值")
     private double realAmount;//实际数量
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
     private double inPrice;//进价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 7,message="格式错误，应为：最多包含3位小数的10位数值")
     private double price;//零售价
     
 	public int getId() {

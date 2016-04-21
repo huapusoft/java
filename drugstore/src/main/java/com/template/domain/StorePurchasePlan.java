@@ -21,13 +21,13 @@ public class StorePurchasePlan {
 	private String storeName;//药库名称
 	private Date purchaseTime;//制定时间
 	
-	@Size(max=64,message="长度最大为64个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String remark;//计划说明
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double inSum;//进价金额
 	
-	@Digits(fraction = 3, integer = 10)
+	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double retailSum;//零售价金额
 	
 	private String status;//状态，默认为0草稿，1已提交，2财务驳回，3财务已审批，4领导驳回，5领导已审批

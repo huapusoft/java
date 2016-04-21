@@ -14,11 +14,11 @@ public class DicProvider {
 	private int id;//供应商标识（唯一）
 	
 	@NotNull(message="不能为空")
-	@Size(max=32,message="长度最大为32个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String providerName;//供应商名称
 	
 	@NotNull(message="不能为空")
-	@Size(max=64,message="长度最大为64个汉字")
+	@Size(max=200,message="长度最大为100个汉字")
 	private String addr;//地址
 	
 	@NotNull(message="不能为空")
@@ -32,7 +32,7 @@ public class DicProvider {
 	private String finance;//财务姓名
 	
 	@NotNull(message="不能为空")
-	@Size(max=64,message="长度最大为64个汉字")
+	@Size(max=64,message="长度最大为32个汉字")
 	private String bank;//开户行及电话
 	
 	private String wb;//名称五笔码

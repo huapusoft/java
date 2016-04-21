@@ -16,7 +16,7 @@ public class DicCompatibilityDetail {
 	@NotNull(message="不能为空")
 	private int comTypeA;//A类：0功能代码,1药类id
 	
-	@Size(max=32,message="长度最大为32个汉字")
+	@Size(max=32,message="长度最大为32个字符")
 	private String functionCodeA;//A类功能代码
 	
 	private int drugClassIdA;//A类药类id
@@ -24,7 +24,7 @@ public class DicCompatibilityDetail {
 	@NotNull(message="不能为空")
 	private int comTypeB;//B类：0功能代码,1药类id
 	
-	@Size(max=32,message="长度最大为32个汉字")
+	@Size(max=32,message="长度最大为32个字符")
 	private String functionCodeB;//B类功能代码
 	
 	private int drugClassIdB;//B类药类id

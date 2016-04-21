@@ -56,13 +56,13 @@ public class DrugAndStore {
 	@Size(max=16,message="长度最大为8个汉字")
 	private String drugFunction;
 	
-	@Digits(fraction = 0, integer = 10)
+	@Digits(fraction = 0, integer = 10,message="格式错误，应为：最多10位的整数")
 	private int amountLowLimit;//库存下限
 	
-	@Digits(fraction = 0, integer = 10)
+	@Digits(fraction = 0, integer = 10,message="格式错误，应为：最多10位的整数")
 	private int validDateWarnDays;//有效期报警天数
 	
-	@Digits(fraction = 0, integer = 10)
+	@Digits(fraction = 0, integer = 10,message="格式错误，应为：最多10位的整数")
 	private int customOrderCode;//自定义顺序码
 	
 	//以下为采购计划用到
