@@ -579,7 +579,7 @@
                     var drugId= $("#table1 tr:eq("+rowNo+")").find("[name='drugId']").text().trim(); 
 					if(matname != null && matname != "")
 					{
-						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Num:num,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId,Total1:total1,Batchno:batchno});
+						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Num:num,Vendor:vendor,Price:price,ValidDate:validDate,DrugId:drugId,Total1:total1,Batchno:batchno});
 
 					}
 				}
@@ -1099,7 +1099,8 @@
      				}; 
                     }else
                     {  
-                    	$.messager.alert(data.msg);  
+                    	$.messager.alert('提示:',data.msg,'info');
+                    	//$.messager.alert(data.msg);  
                         return;  
                     }  
              }  
