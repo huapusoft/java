@@ -344,6 +344,10 @@ public class CommonServiceImpl implements CommonService {
 			for(int i=0; i<detailList.size(); i++){
 				StoreInOutDetail detail = detailList.get(i);
 				detail.setBillNo(billNo);
+				//日期去掉时分秒
+				Date validDate = detail.getValidDate();
+				validDate = CommonUtil.parseDateToDate("yyyy-MM-dd", validDate);
+				detail.setValidDate(validDate);
 				storeInOutDetailMapper.insert(detail);
 				
 			}
@@ -383,6 +387,10 @@ public class CommonServiceImpl implements CommonService {
 			for(int i=0; i<detailList.size(); i++){
 				StoreInOutDetail detail = detailList.get(i);
 				detail.setBillNo(billNo);
+				//日期去掉时分秒
+				Date validDate = detail.getValidDate();
+				validDate = CommonUtil.parseDateToDate("yyyy-MM-dd", validDate);
+				detail.setValidDate(validDate);
 				storeInOutDetailMapper.insert(detail);
 				
 			}

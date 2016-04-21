@@ -104,4 +104,26 @@ public abstract  class CommonUtil {
 		return null;
 	}
 
+	/**
+	  * 将日期按照指定格式转化为没有时分秒
+	  * 
+	  * @Description: 方法功能描述
+	  * @author army.liu
+	  * @date 2016年4月21日 上午9:41:34
+	 */
+	public static Date parseDateToDate(String formatStr, Date date) {
+		if( StringUtils.isNotEmpty(formatStr)  && null != date ){
+			SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+			SimpleDateFormat sdf2 = new SimpleDateFormat(formatStr+" HH:mm:ss");
+			try {
+				String format = sdf.format(date);
+				return sdf2.parse( format+" 00:00:00" );
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
+	}
+
 }

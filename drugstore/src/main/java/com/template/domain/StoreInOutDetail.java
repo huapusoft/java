@@ -2,6 +2,10 @@ package com.template.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 /**
  * 药库出入库信息明细表storeInOutDetail的实体类
 * @author  fengql 
@@ -14,14 +18,30 @@ public class StoreInOutDetail {
 	private static final long serialVersionUID = 1L;
 	
 	private int id;//id,自增长
+	
 	private int billNo;//票据号
+	
+	@Min(value=0,message="最小值为0")
 	private int orderNo;//顺序号
+	
+	@Min(value=1,message="最小值为1")
 	private int drugId;//药品标识
+	
+	@Size(max=16,message="长度最大为16个字符")
 	private String invoiceNo;//发票号,与billType的值相关,当billType为入库时，字段值为发票号。billType取其它值时为空。
+	
+	@Size(max=32,message="长度最大为32个字符")
 	private String batchNo;//批号
+	
+	@Digits(fraction = 1, integer = 10)
 	private double amount;//数量
+	
+	@Digits(fraction = 3, integer = 10)
 	private double price1;//价格1,与billType的值相关，billType为调价，字段值为现零售价。billType为其它值时，字段值为进价
+	
+	@Digits(fraction = 3, integer = 10)
 	private double price2;//价格2，与billType的值相关，billType为调价，字段值为新零售价。billType为其它值时，字段值为零售价
+	
 	private Date validDate;//有效期
 	
 	public int getId() {

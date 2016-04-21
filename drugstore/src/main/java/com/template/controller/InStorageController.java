@@ -10,9 +10,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -181,15 +185,26 @@ public class InStorageController {
 	  */
 	@RequestMapping(value = "/save",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> save(HttpServletRequest request, 
+	public Map<String, Object> save(
+			@Valid @RequestBody StoreInOut inOut,BindingResult bindingResult,
+//			@Valid @RequestBody StoreInOut inOut,Errors errors,
+			HttpServletRequest request, 
 			HttpServletResponse response,
-			HttpSession session,
-			@RequestBody StoreInOut inOut
+			HttpSession session
+			
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("code", "300");
 		result.put("msg", "保存失败");
+		
+		//校验前台数据
+		List<ObjectError> allErrors = bindingResult.getAllErrors();
+		if( null != allErrors && allErrors.size() > 0 ){
+			FieldError error = (FieldError)allErrors.get(0);
+			result.put("msg", error.getField()+error.getDefaultMessage());
+			return result;
+		}
 		
 		try{
 			//详细信息
@@ -212,6 +227,26 @@ public class InStorageController {
 		return result;
 	}
 	
+//	/**
+//	  * 数据校验不符合时，返回前台ajax的错误信息 
+//	  * 
+//	  * @Description: 方法功能描述
+//	  * @author army.liu
+//	  * @date 2016年4月20日 下午4:30:13
+//	 */
+//	@ExceptionHandler  
+//    @ResponseBody  
+//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)  
+//    public String handleException(MethodArgumentNotValidException exception) { 
+//		BindingResult bindingResult = exception.getBindingResult();
+//		List<ObjectError> allErrors = bindingResult.getAllErrors();
+//		if( null != allErrors && allErrors.size() > 0 ){
+//			FieldError error = (FieldError)allErrors.get(0);
+//			return error.getField()+error.getDefaultMessage();
+//		}
+//		return "数据校验错误";
+//    } 
+
 	/**
 	 * 提交入库草稿
 	 * @Description: 提交入库草稿
