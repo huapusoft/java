@@ -132,6 +132,12 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public int submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
 		
+		String sealOper=checkData.getSealOper();
+		System.out.println("sealOper==="+sealOper);
+		if( null != sealOper ){
+			throw new RuntimeException("该盘点号已经封存,不可再次封存！");
+		}
+		
 		//先将页面中的内容进行保存
 		int checkNo = this.save(checkData, detailList, checkOper, storeName);
 		
