@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -106,7 +107,7 @@ public class AdjustPriceController {
 	public Map<String, Object> save(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestBody StoreInOut inOut,BindingResult bindingResult
+			@Valid @RequestBody StoreInOut inOut,BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -151,7 +152,7 @@ public class AdjustPriceController {
 	@RequestMapping(value = "/submit",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> submit(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestBody StoreInOut inOut,BindingResult bindingResult
+			@Valid @RequestBody StoreInOut inOut,BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -106,7 +107,7 @@ public class DepartmentSettingController {
 	@ResponseBody
 	public Map<String, Object> name(HttpServletRequest request, 
 			HttpServletResponse response,HttpSession session,
-			@RequestBody DicDepartment bean, BindingResult bindingResult
+			@Valid @RequestBody DicDepartment bean, BindingResult bindingResult
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
