@@ -136,16 +136,44 @@ public class DrugSettingControllerTest {
 		
 		DicDrug bean = new DicDrug();
 		bean.setExpenseClass("西药");
-		bean.setDrugFrom("喷雾");
-		bean.setStoreClass("测试分类1");
+		bean.setStoreClass("库存1");
 		bean.setItemName("药品1");
 		bean.setSpec("10ml*8瓶");
 		bean.setVendor("国药1号企业");
-		dicDrugService.save(bean);
 		
-//		bean.setId(13219);
-//		bean.setItemName("药品2");
-//		dicDrugService.save(bean);
+		bean.setUnit("箱");
+		bean.setClinicUnit("瓶");
+		bean.setInhosUnit("盖");
+		bean.setAdviceUnit("口");
+		
+		bean.setInPrice(11.2);
+		bean.setPrice(13.4);
+		bean.setClinicInPrice(13.4);
+		bean.setClinicPrice(14.4);
+		bean.setInhosInPrice(13.4);
+		bean.setInhosPrice(15.4);
+		
+		bean.setClinicUnitRatio(10);
+		bean.setInhosUnitRatio(12);
+		bean.setAdviceUnitClinicRatio(13);
+		bean.setAdviceUnitInhosRatio(14);
+		
+		bean.setWb("qwer");
+		bean.setPy("dsfrds");
+		bean.setCompositeItem(1);
+		bean.setSubItemSelect(1);
+		bean.setPartSelect(1);
+		bean.setChangePrice(1);
+		bean.setShowInAdvice(1);
+		bean.setEnabled(1);
+		bean.setHzylCode("24324234");
+		bean.setYbCode("123213");
+		
+		bean.setDrugFrom("喷雾");
+		bean.setDrugFunction("111");
+		bean.setDrugClass("2222");
+		bean.setStoreClass("测试分类1");
+		dicDrugService.save(bean);
 		
 	}
 	

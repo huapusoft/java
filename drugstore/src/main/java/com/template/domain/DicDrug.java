@@ -99,22 +99,22 @@ public class DicDrug {
 
     private double ybInhosSelfRatio;//医疗保险住院自理比例
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double inPrice;//进价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double price;//零售价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double clinicInPrice;//门诊进价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double clinicPrice;//门诊零售价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double inhosInPrice;//住院进价
     
-    @Digits(fraction = 3, integer = 10)
+    @Digits(fraction = 3, integer = 8)
     private double inhosPrice;//住院零售价
     
 

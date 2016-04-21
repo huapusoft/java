@@ -65,7 +65,7 @@ function save(){
 	$('#result').html("")
 	var $paramJson={
 			"billType" : "出库",
-			"typeData" : "手术室",
+			"typeData" : "18945678978",
 			"sum1" : 123.11,
 			"sum2" : 456.32,
 			"detailList" : 
@@ -73,7 +73,7 @@ function save(){
 			      	{
 			    	  	"orderNo" : 1,
 						"drugId" : 1001,
-						"batchNo" : "国药准字CB12382193",
+						"batchNo" : "国药准字CB123",
 						"amount" : 2,
 						"price1" : 1,
 						"price2" : 3.4,
