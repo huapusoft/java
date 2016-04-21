@@ -28,4 +28,6 @@ public interface StoreInOutDetailMapper {
 	
 	public List<DrugAndInOutStatistics> getInOutStatisticsListData(Map<String, Object> params)  throws Exception;
 	
+	public List<StoreInOutDetail> getBatchNo(Map<String, Object> params) throws Exception;
+	
 }

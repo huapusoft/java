@@ -36,7 +36,7 @@ public class DicDepartmentServiceImpl implements DicDepartmentService {
 			if(null == dicDepartment){
 				departmentCode=bean.getParentCode()+"10";
 			}else{
-				departmentCode = String.valueOf( Integer.parseInt( dicDepartment.getDepartmentCode()) + 1 );
+				departmentCode = String.valueOf( Integer.parseInt( dicDepartment.getDepartmentCode().trim()) + 1 );
 			}
 			bean.setDepartmentCode(departmentCode);
 			dicDepartmentMapper.insert(bean);

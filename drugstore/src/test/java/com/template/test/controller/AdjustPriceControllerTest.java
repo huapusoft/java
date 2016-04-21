@@ -81,7 +81,7 @@ public class AdjustPriceControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
 		
-		int billNo = 2016041007;
+		int billNo = 2016041062;
 		adjustPriceService.submit(billNo);
 	}
 	
@@ -97,7 +97,7 @@ public class AdjustPriceControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
 		
-		adjustPriceService.verifySuccess(2016041007, "财务1", "一号仓库");
+		adjustPriceService.verifySuccess(2016041064, "财务1", "一号仓库");
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class AdjustPriceControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
 		
-		adjustPriceService.verifyFail(2016041007, "财务1");
+		adjustPriceService.verifyFail(2016041062, "财务1");
 		
 	}
 	
@@ -128,7 +128,7 @@ public class AdjustPriceControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		AdjustPriceService adjustPriceService = (AdjustPriceService) context.getBean("adjustPriceService");
 		
-		int billNo = 2016041007;
+		int billNo = 2016041062;
 		adjustPriceService.delete(billNo);
 		
 	}
@@ -166,7 +166,7 @@ public class AdjustPriceControllerTest {
 		params.put("storeName", "一号仓库");
 		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
 		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
-		params.put("itemName", "阿莫西林胶囊");
+		params.put("itemName", "阿莫西林颗粒");
 		params.put("status", null);
 		
 		List<StoreInOut> list = adjustPriceService.getListData(params);

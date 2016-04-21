@@ -20,7 +20,7 @@
 		from dic_compatibility
 		<where>
 			<if test="keyWords != null and keyWords != ''">
-				( contentA like CONCAT('%',#{keyWords},'%') ) or ( contentB like CONCAT('%',#{keyWords},'%') )
+				( contentA like CONCAT('%',#{keyWords},'%')  or  contentB like CONCAT('%',#{keyWords},'%') )
 			</if>
 		</where>
 	</select>

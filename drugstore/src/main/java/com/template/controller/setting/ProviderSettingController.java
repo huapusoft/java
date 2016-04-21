@@ -218,7 +218,7 @@ public class ProviderSettingController {
 	 */
 	@RequestMapping(value = "/save",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> name(HttpServletRequest request, 
+	public Map<String, Object> save(HttpServletRequest request, 
 			HttpServletResponse response,HttpSession session,
 			@RequestBody DicProvider bean
 			) throws Exception {

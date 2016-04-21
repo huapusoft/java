@@ -12,12 +12,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.template.domain.DicDrug;
 import com.template.domain.DicProvider;
+import com.template.domain.DrugAndStore;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
 import com.template.service.PurchasePlanService;
+import com.template.service.StoreService;
 import com.template.util.CommonUtil;
 
 /**
@@ -27,6 +29,27 @@ import com.template.util.CommonUtil;
  */
 public class PurchasePlanControllerTest {
 
+	/**
+	 * 获取缺货列表
+	* @author  fengql 
+	* @date 2016年4月20日 下午2:59:48 
+	* @parameter  
+	* @return
+	 */
+	@Test
+	public void testgetDrugsForStockout() throws Exception{
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		StoreService storeService = (StoreService) context.getBean("storeService");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("stockOutFlag", "Y");
+		params.put("storeName", "一号仓库");
+		
+		List<DrugAndStore> list = storeService.getByConditionsForQuery(params);
+		System.out.println( list.size());
+		
+	}
+	
 	/**
 	 * 获取供应商列表
 	 */
@@ -89,7 +112,7 @@ public class PurchasePlanControllerTest {
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
 		StorePurchasePlan spp = new StorePurchasePlan();
-		spp.setRemark("2016年第一季度采购计划1");
+		spp.setRemark("2016年第一季度采购计划2");
 		spp.setInSum( 500*20.000+500*11.000 );
 		spp.setRetailSum( 500*35.000+500*20.000 );
 		
@@ -131,7 +154,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.submit(2016041000);
+		purchasePlanService.submit(2016041001);
 	}
 	
 	/**
@@ -146,7 +169,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.delete(2016041000);
+		purchasePlanService.delete(2016041001);
 	}
 	
 	/**
@@ -161,7 +184,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.financeAudit(2016041000, "财务1", 1);
+		purchasePlanService.financeAudit(2016041001, "财务1", 1);
 	}
 	
 	/**
@@ -176,7 +199,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.financeAudit(2016041000, "财务1", 0);
+		purchasePlanService.financeAudit(2016041001, "财务1", 0);
 	}
 	
 	/**
@@ -191,7 +214,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.leaderAudit(2016041000, "领导1", 1);
+		purchasePlanService.leaderAudit(2016041001, "领导1", 1);
 	}
 	
 	/**
@@ -206,7 +229,7 @@ public class PurchasePlanControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		PurchasePlanService purchasePlanService = (PurchasePlanService) context.getBean("purchasePlanService");
 		
-		purchasePlanService.leaderAudit(2016041000, "领导1", 0);
+		purchasePlanService.leaderAudit(2016041001, "领导1", 0);
 	}
 	
 	/**
@@ -241,7 +264,7 @@ public class PurchasePlanControllerTest {
 		
 		params.put("storeName", "一号仓库");
 		params.put("startTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-08") );
-		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-12") );
+		params.put("endTime", CommonUtil.parseStringToDate("yyyy-MM-dd", "2016-04-20") );
 		params.put("itemName", "阿莫西林颗粒");
 		params.put("status", null);
 		

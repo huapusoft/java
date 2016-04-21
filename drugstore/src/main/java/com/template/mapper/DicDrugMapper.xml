@@ -56,7 +56,7 @@
 		from dic_drug
 		<where>
 			<if test="itemName != null and itemName != ''">
-				( itemName like CONCAT('%',#{itemName},'%') ) OR ( wb like CONCAT('%',#{itemName},'%') ) OR ( py like CONCAT('%',#{itemName},'%') )
+				( itemName like CONCAT('%',#{itemName},'%')  OR  wb like CONCAT('%',#{itemName},'%')  OR  py like CONCAT('%',#{itemName},'%') )
 			</if>
 			<if test="enabled != null and enabled != ''">
 				and enabled = #{enabled}

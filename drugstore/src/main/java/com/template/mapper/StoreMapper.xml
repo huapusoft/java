@@ -189,7 +189,7 @@
 				and s.batchNo = #{batchNo}
 			</if>
 			<if test="itemName != null and itemName != ''">
-				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
+				and ( d.itemName like CONCAT('%',#{itemName},'%')  OR  d.wb like CONCAT('%',#{itemName},'%')  OR  d.py like CONCAT('%',#{itemName},'%') )
 			</if>
 			
 			<if test="expenseClass != null and expenseClass != ''">
@@ -210,7 +210,7 @@
 		select b.drugId,a.itemName,a.spec,a.vendor,sum(b.amount) num,a.unit,b.price
 		from dic_drug a,store b
 		where a.id=b.drugId and a.enabled = 1 and
-		( a.itemName like CONCAT('%',#{itemName},'%') ) OR ( a.wb like CONCAT('%',#{itemName},'%') ) OR ( a.py like CONCAT('%',#{itemName},'%') )
+		( a.itemName like CONCAT('%',#{itemName},'%')  OR  a.wb like CONCAT('%',#{itemName},'%')  OR  a.py like CONCAT('%',#{itemName},'%') )
 		group by  b.drugId,a.itemName,a.spec,a.vendor,a.unit,b.price
 	</select>
 	

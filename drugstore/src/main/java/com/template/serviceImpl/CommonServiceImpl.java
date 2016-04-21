@@ -586,7 +586,7 @@ public class CommonServiceImpl implements CommonService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("storeName", storeName);
 		params.put("drugId", drugId);
-		return storeInOutDetailMapper.getByConditions(params);
+		return storeInOutDetailMapper.getBatchNo(params);
 	}
 
 	@Override

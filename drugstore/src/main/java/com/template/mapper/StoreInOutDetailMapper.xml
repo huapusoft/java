@@ -57,16 +57,17 @@
 				and sio.storeName = #{storeName}
 			</if>
 			<if test="itemName != null and itemName != ''">
-				and ( d.itemName like CONCAT('%',#{itemName},'%') ) OR ( d.wb like CONCAT('%',#{itemName},'%') ) OR ( d.py like CONCAT('%',#{itemName},'%') )
+				and ( d.itemName like CONCAT('%',#{itemName},'%')  OR  d.wb like CONCAT('%',#{itemName},'%')  OR  d.py like CONCAT('%',#{itemName},'%') )
 			</if>
 	</select>
 	
 	<select id="getByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap">
 		select distinct a.*
 		from storeInOutDetail a left join storeInOut b
-		where a.billNo=b.billNo
+		on a.billNo=b.billNo
+		<where>
 			<if test="billNo != null and billNo != ''">
-				and billNo = #{billNo}
+				and a.billNo = #{billNo}
 			</if>
 			<if test="storeName != null and storeName != ''">
 				and b.storeName = #{storeName}
@@ -77,6 +78,21 @@
 			<if test="batchNo != null and batchNo != ''">
 				and batchNo = #{batchNo}
 			</if>
+		</where>
+	</select>
+	
+	<select id="getBatchNo" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select distinct a.batchNo
+		from storeInOutDetail a left join storeInOut b
+		on a.billNo=b.billNo
+		<where>
+			<if test="storeName != null and storeName != ''">
+				and b.storeName = #{storeName}
+			</if>
+			<if test="drugId != null and drugId != ''">
+				and drugId = #{drugId}
+			</if>
+		</where>
 	</select>
 	
 	<select id="getDrugLatestPrice" resultMap="BaseResultMap" parameterType="java.util.HashMap">
@@ -134,13 +150,12 @@
 				and b.billTime &lt;= #{endTime}
 			</if>
 			<if test="itemName != null and itemName != ''">
-				and ( c.itemName like CONCAT('%',#{itemName},'%') ) OR ( c.wb like CONCAT('%',#{itemName},'%') ) OR ( c.py like CONCAT('%',#{itemName},'%') )
+				and ( c.itemName like CONCAT('%',#{itemName},'%')  OR  c.wb like CONCAT('%',#{itemName},'%')  OR  c.py like CONCAT('%',#{itemName},'%') )
 		  	</if>
 		  	<if test="batchNo != null and batchNo != ''">
 				and a.batchNo = #{batchNo}
 			</if>) d
-		group by drugId,batchNo,itemName,spec,vendor,unit
-		order by drugId,batchNo) x
+		group by drugId,batchNo,itemName,spec,vendor,unit ) x
 		left join  (select a.drugId,a.batchNo,sum(realAmount) as firstSum
 			 		from storeCheckDetail a,storeCheck b
 			 		where a.checkNo=b.checkNo
@@ -164,5 +179,6 @@
 					group by drugId,batchNo
 					) z
 				on x.drugId=z.drugId and x.batchNo=z.batchNo
+		 order by x.drugId,x.batchNo
 	</select>
 </mapper>

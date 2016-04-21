@@ -3,6 +3,8 @@ package com.template.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.template.domain.DicProvider;
 
 /**
@@ -22,6 +24,6 @@ public interface DicProviderMapper {
 	
 	public void delete(int id)  throws Exception;
 	
-	public void updateStatus(int id,int status)  throws Exception;
+	public void updateStatus(@Param("id") int id,@Param("status") int status)  throws Exception;
 	
 }
