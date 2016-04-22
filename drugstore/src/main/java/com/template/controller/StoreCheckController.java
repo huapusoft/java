@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DicDrug;
 import com.template.domain.DrugAndStore;
 import com.template.domain.StoreCheck;
@@ -310,6 +311,39 @@ public class StoreCheckController {
 		ModelAndView mv = new ModelAndView("queryCount/storeCheck/list");
 		return mv;
 		
+	}
+	
+	/**
+	 * 得到状态的下拉框
+	* @author  fengql 
+	* @date 2016年4月22日 下午3:18:29 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/getStatus",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getStatus(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "作废失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("dataType", "checkStatus");
+			
+			List<DicDataDictionary> list = commonService.getStatus(params);
+			
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "作废失败："+e.getMessage());		
+		}
+		
+		return result;
 	}
 	
 	/**

@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DicDrug;
 import com.template.domain.DicProvider;
 import com.template.domain.StoreInOut;
 import com.template.domain.StoreInOutDetail;
+import com.template.service.CommonService;
 import com.template.service.DicDrugService;
 import com.template.service.DicProviderService;
 import com.template.service.InStorageService;
@@ -51,6 +53,9 @@ public class InStorageController {
 	
 	@Resource  
 	private DicDrugService dicDrugService;
+	
+	@Resource 
+	private CommonService commonService;
 	
 	/**
 	 * 入库登记页面
@@ -342,6 +347,39 @@ public class InStorageController {
 	}
 	
 	/**
+	 * 得到状态的下拉框
+	* @author  fengql 
+	* @date 2016年4月22日 下午3:18:29 
+	* @parameter  
+	* @return
+	 */
+	@RequestMapping(value = "/getStatus",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getStatus(HttpServletRequest request, HttpServletResponse response,HttpSession session) throws Exception {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("code", "300");
+		result.put("msg", "作废失败");
+		
+		try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("dataType", "inOutStatus");
+			
+			List<DicDataDictionary> list = commonService.getStatus(params);
+			
+			result.put("data", list);
+			result.put("code", "200");
+			result.put("msg", "成功");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			result.put("msg", "作废失败："+e.getMessage());		
+		}
+		
+		return result;
+	}
+	
+	/**
 	  * 获取查询页面的列表数据
 	  * @Description: 获取查询页面的列表数据
 	  * @author army.liu
@@ -446,9 +484,9 @@ public class InStorageController {
 		try{
 			StoreInOut bean = inStorageService.getDetailData( billNo );
 			if( null != bean ){
-				String status = bean.getStatus();
-				if( Constants.BusinessStatus.NEW.equals(status.trim())
-						|| Constants.BusinessStatus.VERIFY_FAIL.equals(status.trim()) ){
+				int status = bean.getStatus();
+				if( Constants.BusinessStatus.NEW == status
+						|| Constants.BusinessStatus.VERIFY_FAIL == status ){
 					result.put("data", bean);
 					result.put("code", "200");
 					result.put("msg", "成功");
