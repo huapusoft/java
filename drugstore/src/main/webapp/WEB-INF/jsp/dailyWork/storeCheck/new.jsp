@@ -262,7 +262,8 @@
 				<th data-options="field:'realPrice',width:100,align:'center'">实际金额</th>
 				<th data-options="field:'validDate',width:100,align:'center',hidden:'true'">有效期</th>
 				<th data-options="field:'vendor',width:100,align:'center',hidden:'true'">vendor</th>
-				<th data-options="field:'drugid',hidden:'true'">drugid</th>
+				<th data-options="field:'drugId',hidden:'true'">drugId</th>
+				<th data-options="field:'inPrice',hidden:'true'">inPrice</th>
 			</tr>
 		</thead>
 		<tbody id="tbody">
@@ -368,10 +369,50 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
-
+		$("#sum1").numberbox("disable");
+		$("#sum2").numberbox("disable");
 	});
 	function onHidePanel(){
-		alert('a');
+		$('#sum3').numberbox().next('span').find('input').focus();
+		var id=$('#itemName').combobox('getValue');
+		
+		var rows = $('#mytable').datagrid('getRows');
+		
+		var index="";
+		 for(i = 0;i < rows.length;i++)  
+		 {
+			 //alert(id+rows[i].drugId);
+			 if(rows[i].drugId==id){
+				 index=i;
+				 $('#mytable').datagrid('selectRow', index); 
+				 break; 
+			 }
+		 }
+		 //alert(index);
+		 if(index!=""||index==0){
+			// alert(index);			
+			  $("#sum3").next("span").children().first().on('input', function (e) {
+				//alert('rr'+ $(this).val()+rows[index-1].price);
+				 var realAmount= $(this).val();
+				 var realPrice=rows[index].price*$(this).val();
+				 $('#mytable').datagrid('updateRow',{
+						index: index,
+						row: {
+							realAmount: realAmount,
+							realPrice:realPrice.toFixed(3),
+						}
+					});
+					var sum2=0;
+				 if(rows.length>0){					
+						for(i = 0;i < rows.length;i++)  
+						 {							
+							sum2+=parseFloat(rows[i].realPrice);							 
+						 }
+					}				
+					$('#sum2').numberbox('setValue', sum2);
+		        }) 
+		 }
+		
 	}
 	function formatter(row){		
 		 var ss=row.itemName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+row.spec+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+row.unit;
@@ -424,9 +465,35 @@
 	function isNumber(n) {
 		  return !isNaN(parseFloat(n)) && isFinite(n);
 		}
-	function dochange(){
-		alert("rr");
-	}
+	 $("#mytable").datagrid({
+		 onClickRow: function (index, row) {			
+			 $('#itemName').combobox('setValue', row.itemName);
+			 $('#sum3').numberbox().next('span').find('input').focus();
+			 $("#sum3").next("span").children().first().on('input', function (e) {
+					//alert('rr'+ $(this).val()+rows[index-1].price);
+					 var realAmount= $(this).val();
+					 var realPrice=row.price*$(this).val();
+					
+					 $('#mytable').datagrid('updateRow',{
+							index: index,
+							row: {
+								realAmount: realAmount,
+								realPrice:realPrice.toFixed(3),
+							}
+						});
+					 var rows = $('#mytable').datagrid('getRows');
+					 var sum2=0;
+					 if(rows.length>0){							
+							for(var i = 0;i < rows.length;i++)  
+							 { 								
+								sum2+=parseFloat(rows[i].realPrice);								 
+							 }
+							//alert(sum2);
+						}				
+						$('#sum2').numberbox('setValue', sum2);
+			        }) 
+		 }
+	 })
 	function doadd(){
 		$.ajax({
 			type : 'POST',
@@ -443,8 +510,17 @@
 					$("#submitbtn").linkbutton("enable");
 					$("#removebtn").linkbutton("enable");
 				$('#mytable').datagrid('loadData',{"total" : data.data.length,"rows" : data.data});
-			
-				var itemName=$('#itemName').combobox('getValue');
+				if(data.data.length>0){
+					var sum1=0;
+					var sum2=0;
+					for(var m=0;m<data.data.length;m++){
+						sum1+=data.data[m].storePrice;
+						sum2+=data.data[m].realPrice;
+					}
+				}				
+				$('#sum1').numberbox('setValue', sum1);
+				$('#sum2').numberbox('setValue', sum2);
+				//var itemName=$('#itemName').combobox('getValue');
 				
 				} else {
 					jQuery.messager.alert('提示:',data.msg,'info'); 
@@ -452,16 +528,11 @@
 			}
 		});
 	}
-	
+	//保存
 	function dosave(){
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').val().trim();
-		if(typeData == "" || typeData == null)
-		{
-			$.messager.alert('提示:','请填写调价批文！','info');
-			return false;
-		}
+		//var typeData =$('#typeData').val().trim();		
 		//alert(typeData);
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
@@ -470,14 +541,14 @@
 		/* alert($('#billNo').val()); */
 		
 		var obj = {};
-		 obj.billType = "调价";
-		 obj.typeData = typeData;
-		 obj.sum1 = sum1;
-		 obj.sum2 = sum2;
+		 //obj.billType = "盘点";
+		 //obj.typeData = typeData;
+		 obj.retailSum = sum1;
+		 obj.checkRetailSum = sum2;
 		 var newArray = [];
 		 var json = '';
-		 if($('#billNo').val()!=""&&$('#billNo').val()!=null&&$('#billNo').val()!="undefined"){
-			 obj.billNo = $('#billNo').val();
+		 if($('#checkNo').val()!=""&&$('#checkNo').val()!=null&&$('#checkNo').val()!="undefined"){
+			 obj.checkNo = $('#checkNo').val();
 		 }
 		 //var entities = "";
 		 for(i = 0;i < rows.length;i++)  
@@ -485,9 +556,9 @@
 			if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
 			{
 				//entities = entities  + JSON.stringify(rows[i]);
-				if(parseInt(rows[i].newprice.trim()) == 0 || rows[i].newprice.trim() == "" || rows[i].newprice.trim() == null)
+				if( rows[i].realAmount == "" || rows[i].realAmount == null)
 				{
-					$.messager.alert('提示:',"第"+(i+1)+"行新价格异常！",'info');
+					$.messager.alert('提示:',"第"+(i+1)+"行实际数量异常！",'info');
 					return false;
 				}
 				var objes = {};
@@ -495,79 +566,114 @@
 		    	 objes.drugId = rows[i].drugId;
 		    	 objes.batchNo = rows[i].batchno;
 		    	 objes.amount = rows[i].num;
-		    	 objes.price1 = rows[i].price;
-		    	 objes.price2 = rows[i].newprice;
-		    	 objes.validDate = rows[i].validDate;
+		    	 objes.price = rows[i].price;
+		    	 objes.inPrice = rows[i].inPrice;
+		    	// objes.price2 = rows[i].newprice;
+		    	 //objes.validDate = rows[i].validDate;		    	
+		    	 objes.realAmount = rows[i].realAmount;
+		    	// objes.realPrice = rows[i].realPrice;		    	
 			     newArray.push(objes);
 			}
 		 } 
-		 if(newArray.length ==0)
+		 /* if(newArray.length ==0)
 		 {
-			 $.messager.alert('提示:',"请填写调价明细！",'info');
+			 $.messager.alert('提示:',"请新建或打开盘点单！",'info');
 			 return false;
-		 }
+		 } */
 		 obj.detailList = newArray;
 		 //alert(entities);
-		 $.ajax({  
-             url: '/adjustPrice/save',  
-             type: "post",  
-             dataType: 'json',
-             contentType:"application/json;charset=UTF-8",
-             data: JSON.stringify(obj),
-             success: function (data) {  
-                 if(data.code == 200){  
-                	 $('#billNo').val(data.data);
-                	
-                	 var interval;  
-     				 var time=1000;  
-     				 var x=2;    //设置时间2s
-     				 jQuery.messager.alert('提示:','保存'+data.msg+'!','info',function(){});     				
-     				 interval=setInterval(fun,time);  
-     				        function fun(){  
-     				      --x;  
-     				      if(x==0){  
-     				          clearInterval(interval);  
-     				  $(".messager-body").window('close');    
-     				       }  
-     				}; 
-                    }else
-                    {  
-                    	$.messager.alert(data.msg);  
-                        return;  
-                    }  
-             }  
-           });  
+		 $.messager.confirm('确认对话框', '确认保存该盘点数据吗？', function(r){
+	if (r){	   
+		$.ajax({  
+            url: '/storeCheck/save',  
+            type: "post",  
+            dataType: 'json',
+            contentType:"application/json;charset=UTF-8",
+            data: JSON.stringify(obj),
+            success: function (data) {  
+                if(data.code == 200){  
+               	 //$('#checkNo').val(data.data);
+               	 $('#checkNo').textbox('setValue', data.data);     
+               	 var interval;  
+    				 var time=1000;  
+    				 var x=2;    //设置时间2s
+    				 jQuery.messager.alert('提示:','保存'+data.msg+'!','info',function(){});     				
+    				 interval=setInterval(fun,time);  
+    				        function fun(){  
+    				      --x;  
+    				      if(x==0){  
+    				          clearInterval(interval);  
+    				  $(".messager-body").window('close');    
+    				       }  
+    				}; 
+                   }else
+                   {  
+                   	//$.messager.alert(data.msg);  
+                   	$.messager.alert('提示:',data.msg,'info');
+                       return;  
+                   }  
+            }  
+          }); 
+	}
+});
     }
-	
+	//清除
+ function docancel(){
+	 $.messager.confirm('确认对话框', '您确认要取消该盘点数据吗？', function(r){
+			if (r){
+				 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+				 $('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+						$('#checkNo').textbox('setValue','');
+						$('#sum1').numberbox('setValue', '');
+						$('#sum2').numberbox('setValue', '');
+						$('#sum3').numberbox('setValue', '');  
+						$("#addbtn").linkbutton("enable");
+						$("#openbtn").linkbutton("enable");
+						$("#cancelbtn").linkbutton("disable");
+						$("#savebtn").linkbutton("disable");
+						$("#printbtn").linkbutton("disable");
+						$("#submitbtn").linkbutton("disable");
+						$("#removebtn").linkbutton("disable");
+			}
+		});  
+	 }
+	//封存
 	function dosubmit()
 	{
 		var detailList = {};
 		var rows = $('#mytable').datagrid('getRows');  
-		var typeData =$('#typeData').val().trim();
-		if(typeData == "" || typeData == null)
-		{
-			jQuery.messager.alert('提示:',"请填写调价批文！",'info'); 
-			return false;
-		}
+		//var typeData =$('#typeData').val().trim();		
 		//alert(typeData);
 		var sum1 = $('#sum1').val();
 		var sum2 = $('#sum2').val();
+		var sum3 = $('#sum3').val();
+		//alert(sum1);
+		/* alert($('#billNo').val()); */
+		
 		var obj = {};
-		 obj.billType = "调价";
-		 obj.typeData = typeData;
-		 obj.sum1 = sum1;
-		 obj.sum2 = sum2;
+		 //obj.billType = "盘点";
+		 //obj.typeData = typeData;
+		 obj.retailSum = sum1;
+		 obj.checkRetailSum = sum2;
 		 var newArray = [];
 		 var json = '';
+		 if($('#checkNo').val()!=""&&$('#checkNo').val()!=null&&$('#checkNo').val()!="undefined"){
+			 obj.checkNo = $('#checkNo').val();
+		 }
 		 //var entities = "";
 		 for(i = 0;i < rows.length;i++)  
 		 {  
 			if(rows[i]['itemName'].trim() != "" && rows[i]['itemName'].trim() != null)
 			{
 				//entities = entities  + JSON.stringify(rows[i]);
-				if(parseInt(rows[i].newprice.trim()) == 0 || rows[i].newprice.trim() == "" || rows[i].newprice.trim() == null)
+				if( rows[i].realAmount == "" || rows[i].realAmount == null)
 				{
-					jQuery.messager.alert('提示:',"第"+(i+1)+"行新价格异常！",'info');
+					$.messager.alert('提示:',"第"+(i+1)+"行实际数量异常！",'info');
 					return false;
 				}
 				var objes = {};
@@ -575,137 +681,180 @@
 		    	 objes.drugId = rows[i].drugId;
 		    	 objes.batchNo = rows[i].batchno;
 		    	 objes.amount = rows[i].num;
-		    	 objes.price1 = rows[i].price;
-		    	 objes.price2 = rows[i].newprice;
-		    	 objes.validDate = rows[i].validDate;
+		    	 objes.price = rows[i].price;
+		    	 objes.inPrice = rows[i].inPrice;
+		    	// objes.price2 = rows[i].newprice;
+		    	 //objes.validDate = rows[i].validDate;		    	
+		    	 objes.realAmount = rows[i].realAmount;
+		    	// objes.realPrice = rows[i].realPrice;		    	
 			     newArray.push(objes);
 			}
-		 } 
-		 if(newArray.length ==0)
-		 {
-			 jQuery.messager.alert('提示:',"请填写调价明细！",'info');
-			 return false;
-		 }
+		 } 		 	 
 		 obj.detailList = newArray;
-		 $.ajax({  
-             url: '/adjustPrice/submit',  
-             type: "post",  
-             dataType: 'json',
-             contentType:"application/json;charset=UTF-8",
-             data: JSON.stringify(obj),
-             success: function (data) {  
-                 if(data.code == 200){  
-                	 $('#billNo').val();
-                	 /* $("#sum1").numberbox("disable");
-                	 $("#sum2").numberbox("disable");
-                	 $("#typeData").combobox("disable"); */
-                	 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#mytable').datagrid('appendRow',{
-     					orderNo:'',
-						itemName: '',
-						spec: '',
-						unit: '',
-						vendor: '',
-						batchno:'',
-						price: '',
-						inPrice: '',
-						validDate: '',
-						drugId:''
-     					});
-     				$('#billNo').val('');
-     				$('#typeData').textbox('setValue','');
-     				$('#sum1').numberbox('setValue', '');
-     				$('#sum2').numberbox('setValue', '');
-     				$('#sum3').numberbox('setValue', '');     				
-     				 var interval;  
-     				 var time=1000;  
-     				 var x=2;    //设置时间2s
-     				 jQuery.messager.alert('提示:','提交'+data.msg+'!','info',function(){});     				
-     				 interval=setInterval(fun,time);  
-     				        function fun(){  
-     				      --x;  
-     				      if(x==0){  
-     				          clearInterval(interval);  
-     				  $(".messager-body").window('close');    
-     				       }  
-     				}; 
-            /*     	 $.messager.show({
-                         title:'提示',
-                         msg:'提交'+data.msg+'!',
-                         showType:'show',
-                         style:{
-                        	    left:'', // 与左边界的距离
-                        	    top:0 ,// 与顶部的距离
-                        	    right : 0,
-                        	}
-                     	}); */
-                    }else
-                    {  
-                    	$.messager.alert(data.msg);  
-                        return;  
-                    }  
-             }  
-           });  
+		 $.messager.confirm('确认对话框', '封存后，盘点数据将不可再更改，确认要封存吗？', function(r){
+				if (r){
+				    // 封存操作;
+					$.ajax({  
+			            url: '/storeCheck/submit',  
+			            type: "post",  
+			            dataType: 'json',
+			            contentType:"application/json;charset=UTF-8",
+			            data: JSON.stringify(obj),
+			            success: function (data) {  
+			                if(data.code == 200){  
+			               	 //$('#checkNo').val(data.data);
+			               	 $('#checkNo').textbox('setValue', data.data);     
+			               	 var interval;  
+			    				 var time=1000;  
+			    				 var x=2;    //设置时间2s
+			    				 jQuery.messager.alert('提示:','封存'+data.msg+'!','info',function(){});     				
+			    				 interval=setInterval(fun,time);  
+			    				        function fun(){  
+			    				      --x;  
+			    				      if(x==0){  
+			    				          clearInterval(interval);  
+			    				  $(".messager-body").window('close');    
+			    				       }  
+			    				}; 
+			    				$('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+								$('#checkNo').textbox('setValue','');
+								$('#sum1').numberbox('setValue', '');
+								$('#sum2').numberbox('setValue', '');
+								$('#sum3').numberbox('setValue', '');  
+								$("#addbtn").linkbutton("enable");
+								$("#openbtn").linkbutton("enable");
+								$("#cancelbtn").linkbutton("disable");
+								$("#savebtn").linkbutton("disable");
+								$("#printbtn").linkbutton("disable");
+								$("#submitbtn").linkbutton("disable");
+								$("#removebtn").linkbutton("disable");
+			                   }else
+			                   {  
+			                   	//$.messager.alert(data.msg);  
+			                   	$.messager.alert('提示:',data.msg,'info');
+			                       return;  
+			                   }  
+			                
+			            }  
+			          });
+				}
+			});
+ 
+	}
+	//作废
+	function doremove()
+	{
+		//alert($('#checkNo').val());
+		//var checkNo=parseInt($('#checkNo').val());
+		//alert(checkNo);
+		if($('#checkNo').val()==""){
+			$.messager.alert('提示:','盘点数据未保存无法作废！请点击取消按钮！','info');
+            return;  
+		}
+			 $.messager.confirm('确认对话框', '确认要作废盘点数据吗？', function(r){
+				if (r){
+				    // 作废操作;
+				    $.ajax({
+							type : 'POST',
+							url : '/storeCheck/delete',
+							data : {checkNo : parseInt($('#checkNo').val())},
+							dataType : 'JSON',
+							success : function(data) {
+							if(data.code == 200){  			               	 
+							var interval;  
+							 var time=1000;  
+							var x=2;    //设置时间2s
+							jQuery.messager.alert('提示:','作废'+data.msg+'!','info',function(){});     				
+							interval=setInterval(fun,time);  
+							 function fun(){  
+							--x;  
+							if(x==0){  
+							clearInterval(interval);  
+							 $(".messager-body").window('close');    
+							 }  
+							}; 
+							$('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+							$('#checkNo').textbox('setValue','');
+							$('#sum1').numberbox('setValue', '');
+							$('#sum2').numberbox('setValue', '');
+							$('#sum3').numberbox('setValue', '');  
+							$("#addbtn").linkbutton("enable");
+							$("#openbtn").linkbutton("enable");
+							$("#cancelbtn").linkbutton("disable");
+							$("#savebtn").linkbutton("disable");
+							$("#printbtn").linkbutton("disable");
+							$("#submitbtn").linkbutton("disable");
+							$("#removebtn").linkbutton("disable");
+							}else
+							{  
+							$.messager.alert('提示:',data.msg,'info');
+							 return;  
+							 } 
+							}
+							})
+				/* 	$.ajax({  
+			            url: '/storeCheck/delete',  
+			            type: "post",  
+			            dataType: 'json',
+			            contentType:"application/json;charset=UTF-8",
+			            data: {checkNo:$('#checkNo').val()},
+			            success: function (data) { 
+			            	alert(data.code);
+			                if(data.code == 200){  			               	 
+			               	 var interval;  
+			    				 var time=1000;  
+			    				 var x=2;    //设置时间2s
+			    				 jQuery.messager.alert('提示:','封存'+data.msg+'!','info',function(){});     				
+			    				 interval=setInterval(fun,time);  
+			    				        function fun(){  
+			    				      --x;  
+			    				      if(x==0){  
+			    				          clearInterval(interval);  
+			    				  $(".messager-body").window('close');    
+			    				       }  
+			    				}; 
+			    				$('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+			    				$('#mytable').datagrid('appendRow',{orderNo:'',itemName: '',spec: '',unit: '',vendor: '',batchno:'',price: '',inPrice: '',validDate: '',drugId:''});
+								$('#checkNo').textbox('setValue','');
+								$('#sum1').numberbox('setValue', '');
+								$('#sum2').numberbox('setValue', '');
+								$('#sum3').numberbox('setValue', '');  
+								$("#addbtn").linkbutton("enable");
+								$("#openbtn").linkbutton("enable");
+								$("#cancelbtn").linkbutton("disable");
+								$("#savebtn").linkbutton("disable");
+								$("#printbtn").linkbutton("disable");
+								$("#submitbtn").linkbutton("disable");
+								$("#removebtn").linkbutton("disable");
+			                   }else
+			                   {  
+			                   	//$.messager.alert(data.msg);  
+			                   	$.messager.alert('提示:',data.msg,'info');
+			                       return;  
+			                   }  
+			                
+			            }  
+			          }); */
+				}
+			});
+ 
 	}
 	function doopen(){
 		 var billNo=$('#billNos').val();
