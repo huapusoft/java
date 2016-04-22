@@ -25,12 +25,12 @@ public abstract  class Constants {
 	
 	//业务状态
 	public class BusinessStatus{
-		public static final String NEW = "0";//草稿
-		public static final String SUBMIT = "1";//已提交
-		public static final String VERIFY_SUCCESS = "2";//复核通过
-		public static final String VERIFY_FAIL = "3";//复核驳回
-		public static final String LEADER_SUCCESS = "4";//领导审批通过
-		public static final String LEADER_FAIL = "5";//领导审批驳回
+		public static final int NEW = 0;//草稿
+		public static final int SUBMIT = 1;//已提交
+		public static final int VERIFY_SUCCESS = 2;//复核通过
+		public static final int VERIFY_FAIL = 3;//复核驳回
+		public static final int LEADER_SUCCESS = 4;//领导审批通过
+		public static final int LEADER_FAIL = 5;//领导审批驳回
 		
 	}
 	

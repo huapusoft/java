@@ -3,13 +3,18 @@ package com.template.serviceImpl;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.template.dao.DicDataDictionaryMapper;
 import com.template.dao.StoreCheckDetailMapper;
 import com.template.dao.StoreCheckMapper;
 import com.template.dao.StoreMapper;
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DrugAndCheckDetail;
 import com.template.domain.Store;
 import com.template.domain.StoreCheck;
@@ -35,6 +40,9 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	
 	@Resource
 	private CommonService commonService;
+	
+	@Resource
+	private DicDataDictionaryMapper dicDataDictionaryMapper;
 
 	
 	/*@Override
@@ -85,6 +93,7 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 			checkData.setStoreName(storeName);//药库名
 			checkData.setCheckTime(new Date());//创建时间
 			checkData.setCheckOper(checkOper);//操作员
+			checkData.setStatus(0);//状态
 			
 			storeCheckMapper.insert(checkData);
 			
@@ -132,16 +141,16 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
 	public int submit(StoreCheck checkData, List<StoreCheckDetail> detailList, String checkOper, String storeName) throws Exception {
 		
-		String sealOper=checkData.getSealOper();
-		System.out.println("sealOper==="+sealOper);
-		if( null != sealOper ){
+		int status=checkData.getStatus();
+		if( 1 == status ){
 			throw new RuntimeException("该盘点号已经封存,不可再次封存！");
 		}
 		
 		//先将页面中的内容进行保存
 		int checkNo = this.save(checkData, detailList, checkOper, storeName);
 		
-		//更新盘点主表-封存时间、人
+		//更新盘点主表-状态、封存时间、人
+		checkData.setStatus(1);
 		checkData.setSealTime(new Date());
 		checkData.setSealOper(checkOper);
 		storeCheckMapper.update(checkData);
@@ -178,8 +187,8 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 			throw new RuntimeException("盘点号为空");
 		}
 		
-		String sealOper=storeCheckMapper.getByCheckNo(checkNo).getSealOper();
-		if( null != sealOper ){
+		int status=storeCheckMapper.getByCheckNo(checkNo).getStatus();
+		if( 1 == status ){
 			throw new RuntimeException("该盘点号已经封存,不可作废");
 		}
 		
@@ -197,7 +206,21 @@ public class StoreCheckServiceImpl implements StoreCheckService{
 		params.put("orderBycheckNo", "Y");
 		List<StoreCheck> list = storeCheckMapper.getByConditions(params);
 		if( null != list && list.size() > 0 ){
+			//获取盘点的状态
+			params.put("dataType", "checkStatus");
+			List<DicDataDictionary> statusList = dicDataDictionaryMapper.getByConditions(params);
+			
 			for(int i=0; i<list.size(); i++){
+				
+				//得到状态的说明
+				int status=list.get(i).getStatus();
+				for(int j=0;j<statusList.size();j++){
+					if(status==statusList.get(j).getDataId()){
+						list.get(i).setStatusName(statusList.get(j).getDataIdName());
+					}
+				}
+				
+				//得到盘点明细
 				int checkNo = list.get(i).getCheckNo();
 				List<DrugAndCheckDetail> detailList = storeCheckDetailMapper.getCheckDetailList(checkNo);
 				list.get(i).setDetailAndDrugList(detailList);

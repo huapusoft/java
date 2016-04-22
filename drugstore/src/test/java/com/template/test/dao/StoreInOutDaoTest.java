@@ -24,7 +24,7 @@ public class StoreInOutDaoTest {
 		bean.setBillOper("张三");
 		bean.setBillTime(new Date());
 		bean.setBillType("出库");
-		bean.setStatus("0");
+		bean.setStatus(0);
 		bean.setStoreName("三院库1");
 		bean.setSum1(12.123);
 		bean.setSum2(12.456);
@@ -50,7 +50,7 @@ public class StoreInOutDaoTest {
 		
 		StoreInOut bean = storeInOutDao.getById(2016041000);
 		System.out.println(bean.getStoreName());
-		bean.setStatus("1");
+		bean.setStatus(1);
 		bean.setSubmitTime(new Date());
 		storeInOutDao.update(bean);
 		

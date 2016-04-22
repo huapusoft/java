@@ -40,7 +40,8 @@ public class StoreInOut {
 	
 	private String billOper;//操作员
 	
-	private String status;//状态：默认为0草稿，1已提交，2复核通过，3复核驳回
+	private int status;//状态：默认为0草稿，1已提交，2复核通过，3复核驳回
+	private String statusName;//状态说明
 	
 	private Date submitTime;//提交时间
 	
@@ -114,12 +115,6 @@ public class StoreInOut {
 	public void setBillOper(String billOper) {
 		this.billOper = billOper;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public Date getSubmitTime() {
 		return submitTime;
 	}
@@ -137,6 +132,18 @@ public class StoreInOut {
 	}
 	public void setVerifyTime(Date verifyTime) {
 		this.verifyTime = verifyTime;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 	
 }

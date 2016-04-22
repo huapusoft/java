@@ -30,7 +30,9 @@ public class StorePurchasePlan {
 	@Digits(fraction = 3, integer = 9,message="格式错误，应为：最多包含3位小数的12位数值")
 	private double retailSum;//零售价金额
 	
-	private String status;//状态，默认为0草稿，1已提交，2财务驳回，3财务已审批，4领导驳回，5领导已审批
+	private int status;//状态，默认为0草稿，1已提交，2财务驳回，3财务已审批，4领导驳回，5领导已审批
+	private String statusName;//状态说明
+	
 	private String oper;//操作员
 	private Date submitTime;//提交时间
 	private String financeOper;//财务操作员
@@ -91,12 +93,6 @@ public class StorePurchasePlan {
 	public void setRetailSum(double retailSum) {
 		this.retailSum = retailSum;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public String getOper() {
 		return oper;
 	}
@@ -132,6 +128,18 @@ public class StorePurchasePlan {
 	}
 	public void setLeaderTime(Date leaderTime) {
 		this.leaderTime = leaderTime;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 	
 }

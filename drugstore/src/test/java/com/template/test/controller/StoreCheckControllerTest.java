@@ -206,7 +206,7 @@ public class StoreCheckControllerTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		StoreCheckService storeCheckService = (StoreCheckService) context.getBean("storeCheckService");
 		
-		StoreCheck bean =storeCheckService.getDetailData( 2016041001 );
+		StoreCheck bean =storeCheckService.getDetailData(2016041001);
 		System.out.println(bean);
 	}
 	

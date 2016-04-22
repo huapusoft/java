@@ -3,12 +3,17 @@ package com.template.serviceImpl;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.template.dao.DicDataDictionaryMapper;
 import com.template.dao.StorePurchasePlanDetailMapper;
 import com.template.dao.StorePurchasePlanMapper;
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DrugAndPurchasePlanDetail;
 import com.template.domain.StorePurchasePlan;
 import com.template.domain.StorePurchasePlanDetail;
@@ -32,6 +37,9 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 
 	@Resource
 	private CommonService commonService;
+	
+	@Resource
+	private DicDataDictionaryMapper dicDataDictionaryMapper;
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
@@ -72,9 +80,9 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 			}
 			
 			//检查状态
-			if( Constants.BusinessStatus.SUBMIT.equals( purchaseData.getStatus() ) 
-					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( purchaseData.getStatus() )
-					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( purchaseData.getStatus() )
+			if( Constants.BusinessStatus.SUBMIT == purchaseData.getStatus()  
+					|| Constants.BusinessStatus.VERIFY_SUCCESS == purchaseData.getStatus() 
+					|| Constants.BusinessStatus.LEADER_SUCCESS ==purchaseData.getStatus() 
 				){
 				throw new RuntimeException("不是草稿、驳回状态，不允许更新");
 				
@@ -115,9 +123,9 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 			throw new RuntimeException("采购号对应的数据为空");
 		}
 		//检查状态
-		if( Constants.BusinessStatus.SUBMIT.equals( purchaseData.getStatus() ) 
-				|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( purchaseData.getStatus() )
-				|| Constants.BusinessStatus.LEADER_SUCCESS.equals( purchaseData.getStatus() )
+		if( Constants.BusinessStatus.SUBMIT == purchaseData.getStatus() 
+				|| Constants.BusinessStatus.VERIFY_SUCCESS ==purchaseData.getStatus() 
+				|| Constants.BusinessStatus.LEADER_SUCCESS == purchaseData.getStatus() 
 			){
 			throw new RuntimeException("不是草稿、驳回状态，不允许提交");
 			
@@ -141,9 +149,9 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 		
 		StorePurchasePlan purchaseData = storePurchasePlanMapper.getByPurchaseNo(purchaseNo);
 		if( null != purchaseData ){
-			if( Constants.BusinessStatus.SUBMIT.equals( purchaseData.getStatus() ) 
-					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( purchaseData.getStatus() )
-					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( purchaseData.getStatus() )
+			if( Constants.BusinessStatus.SUBMIT == purchaseData.getStatus() 
+					|| Constants.BusinessStatus.VERIFY_SUCCESS == purchaseData.getStatus() 
+					|| Constants.BusinessStatus.LEADER_SUCCESS ==purchaseData.getStatus() 
 				){
 				throw new RuntimeException("不是草稿、驳回状态，不允许废除");
 				
@@ -169,7 +177,7 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 		}
 		
 		//检查状态
-		if( !Constants.BusinessStatus.SUBMIT.equals( purchaseData.getStatus()  )){
+		if( Constants.BusinessStatus.SUBMIT != purchaseData.getStatus()  ){
 				throw new RuntimeException("不是已提交状态，财务不可审核");
 			}
 		//更新采购计划主表
@@ -196,7 +204,7 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 		}
 		
 		//检查状态
-		if( !Constants.BusinessStatus.VERIFY_SUCCESS.equals( purchaseData.getStatus()  )){
+		if( Constants.BusinessStatus.VERIFY_SUCCESS != purchaseData.getStatus()  ){
 				throw new RuntimeException("不是财务审核通过状态，领导不可审核");
 			}
 		//更新采购计划主表
@@ -216,7 +224,20 @@ public class PurchasePlanServiceImpl implements PurchasePlanService{
 			throws Exception {
 		List<StorePurchasePlan> list = storePurchasePlanMapper.getByConditionsForQuery(params);
 		if( null != list && list.size() > 0 ){
+			//获取盘点的状态
+			params.put("dataType", "purchaseStatus");
+			List<DicDataDictionary> statusList = dicDataDictionaryMapper.getByConditions(params);
+			
 			for(int i=0; i<list.size(); i++){
+				
+				//得到状态的说明
+				int status=list.get(i).getStatus();
+				for(int j=0;j<statusList.size();j++){
+					if(status==statusList.get(j).getDataId()){
+						list.get(i).setStatusName(statusList.get(j).getDataIdName());
+					}
+				}
+				
 				int purchaseNo = list.get(i).getPurchaseNo();
 				List<DrugAndPurchasePlanDetail> detailList = storePurchasePlanDetailMapper.getPurchaseDetailList(purchaseNo);
 				list.get(i).setDetailAndDrugList(detailList);

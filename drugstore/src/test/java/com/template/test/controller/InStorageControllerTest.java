@@ -194,9 +194,9 @@ public class InStorageControllerTest {
 		
 		StoreInOut detailData = inStorageService.getDetailData(2016041027);
 		if( null != detailData ){
-			String status = detailData.getStatus();
-			if( Constants.BusinessStatus.NEW.equals(status.trim())
-					|| Constants.BusinessStatus.VERIFY_FAIL.equals(status.trim()) ){
+			int status = detailData.getStatus();
+			if( Constants.BusinessStatus.NEW ==status 
+					|| Constants.BusinessStatus.VERIFY_FAIL ==status  ){
 				System.out.println("success");
 				
 			}else{

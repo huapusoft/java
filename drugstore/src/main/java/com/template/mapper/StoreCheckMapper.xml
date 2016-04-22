@@ -10,6 +10,7 @@
 		<result column="retailSum" property="retailSum" />
 		<result column="checkRetailSum" property="checkRetailSum" />
 		<result column="checkOper" property="checkOper" />
+		<result column="status" property="status" />
 		<result column="sealOper" property="sealOper" />
 		<result column="sealTime" property="sealTime" />
 	</resultMap>
@@ -50,9 +51,9 @@
 	
 	<insert id="insert" parameterType="com.template.domain.StoreCheck">
 		insert into storeCheck
-		( checkNo, storeName, checkTime, inSum, retailSum, checkRetailSum, checkOper, sealOper, sealTime )
+		( checkNo, storeName, checkTime, inSum, retailSum, checkRetailSum, checkOper, status, sealOper, sealTime )
 		values
-		( #{checkNo}, #{storeName}, #{checkTime}, #{inSum}, #{retailSum}, #{checkRetailSum}, #{checkOper}, #{sealOper}, #{sealTime} )
+		( #{checkNo}, #{storeName}, #{checkTime}, #{inSum}, #{retailSum}, #{checkRetailSum}, #{checkOper}, #{status}, #{sealOper}, #{sealTime} )
 	</insert>
 	
 	<update id="update" parameterType="com.template.domain.StoreCheck">
@@ -75,6 +76,9 @@
 			</if>
 			<if test="checkOper != null and checkOper != ''">
 				checkOper = #{checkOper},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status},
 			</if>
 			<if test="sealOper != null and sealOper != ''">
 				sealOper = #{sealOper},

@@ -33,6 +33,9 @@ public class StoreCheck {
 	private String sealOper;//封存操作员
 	private Date sealTime;//封存时间
 	
+	private int status;//状态
+	private String statusName;//状态说明
+	
 	//临时
 	private List<StoreCheckDetail> detailList;//盘点明细
 	
@@ -103,6 +106,18 @@ public class StoreCheck {
 	}
 	public void setSealTime(Date sealTime) {
 		this.sealTime = sealTime;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 	
 }

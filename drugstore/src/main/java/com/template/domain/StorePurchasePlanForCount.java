@@ -7,13 +7,14 @@ package com.template.domain;
  */
 public class StorePurchasePlanForCount {
 	
-	private String status;//状态：默认为0草稿，1已提交，2复核通过，3复核驳回
+	private int status;//状态：默认为0草稿，1已提交，2复核通过，3复核驳回
 	private int total;
 	
-	public String getStatus() {
+	
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	public int getTotal() {

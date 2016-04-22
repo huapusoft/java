@@ -65,4 +65,5 @@ public interface StoreCheckService {
 	* @return
 	 */
 	public List<StoreCheck> getListData(Map<String, Object> params) throws Exception;
+	
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.template.dao.DicDataDictionaryMapper;
 import com.template.dao.DicDrugFunctionMapper;
 import com.template.dao.DicDrugMapper;
 import com.template.dao.DicDrugStoreMapper;
@@ -26,6 +27,7 @@ import com.template.dao.StoreInOutDetailMapper;
 import com.template.dao.StoreInOutMapper;
 import com.template.dao.StoreMapper;
 import com.template.dao.StorePurchasePlanMapper;
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DicDrug;
 import com.template.domain.DicDrugFunction;
 import com.template.domain.DicDrugStore;
@@ -99,6 +101,9 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Resource
 	private StoreService storeService;
+	
+	@Resource
+	private DicDataDictionaryMapper dicDataDictionaryMapper;
 	
 	@Override
 	public void test() {
@@ -250,16 +255,16 @@ public class CommonServiceImpl implements CommonService {
 			if( null != planList && planList.size() > 0 ){
 				for(int i=0; i<planList.size(); i++){
 					StorePurchasePlanForCount bean = planList.get(i);
-					String status = bean.getStatus();
+					int status = bean.getStatus();
 					int total = bean.getTotal();
 					
-					if( Constants.BusinessStatus.NEW.equals(status) ){
+					if( Constants.BusinessStatus.NEW == status ){
 						result.put("storePurchasePlanSum0", total);//采购计划草稿
-					}else if( Constants.BusinessStatus.SUBMIT.equals(status) ){
+					}else if( Constants.BusinessStatus.SUBMIT == status ){
 						result.put("storePurchasePlanSum1", total);//采购计划已提交
-					}else if( Constants.BusinessStatus.VERIFY_FAIL.equals(status) ){
+					}else if( Constants.BusinessStatus.VERIFY_FAIL ==status ){
 						result.put("storePurchasePlanSum3", total);//采购计划复核驳回
-					}else if( Constants.BusinessStatus.LEADER_FAIL.equals(status) ){
+					}else if( Constants.BusinessStatus.LEADER_FAIL ==status ){
 						result.put("storePurchasePlanSum5", total);//采购计划领导驳回
 					}
 				}
@@ -359,9 +364,9 @@ public class CommonServiceImpl implements CommonService {
 				throw new RuntimeException("出入库信息不存在");
 			}
 			//检查状态
-			if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
-					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
-					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+			if( Constants.BusinessStatus.SUBMIT == inOut.getStatus()  
+					|| Constants.BusinessStatus.VERIFY_SUCCESS == inOut.getStatus() 
+					|| Constants.BusinessStatus.LEADER_SUCCESS == inOut.getStatus() 
 				){
 				throw new RuntimeException("不是草稿状态，不可更新");
 				
@@ -412,9 +417,9 @@ public class CommonServiceImpl implements CommonService {
 			throw new RuntimeException("票据号对应的数据为空");
 		}
 		//检查状态
-		if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
-				|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
-				|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+		if( Constants.BusinessStatus.SUBMIT == inOut.getStatus() 
+				|| Constants.BusinessStatus.VERIFY_SUCCESS == inOut.getStatus() 
+				|| Constants.BusinessStatus.LEADER_SUCCESS  ==inOut.getStatus() 
 			){
 			throw new RuntimeException("不是草稿状态，不可操作");
 			
@@ -437,9 +442,9 @@ public class CommonServiceImpl implements CommonService {
 		
 		StoreInOut inOut = storeInOutMapper.getById(billNo);
 		if( null != inOut ){
-			if( Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus() ) 
-					|| Constants.BusinessStatus.VERIFY_SUCCESS.equals( inOut.getStatus() )
-					|| Constants.BusinessStatus.LEADER_SUCCESS.equals( inOut.getStatus() )
+			if( Constants.BusinessStatus.SUBMIT == inOut.getStatus() 
+					|| Constants.BusinessStatus.VERIFY_SUCCESS == inOut.getStatus() 
+					|| Constants.BusinessStatus.LEADER_SUCCESS == inOut.getStatus() 
 				){
 				throw new RuntimeException("不是草稿状态，不可删除");
 				
@@ -463,7 +468,7 @@ public class CommonServiceImpl implements CommonService {
 		
 		StoreInOut inOut = storeInOutMapper.getById(billNo);
 		if( null != inOut ){
-			if( !Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus()  )
+			if( Constants.BusinessStatus.SUBMIT != inOut.getStatus()  
 				){
 				throw new RuntimeException("不是已提交状态，不可复核");
 				
@@ -495,7 +500,7 @@ public class CommonServiceImpl implements CommonService {
 			throw new RuntimeException("票据号对应的数据为空");
 		}
 		if( null != inOut ){
-			if( !Constants.BusinessStatus.SUBMIT.equals( inOut.getStatus()  )
+			if( Constants.BusinessStatus.SUBMIT != inOut.getStatus()  
 				){
 				throw new RuntimeException("不是已提交状态，不可复核");
 				
@@ -544,7 +549,20 @@ public class CommonServiceImpl implements CommonService {
 		params.put("billType", billType);
 		List<StoreInOut> list = storeInOutMapper.getByConditionsForQuery(params);
 		if( null != list && list.size() > 0 ){
+			//获取盘点的状态
+			params.put("dataType", "inOutStatus");
+			List<DicDataDictionary> statusList = dicDataDictionaryMapper.getByConditions(params);
+			
 			for(int i=0; i<list.size(); i++){
+				
+				//得到状态的说明
+				int status=list.get(i).getStatus();
+				for(int j=0;j<statusList.size();j++){
+					if(status==statusList.get(j).getDataId()){
+						list.get(i).setStatusName(statusList.get(j).getDataIdName());
+					}
+				}
+				
 				int billNo = list.get(i).getBillNo();
 				List<DrugAndStoreInOutDetail> detailList = storeInOutDetailMapper.getByBillNo(billNo);
 				list.get(i).setDetailAndDrugList(detailList);
@@ -688,4 +706,10 @@ public class CommonServiceImpl implements CommonService {
 		return result;
 	}
 
+	@Override
+	public List<DicDataDictionary> getStatus(Map<String, Object> params)
+			throws Exception {
+		List<DicDataDictionary> list = dicDataDictionaryMapper.getByConditions(params);
+		return list;
+	}
 }

@@ -3,6 +3,7 @@ package com.template.service;
 import java.util.List;
 import java.util.Map;
 
+import com.template.domain.DicDataDictionary;
 import com.template.domain.DicDrugFunction;
 import com.template.domain.DicDrugStore;
 import com.template.domain.DicHzylContrast;
@@ -319,4 +320,12 @@ public interface CommonService {
 	  */
 	public String getPyCode(String name) throws Exception;
 	
+	/**
+	 * 获取状态
+	* @author  fengql 
+	* @date 2016年4月22日 下午3:20:58 
+	* @parameter  
+	* @return
+	 */
+	public List<DicDataDictionary> getStatus(Map<String, Object> params) throws Exception;
 }
