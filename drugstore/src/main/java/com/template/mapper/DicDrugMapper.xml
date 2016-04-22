@@ -22,7 +22,7 @@
 	    <result column="wb" property="wb"  />
 	    <result column="py" property="py"  />
 	    <result column="drugFunction" property="drugFunction"  />
-	    <result column="drugClass" property="drugClass"  />
+	    <result column="drugClassId" property="drugClassId"  />
 	    <result column="drugFrom" property="drugFrom"  />
 	    <result column="compositeItem" property="compositeItem"  />
 	    <result column="subItemSelect" property="subItemSelect"  />
@@ -72,7 +72,7 @@
 	      inhosUnitRatio, adviceUnit, adviceUnitValue, 
 	      adviceUnitValueUnit, adviceUnitClinicRatio, 
 	      adviceUnitInhosRatio, wb, py, 
-	      drugFunction, drugClass, drugFrom, 
+	      drugFunction, drugClassId, drugFrom, 
 	      compositeItem, subItemSelect, partSelect, 
 	      changePrice, showInAdvice, enabled, 
 	      hzylCode, hzylVerify, hzylReimburse, 
@@ -86,7 +86,7 @@
 	      #{inhosUnitRatio}, #{adviceUnit}, #{adviceUnitValue}, 
 	      #{adviceUnitValueUnit}, #{adviceUnitClinicRatio}, 
 	      #{adviceUnitInhosRatio}, #{wb}, #{py}, 
-	      #{drugFunction}, #{drugClass}, #{drugFrom}, 
+	      #{drugFunction}, #{drugClassId}, #{drugFrom}, 
 	      #{compositeItem}, #{subItemSelect}, #{partSelect}, 
 	      #{changePrice}, #{showInAdvice}, #{enabled}, 
 	      #{hzylCode}, #{hzylVerify}, #{hzylReimburse}, 
@@ -153,8 +153,8 @@
 	      <if test="drugFunction != null" >
 	        drugFunction = #{drugFunction},
 	      </if>
-	      <if test="drugClass != null" >
-	        drugClass = #{drugClass},
+	      <if test="drugClassId != null" >
+	        drugClassId = #{drugClassId},
 	      </if>
 	      <if test="drugFrom != null" >
 	        drugFrom = #{drugFrom},

@@ -171,7 +171,7 @@ public class DrugSettingControllerTest {
 		
 		bean.setDrugFrom("喷雾");
 		bean.setDrugFunction("111");
-		bean.setDrugClass("2222");
+		bean.setDrugClassId(12);
 		bean.setStoreClass("测试分类1");
 		dicDrugService.save(bean);
 		

@@ -64,13 +64,12 @@ public class DicDrug {
     @Size(max=64,message="长度最大为64个字符")
     private String py;//拼音码
 
-    @Size(max=16,message="长度最大为16个字符")
+    @Size(max=32,message="长度最大为32个字符")
     private String drugFunction;//药品功能代码
 
-    @Size(max=16,message="长度最大为16个字符")
-    private String drugClass;//药品类别
+    private int drugClassId;//药品类别id
 
-    @Size(max=16,message="长度最大为16个字符")
+    @Size(max=32,message="长度最大为32个字符")
     private String drugFrom;//药品剂型
 
     private int compositeItem;//是否为复合项目
@@ -321,12 +320,12 @@ public class DicDrug {
 		this.drugFunction = drugFunction;
 	}
 
-	public String getDrugClass() {
-		return drugClass;
+	public int getDrugClassId() {
+		return drugClassId;
 	}
 
-	public void setDrugClass(String drugClass) {
-		this.drugClass = drugClass;
+	public void setDrugClassId(int drugClassId) {
+		this.drugClassId = drugClassId;
 	}
 
 	public String getDrugFrom() {

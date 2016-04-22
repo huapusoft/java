@@ -404,11 +404,12 @@ public class DicDrugServiceImpl implements DicDrugService {
 							msg+="第"+(i+1)+"行第"+(j+1)+"列(药品功能代码)的数据长度不对(最多16位)、";
 						}
 						break;
-					case 25://药品类别
-						if(celldata.length()<=16){
-							dicDrug.setDrugClass(celldata);
+					case 25://药品类别id
+						if(isInteger(celldata)){
+							int drugClassId=Integer.parseInt(celldata);
+							dicDrug.setDrugClassId(drugClassId);
 						}else{
-							msg+="第"+(i+1)+"行第"+(j+1)+"列(药品类别)的数据长度不对(最多16位)、";
+							msg+="第"+(i+1)+"行第"+(j+1)+"列(药品类别id)的数据类型不对(应该为整数)、";
 						}
 						break;
 					case 26://药品剂型
