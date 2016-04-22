@@ -327,5 +327,16 @@ public class TestController {
 
 	}
 
+	/**
+	 * 测试打印:
+	 */
+	@RequestMapping(value = "/print", method = RequestMethod.GET)
+	public ModelAndView print(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session)
+			throws IOException {
+		ModelAndView mv = new ModelAndView("/test/print");
 
+		return mv;
+
+	}
 }

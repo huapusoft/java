@@ -18,6 +18,7 @@
 		<script type="text/javascript" src="/staticPublic/js/formJson.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.jqprint-0.3.js"></script>
 		<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+		<script type="text/javascript" src="/staticPublic/js/layer/layer.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/default/easyui.css"></link>
 		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"></link>
@@ -399,6 +400,9 @@ function save(){
 }
 
 function testGetJson(){
+	//
+	layer.tips('默认就是向右的', '#companyName', {time :0} );
+	
 	var $paramJson = $.formHelper.getObject($('#companyForm').serialize());
 	alert( JSON.stringify( $paramJson ) );
 	
