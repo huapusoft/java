@@ -32,7 +32,6 @@
   
   <resultMap id="BaseResultMap2" type="com.template.domain.DrugAndCheckDetail" >
     <id column="orderNo" property="orderNo"/>
-    <result column="checkNo" property="checkNo" />
     <result column="id" property="id" />
     <result column="itemName" property="itemName" />
     <result column="spec" property="spec" />
@@ -50,9 +49,7 @@
   				a.realAmount,a.price*a.realAmount realPrice
 		from storeCheckDetail a,dic_drug b
 		where a.drugId=b.id and b.enabled = 1
-			<if test="checkNo != null and checkNo != ''">
 				and a.checkNo = #{checkNo}
-			</if>
 		order by a.orderNo asc
 	</select>
   
