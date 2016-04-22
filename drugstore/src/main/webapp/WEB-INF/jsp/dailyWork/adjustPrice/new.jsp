@@ -844,7 +844,11 @@
 }
 .on{
 	background-color: #3299ff;
-}		
+}	
+.fonttitle{
+	font-size: 13px;
+	/* font-family: Microsoft YaHei; */
+}	
 </style>
 	</head>
 	<body onkeydown="keyCheck()">

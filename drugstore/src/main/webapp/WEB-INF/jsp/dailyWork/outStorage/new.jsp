@@ -312,7 +312,7 @@ $(document).ready(function() {
 	$('#mytable').datagrid('hideColumn','id');
 	$('#mytable').datagrid('hideColumn','invoiceNo');	
 	$('#mytable').datagrid('options').onSelect = function(index, rowData){selectRow = index;}
-	 $("#mytable").datagrid().datagrid("keyCtr"); 
+	
 	/* var ed = $('#mytable').datagrid('getEditor', {index:0,field:'attr1'});
     $(ed.target).datebox('setValue', '12'); */
 });
@@ -422,6 +422,7 @@ function isNumber(n) {
 	  return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 var maincurRow = "";//主页面表格行索引
+var fieldName = "";//点击的列field
 var selectRow = "";//选择行
 var saveclick  = 0;
 var rowNo= 0;
@@ -573,14 +574,7 @@ $.extend($.fn.datagrid.methods, {
                	  					                var drugId= tablerow.find("[name='drugId']").text();
                	  									selectedData.push({Name:matname,Spec:spec,UnitName:unitname,BatchNo:batchno,Vendor:vendor,Price:price,InPrice:inPrice,ValidDate:validDate,DrugId:drugId});
                										});
-               								/*
-               	    						alert(selectedData.length);
-               	    						for(var i = 0;i<selectedData.length;i++)
-               	    						{
-               	    							alert(selectedData[i]['Name']);
-               	    							alert(selectedData[i]['Spec']);
-               	    							alert(selectedData[i]['UnitName']);
-               	    						}*/
+               								
                								});
                								//单击checkbox
                								$("#selectItem").find("#table1 :checkbox").click(function(e){
@@ -727,9 +721,8 @@ $.extend($.fn.datagrid.methods, {
             var opts = dg.datagrid('options');
             opts.oldOnClickCell = opts.onClickCell;
             opts.onClickCell = function(index, field){
+            	fieldName = field;
             	maincurRow = index;//点击加入当前行索引
-            	//alert("maincurRow:"+maincurRow);
-            	//alert(opts.editIndex);
                 if (opts.editIndex != undefined){//editIndex为编辑的索引值,这里仅为引用
                     if (dg.datagrid('validateRow', opts.editIndex)){
                         dg.datagrid('endEdit', opts.editIndex);
@@ -757,9 +750,6 @@ $.extend($.fn.datagrid.methods, {
     				rowNo = 0;
     				$("#selectItem").hide();
     			}
-    			
-    			//alert(event.target.getAttribute('class'));
-    			//alert($(event.target).text());
     				if(event.target.getAttribute('class') != "" && event.target.getAttribute('class') != null)
         			{
         				if(event.target.getAttribute('class').indexOf('datagrid-cell') == -1)//是否点击表格cell 不包含
@@ -782,102 +772,7 @@ $.extend($.fn.datagrid.methods, {
     		});
         });
         
-    } ,
-    keyCtr : function (jq) {
-        return jq.each(function () {         				  
-            var grid = $(this);             
-            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (e) {            
-                switch (e.keyCode) {               
-                case 13: // up
-                
-                    var selected = grid.datagrid('getSelected');                   
-                    if (selected) {                    	 
-                    	var index = grid.datagrid('getRowIndex', selected);
-                        grid.datagrid('selectRow', index);                       
-                      //单元格聚焦
-                      alert(fieldname);
-                        if(fieldname != ""){
-                        	if(fieldname=="itemName"){
-                        	var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'itemName'});
-                        	 $(ed.target).blur();
-                        		$('#mytable').datagrid('endEditCell', {index: index, field:'itemName'}); 
-                           	 $('#mytable').datagrid('beginEditCell', {index: index, field: 'amount'});                           	                       
-                           	 /* alert(ed); */                          
-                           	 fieldname="amount";                           
-                            grid.datagrid('selectRow', index);
-                            var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'amount'});                         
-                           $(".datagrid-editable-input").focus(function(){
-                           this.select();
-                           });
-                           $(ed.target).focus();
-                                index=index+1;
-                        	}else if(fieldname=="amount"){    
-                        		var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'amount'});
-                           	    $(ed.target).blur();
-                        		$('#mytable').datagrid('endEditCell', {index: index, field: 'amount'});                         		
-                              	 $('#mytable').datagrid('beginEditCell', {index: index+1, field: 'itemName'});
-                              	 var ed = $('#mytable').datagrid('getEditor', {index: index+1,field:'itemName'});
-                              	  /* alert(ed); */
-                              	  fieldname="itemName";
-                              	index=index+1;
-                              	grid.datagrid('selectRow', index);   
-                                $(".datagrid-editable-input").focus(function(){
-                                    this.select();
-                                    });
-                                    $(ed.target).focus();
-                        	}
-                        	 
-                        
-                     }
-                    } 
-                    break;
-                case 9: // down
-                	  var selected = grid.datagrid('getSelected');                   
-                      if (selected) {                    	 
-                      	var index = grid.datagrid('getRowIndex', selected);
-                          grid.datagrid('selectRow', index);                       
-                        //单元格聚焦
-                        alert(fieldname);
-                          if(fieldname != ""){
-                          	if(fieldname=="itemName"){
-                          	var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'itemName'});
-                          	 $(ed.target).blur();
-                          		$('#mytable').datagrid('endEditCell', {index: index, field:'itemName'}); 
-                             	 $('#mytable').datagrid('beginEditCell', {index: index, field: 'amount'});                           	                       
-                             	 /* alert(ed); */                          
-                             	 fieldname="amount";                           
-                              grid.datagrid('selectRow', index);
-                              var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'amount'});                         
-                             $(".datagrid-editable-input").focus(function(){
-                             this.select();
-                             });
-                             $(ed.target).focus();
-                                  index=index+1;
-                          	}else if(fieldname=="amount"){    
-                          		var ed =  $('#mytable').datagrid('getEditor', {index:index,field:'amount'});
-                             	    $(ed.target).blur();
-                          		$('#mytable').datagrid('endEditCell', {index: index, field: 'amount'});                         		
-                                	 $('#mytable').datagrid('beginEditCell', {index: index+1, field: 'itemName'});
-                                	 var ed = $('#mytable').datagrid('getEditor', {index: index+1,field:'itemName'});
-                                	  /* alert(ed); */
-                                	  fieldname="itemName";
-                                	index=index+1;
-                                	grid.datagrid('selectRow', index);   
-                                  $(".datagrid-editable-input").focus(function(){
-                                      this.select();
-                                      });
-                                      $(ed.target).focus();
-                          	}
-                          	 
-                          
-                       }
-                      } 
-                    break;
-               
-                }
-            });
-        });
-    } 
+    }  
 	
 });
 
@@ -916,17 +811,7 @@ function keyCheck(){
     			return false;
     		}
     		else
-    		{
-    			/*
-    			if(tr_top <= 262+d.scrollTop)
-    			{
-    				d.scrollTop = d.scrollTop;
-    				if(tr_top == d.scrollTop+1)
-    				{
-    					d.scrollTop = d.scrollTop-29;
-    				}
-    			}
-    			*/
+    		{    		
     			$("#selectItem").animate({scrollTop:tr_top-tr_height},1);
     			document.getElementById("table1").rows(--rowNo).className = "on";
     		}
@@ -948,22 +833,7 @@ function keyCheck(){
     		return false;
     	}
     	else
-    	{
-    		
-    		//if(tr_top >= d.scrollTop+1)
-    		//{
-    			//d.scrollTop = d.scrollTop;
-    			//$("#selectItem").animate({scrollTop:d.scrollTop},1);
-    			//if(tr_top == 262+d.scrollTop)
-    			//{
-    				//alert(d.scrollTop);
-    				//alert(d.scrollHeight);
-    				//alert(tr_top);
-    				//d.scrollTop = d.scrollTop+29;
-    				//$("#selectItem").animate({scrollTop:tr_top-233},1);
-    			//}
-    		//}
-    		
+    	{    		   		
     		$("#selectItem").animate({scrollTop:tr_top-290+2*tr_height},1);
     		document.getElementById("table1").rows(++rowNo).className = "on";
     	}
@@ -972,6 +842,14 @@ function keyCheck(){
 	if(window.event.keyCode== 13)
 	{
 		//alert(maincurRow);
+		window.event.returnValue = false;//阻止事件的默认行为
+				if($("#selectItem").is(':hidden'))//true 隐藏
+				{
+					//alert('ent');
+					keyTab();
+				}
+				else
+				{
 		var flag = false;
 		var rowindex = 0;
 		var inumber = "";//有数据的行数
@@ -1098,7 +976,8 @@ function keyCheck(){
     	rowNo = 0;
     	clickIndex.splice(0,clickIndex.length);
     	$("#selectItem").hide();
- 		
+    	keyTab();
+    	}
 	}
 	//esc事件
 	if(window.event.keyCode== 27)
@@ -1108,7 +987,40 @@ function keyCheck(){
 		clickIndex.splice(0,clickIndex.length);
 		$("#selectItem").hide();
 	}
+	//Tab键盘
+	if(window.event.keyCode== 9)
+	{
+		keyTab();
+	}
 };
+function keyTab()
+{
+	var array = ['itemName','amount'];
+	for(var i = 0;i<array.length;i++)
+	{
+		if(fieldName == array[i])
+		{
+			ai = i+1;
+		}
+	}
+	//alert(ai);
+	console.info(fieldName);
+	console.info(ai);
+	if(ai%(array.length) == 0)
+	 {
+		 //alert("aa");
+		 maincurRow +=1;
+	 }
+	var dg = $('#mytable');
+    var opts = dg.datagrid('options');
+    opts.onClickCell(maincurRow, array[ai%(array.length)]);   
+	//opts.onClickCell(maincurRow, array[ai%(array.length)]);//再点击一次，获得焦点
+	if(array[ai%(array.length)].trim() == "amount")//输入框在itemName时,模糊查询药品名称,按enter后(即按下enter 后为amount时，再点击一次，获得焦点 ).
+	{
+		opts.onClickCell(maincurRow, array[ai%(array.length)]);
+	}
+	
+}
 
 String.prototype.trim=function()
 {
@@ -1176,7 +1088,7 @@ function dosave(){
  				        function fun(){  
  				      --x;  
  				      if(x==0){  
- 				          clearInterval(interval);  
+ 				    clearInterval(interval);  
  				  $(".messager-body").window('close');    
  				       }  
  				}; 
@@ -1376,333 +1288,8 @@ function doopen(){
 				jQuery.messager.alert('提示:',data.msg,'info'); 
 			}
 		}
-	});
-	 
-	
-	
-	
+	});	 			
 } 
 
-(function ($) {
-
-	var editNumCell = undefined;
-	var zdyBeforeEdit = undefined;
-	var zdyCheckField = undefined;
-	var showNumValue = undefined; 
-	var checkFocus = undefined;//用来检查失去焦点的状态
-	var comboboxValue = {};
-	var copyArray = [];//用来存数最新的数据
-	var zdyFlag = undefined;//判断值是否发生改变的标记
-	var EditorFields = [];//存放具有编辑器的列的集合
-	 
-	    //开启编辑单元格状态,参数options的格式构成为:Object {index: **, field: "***"},由索引index和field字段名构成
-	    function beginEditCell(target, options) {
-	         
-	        _initCellEditor(target, options.index, options.field);
-	        _outerWidthOfEditable(target);
-	        //$.validateRow(target, options.index);暂时先不使用,不知道该方法作用
-	    }
-	 
-	    /**
-	     * 初始化表格编辑器
-	     * @param target
-	     * @param _index
-	     * @param _field
-	     */
-	    function _initCellEditor(target, _index, _field) {
-	        //获得datagrid数据表格的属性options
-	        var opts = $.data(target, "datagrid").options;
-	        //获得数据表格的tr
-	        var tr = opts.finder.getTr(target, _index);
-	        //获得填充表格的tr的记录row
-	        var row = opts.finder.getRow(target, _index);
-	         
-	        //循环该tr下的每一个td
-	        tr.children("td").each(function (index) {
-	            //此时还未开启编辑,可以看到每一个cell都是一个div,格式为[div.datagrid-cell.datagrid-cell-c1-practName...]
-	            var cell = $(this).find("div.datagrid-cell");
-	            var field = $(this).attr("field");
-	 
-//	            if (field == _field) {//找到与传递参数相同field的单元格
-	                //返回指定datagrid的列属性
-	                var col = $(target).datagrid("getColumnOption", field);
-	                
-	                if (col && col.editor) {
-	                    EditorFields.push(field);
-	                    var editorType, editorOp;
-	                    if (typeof col.editor == "string") {
-	                        editorType = col.editor;
-	                    } else {
-	                        editorType = col.editor.type;
-	                        editorOp = col.editor.options;
-	                    }
-	                    var editor = opts.editors[editorType];
-	                    //设置编辑器样式和在该div中填充一个table表格
-	                    if (editor) {
-	                        var html = cell.html();
-	                        var outerWidth = cell._outerWidth();
-	                        cell.addClass("datagrid-editable");
-	                        cell._outerWidth(outerWidth);
-	                        cell.html("<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\"><tr><td></td></tr></table>");
-	                        cell.children("table").bind(
-	                            "click dblclick contextmenu",
-	                            function (e) {
-	                                e.stopPropagation();
-	                            });
-	                        $.data(cell[0], "datagrid.editor", {
-	                            actions: editor,
-	                            target: editor.init(cell.find("td"),
-	                                editorOp),
-	                            field: field,
-	                            type: editorType,
-	                            oldHtml: html
-	                        });
-	                    }
-	                }
-	 
-	                tr.find("div.datagrid-editable").each(function () {
-	                    var field = $(this).parent().attr("field");
-	                    var ed = $.data(this, "datagrid.editor");
-//	                    $('.datagrid-editable')[0].style['height']="auto";//设置包裹该editorde的div的样式
-	                    ed.actions.setValue(ed.target, row[field]);
-	                });
-//	            }
-	        });
-	    }
-	 
-	    //为可编辑的单元格设置外边框
-	    //来自jquery.easyui.1.8.0.js的 function _4d8()方法
-	    function _outerWidthOfEditable(target) {
-	        var dc = $.data(target, "datagrid").dc;
-	        dc.view.find("div.datagrid-editable").each(function () {
-	            var _this = $(this);
-	            var field = _this.parent().attr("field");
-	            var col = $(target).datagrid("getColumnOption", field);
-	            _this._outerWidth(col.width);
-	            var ed = $.data(this, "datagrid.editor");
-	            if (ed.actions.resize) {
-	                ed.actions.resize(ed.target, _this.width());
-	            }
-	        });
-	    }
-	 
-	    //关闭编辑单元格状态
-	    function endEditCell(target, options) {
-	        var opts = $.data(target, "datagrid").options;
-	 
-	        var updatedRows = $.data(target, "datagrid").updatedRows;
-	        var insertedRows = $.data(target, "datagrid").insertedRows;
-	 
-	        var tr = opts.finder.getTr(target, options.index);
-	        var row = opts.finder.getRow(target, options.index);
-	 
-	        var _535 = false;
-	        var _536 = {};
-	        tr.find("div.datagrid-editable").each(function () {
-	            var _537 = $(this).parent().attr("field");
-	            var ed = $.data(this, "datagrid.editor");
-	            var _538 = ed.actions.getValue(ed.target);
-	            if (row[_537] != _538) {
-	                row[_537] = _538;
-	                _535 = true;
-	                _536[_537] = _538;
-	            }
-	        });
-	        if (_535) {
-	            if (_45f(insertedRows, row) == -1) {
-	                if (_45f(insertedRows, row) == -1) {
-	                    updatedRows.push(row);
-	                }
-	            }
-	        }
-	         
-	        _destroyCellEditor(target, options);
-	        $(target).datagrid("refreshRow", options.index);
-	        opts.onAfterEdit.call(target, options.index, row, _536);
-	    }
-	 
-	    function _45f(a, o) {
-	        for (var i = 0, len = a.length; i < len; i++) {
-	            if (a[i] == o) {
-	                return i;
-	            }
-	        }
-	        return -1;
-	    }
-	 
-	    //销毁单元格编辑器
-	    function _destroyCellEditor(target, options) {
-	        var opts = $.data(target, "datagrid").options;
-	        var tr = opts.finder.getTr(target, options.index);
-	 
-	        tr.children("td").each(function () {
-	            var field = $(this).attr("field");
-	                var cell = $(this).find("div.datagrid-editable");
-	                if (cell.length) {
-	                    var ed = $.data(cell[0], "datagrid.editor");
-	                    if (ed.actions.destroy) {
-	                        ed.actions.destroy(ed.target);
-	                    }
-	                    cell.html(ed.oldHtml);
-	                    $.removeData(cell[0], "datagrid.editor");
-	                    cell.removeClass("datagrid-editable");
-	                    cell.css("width", "");
-	                }
-	        });
-	    }
-	 
-	    $.extend($.fn.datagrid.methods, {
-	        beginEditCell: function (target, options) {
-	            return target.each(function () {
-	                beginEditCell(this, options);
-	            });
-	        },
-	        endEditCell: function (target, options) {
-	            return target.each(function () {
-	                endEditCell(this, options);
-	            });
-	        }
-	    });
-	     
-	    /**
-	     * 开启单击单元格
-	     * 
-	     */
-	    var _rowIndex = undefined;
-	    var _field = undefined;
-	    var _rowId=undefined;
-	    function onClickRow(rowIndex, field, value,id) {
-	        if(zdyBeforeEdit!=undefined && $.isFunction(zdyBeforeEdit)){
-	            zdyBeforeEdit(rowIndex,id);
-	        }
-	        var columnOption=$(id).datagrid("getColumnOption",field);
-	        if(columnOption && columnOption.readonly == true)
-	            return false;
-	        if (_rowIndex != rowIndex || _field != field) {
-	            if (endEditing(id)){
-	                $(id).datagrid('selectRow',rowIndex);
-	                $(id).datagrid('beginEditCell', {index: rowIndex, field: field});
-	                //去除当前被编辑的单元格之外的编辑框的错误信息提示的图标
-	                $(".validatebox-invalid").removeClass("validatebox-invalid");
-	                 
-	                var ed = $(id).datagrid('getEditor', {index:rowIndex,field:field});
-	                if(ed == null){
-	                    _destroyCellEditor($(id)[0],{index:rowIndex,field:field});/*必须要先销毁再点击,否则会出现一个div中有多个编辑框*/
-	                    onClickRow(rowIndex, EditorFields[0], value,id);
-	                    return false;
-	                }
-	                _rowIndex = rowIndex;
-	                _field = field;
-	                _rowId=id;
-	                 
-	                $(".datagrid-editable-input").focus(function(){
-	                    this.select();
-	                });
-	                $(ed.target).focus();
-	                 
-	                var row=$(id).datagrid("getRowData",rowIndex);
-	                if(zdyCheckField!=undefined && $.isFunction(zdyCheckField)){
-	                    zdyCheckField(row,field);
-	                    $(".datagrid-editable-input")[0].select();
-	                }
-	                 
-	                $(".datagrid-editable-input").blur(function(){
-	                    field = $(this).parents('td[field]').attr('field');
-	                    copyArray[field] = this.value;
-	                    checkFocus = false;//用来检查获得是否在失去焦点的时候点击的是input文本框
-	                     
-	                    zdyFlag = false;//该值用来检测是否有值发生改变,true表示发生改变,false表示没有
-	                    for(var name in copyArray){
-	                        if(copyArray[name]!= row[name]){
-	                            row[name] = copyArray[name];//让row中的数据是最新的数据,即修改过后的数据
-	                            zdyFlag = true;
-	                        }
-	                    }
-	                     
-	                    $("input").focus(function(){
-	                        checkFocus = true;
-	                    });
-	                    setTimeout(function(){
-	                        if(!checkFocus/*表示点击非文本框input之外的地方而失去焦点*/){timeOutCode(id,rowIndex,field,row,ed);}
-	                    },200);
-	                });
-	                $(".datagrid-editable-input").bind('keydown', function(){
-	                    switch (window.event.keyCode) {
-	                        case 13:
-	                            $(this).blur();
-	                        case 37 :/* Left  ←*/
-	                            $(this).blur();
-	                            var prevRow = $(id).datagrid('prevRow');
-	                            var preRowIndex = $(id).datagrid('getRowIndex',prevRow);
-	                            if(prevRow){
-	                                onClickRow(preRowIndex, field, value,id);
-	                            }
-	                        case 40 :/*Down ↓*/
-	                            $(this).blur();
-	                            var nextRow = $(id).datagrid('nextRow');
-	                            var nextRowIndex = $(id).datagrid('getRowIndex',nextRow);
-	                            if(nextRow){
-	                                onClickRow(nextRowIndex, field, value,id);
-	                            }
-	                    }
-	                });
-	            }
-	        }
-	        return true;
-	    }    
-	    function endEditing(id) {
-	        if (_rowIndex == undefined || _field == undefined || id == undefined) {
-	            return true;
-	        }
-	 
-	        $(id).datagrid('endEditCell', {index: _rowIndex, field: _field});
-	        _rowIndex = undefined;
-	        _field = undefined;
-	        _rowId = undefined;
-	        return true;
-	    }
-	 
-	    function afterEdit(rowIndex, rowData,id){
-	        $(id).datagrid('updateRow',{
-	            index: rowIndex,
-	            row: rowData
-	        });
-	        $(id).datagrid('acceptChanges');
-	    }
-	    function onAfterEditing(rowIndex,row,id){
-	        var saveData=save(rowIndex,row,id);
-	        row=saveData[0];
-	         
-	        afterEdit(rowIndex,row,id);
-	    }
-	 
-	/**
-	 * 改变执行顺序的代码片段,要在判断了input获得焦点之后才执行,否则会先于判断执行
-	 */
-	function timeOutCode(id,rowIndex,field,row,ed){
-	    //如果所有的编辑器都失去焦点,那么进入下面方法
-	    if(ed.type=="combobox" && zdyCheckField!=undefined){
-	        comboboxValue.id = id;
-	        comboboxValue.rowIndex = rowIndex;
-	        comboboxValue.field = field;
-	        comboboxValue.row = row;
-	        comboboxValue.value = $(".datagrid-editable-input").val();
-	        _rowIndex = undefined;
-	        _field = undefined;
-	    }else{
-	         
-	        _destroyCellEditor($(id)[0],{index:rowIndex,field:field});
-	        if(showNumValue!=undefined){
-	            oldVal = showNumValue;
-	        }
-	        if(zdyFlag){//如果值发生改变
-	            onAfterEditing(rowIndex,row,id);
-	        }
-	         
-	        _rowIndex = undefined;
-	        _field = undefined;
-	    }
-	}
-})(jQuery);	
 </script>
 </html>
