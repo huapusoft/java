@@ -17,6 +17,15 @@ public class DictEmployee {
 	private String password;
 	private String highLevel;
 	
+	//
+	private String storeName;
+	
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
 	public String getJobNumber() {
 		return jobNumber;
 	}

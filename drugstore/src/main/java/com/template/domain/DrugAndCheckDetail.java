@@ -15,7 +15,7 @@ public class DrugAndCheckDetail {
 	private int id;//药品id
 	private String itemName;//药品名称
 	private String spec;//规格
-	private int batchNo;//批号
+	private String batchNo;//批号
 	private double price;//单价--当前零售价
 	private double amount;//库存数量
 	private String unit;//单位
@@ -53,10 +53,10 @@ public class DrugAndCheckDetail {
 	public void setSpec(String spec) {
 		this.spec = spec;
 	}
-	public int getBatchNo() {
+	public String getBatchNo() {
 		return batchNo;
 	}
-	public void setBatchNo(int batchNo) {
+	public void setBatchNo(String batchNo) {
 		this.batchNo = batchNo;
 	}
 	public double getPrice() {

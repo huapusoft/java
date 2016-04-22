@@ -12,14 +12,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.template.domain.DicDrugStore;
 import com.template.domain.DictEmployee;
+import com.template.domain.Store;
 import com.template.service.CommonService;
 import com.template.service.DicEmployeeService;
 import com.template.util.CommonUtil;
@@ -98,6 +99,7 @@ public class LoginController {
 			List<DicDrugStore> list = commonService.getAllDicDrugStore();
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "获取成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -126,7 +128,7 @@ public class LoginController {
 	public Map<String, Object> getDicEmployeeBySotreName(HttpServletRequest request, 
 			HttpServletResponse response,
 			HttpSession session,
-			@RequestParam("storeName")String storeName
+			Store bean
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -134,9 +136,10 @@ public class LoginController {
 		result.put("msg", "获取失败");
 		
 		try{
-			List<String> list = commonService.getDicEmployeeBySotreName(storeName);
+			List<String> list = commonService.getDicEmployeeBySotreName(bean.getStoreName());
 			result.put("data", list);
 			result.put("code", "200");
+			result.put("msg", "获取成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -197,9 +200,7 @@ public class LoginController {
 	@RequestMapping(value = "/validate",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> ttt(HttpServletRequest request, HttpServletResponse response,HttpSession session,
-			@RequestParam("name")String name,
-			@RequestParam("password")String password,
-			@RequestParam("storeName")String storeName
+			@RequestBody DictEmployee bean
 			) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -207,6 +208,9 @@ public class LoginController {
 		result.put("msg", "用户名或密码错误");
 		
 		try{
+			String storeName = bean.getStoreName();
+			String name = bean.getName();
+			String password = bean.getPassword();
 			if( StringUtils.isEmpty(storeName) ){
 				result.put("msg", "药库名称不能为空");
 				return result;

@@ -339,4 +339,36 @@ public class TestController {
 		return mv;
 
 	}
+	
+	/**
+	 * 测试导出word
+	 * 
+	 * @Description:
+	 * @author army.liu
+	 * @param
+	 * @return
+	 * @throws
+	 */
+	@RequestMapping(value = "/exportWord", method = RequestMethod.GET)
+	@ResponseBody
+	public void exportWord(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws Exception {
+		
+		String htmlStr = "<html>" +
+				"<head>你好</head>" +
+				"<body>" +
+				"<table>" +
+				"<tr>" +
+				"<td>信息1</td>" +              
+				"<td>信息2</td>" +              
+				"<td>t3</td>" +              
+				"<tr>" +
+				"</table>" +
+				"</body>" +
+				"</html>";
+		String fileName = "药品基础信息维护模板";
+		String fileExtend = "doc";
+		POIUtil.htmlToWord(request, response, fileName, fileExtend, htmlStr);
+
+	}
 }

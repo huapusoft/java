@@ -1,5 +1,6 @@
 package com.template.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -22,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.DirectoryEntry;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -458,4 +460,24 @@ public abstract class POIUtil {
 		return result;
 	}
 
+	/*
+	 * html转word
+	 */
+	public static void htmlToWord(
+			HttpServletRequest request,HttpServletResponse response, 
+			String fileName, String fileExtend,
+			String htmlStr) throws Exception {
+		
+		POIUtil.addDownloadHeader(request, response, fileName, fileExtend);
+		
+		byte b[] = htmlStr.getBytes();
+		ByteArrayInputStream bais = new ByteArrayInputStream(b);
+		POIFSFileSystem poifs = new POIFSFileSystem();
+		DirectoryEntry directory = poifs.getRoot();
+		directory.createDocument("WordDocument", bais);
+		poifs.writeFilesystem(response.getOutputStream());
+		bais.close();
+		 
+	}
+	
 }
