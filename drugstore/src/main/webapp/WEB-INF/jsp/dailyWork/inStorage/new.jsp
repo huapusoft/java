@@ -18,6 +18,13 @@
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/locale/easyui-lang-zh_CN.js"></script> 
 		<script type="text/javascript">
+		String.prototype.trim=function()
+		{
+	    	return this.replace(/(^\s*)|(\s*$)/g,'');
+		}
+		
+		var ai = "";
+		var fieldName = "";//点击的列field
 		var maincurRow = "";//主页面表格行索引
 		var selectRow = "";//选择行
 		var saveclick  = 0;
@@ -41,9 +48,53 @@
 					//alert(param);
 					$(this).datagrid('beginEdit', param.index);
                     var ed = $(this).datagrid('getEditor', param);
+                    //console.info($(ed.target).attr('class'));
                     if (ed){
                         if ($(ed.target).hasClass('textbox-f')){
-                            $(ed.target).textbox('textbox').focus();//获得焦点
+                        	$(ed.target).textbox('textbox').focus();//获得焦点
+                            $(ed.target).next("span").children().first().one('blur', function (e) {
+                            	//alert("aaa");
+                            	//console.info($(this).val().trim());
+                            	var amount = 0;
+                            	var price1 = 0;
+                            	var sum1 = 0;
+                            	var eds = $('#mytable').datagrid('getRows');
+                            	if(param.field == "amount")//列名等于名称
+                                {
+                            		amount = $(this).val().trim();
+                            		price1 = eds[param.index]['price1'];
+                            		//console.info(amount*price1);
+                            		$('#mytable').datagrid('updateRow',{
+       									index: param.index,
+       									row: {
+       										amount:amount,
+       										total1: (price1*amount).toFixed(3)
+       									}
+       								});
+                                }
+                            	if(param.field == "price1")
+                            	{
+                            		price1 = $(this).val().trim();
+                            		amount = eds[param.index]['amount'];
+                            		$('#mytable').datagrid('updateRow',{
+       									index: param.index,
+       									row: {
+       										price1:price1,
+       										total1: (price1*amount).toFixed(3)
+       									}
+       								});
+                            	}
+                            	for(var i = 0;i<eds.length;i++)
+                            	{
+                            		if(eds[i]['total1'] != "" && eds[i]['total1'] != null)
+                            		{
+                            			sum1 += parseFloat(eds[i]['total1']);
+                            		}
+                            	}
+                            	//console.info(sum1);
+                            	$('#sum1').numberbox('setValue', sum1);
+                            });
+                            /*
                             $(ed.target).textbox('textbox').bind('blur',function(){
                             	var amount = 0;
                             	var price1 = 0;
@@ -73,24 +124,19 @@
        									}
        								});
                             	}
-                            	/*
-                            	var td=$('.datagrid-body td[field="total1"]')[param.index];
-                        		var div = $(td).find('div')[0];
-                        		$(div).text((price1*amount).toFixed(2));*/
-                        		
-                            });
+                            });*/
                         } else {
                            $(ed.target).focus();
                            if(param.field == "itemName")//列名等于名称
                            {
                         	   $(ed.target).bind('keyup', function (event) {
-                        		   if(event.keyCode == 38 || event.keyCode == 40)
+                        		   if(event.keyCode == 38 || event.keyCode == 40 )
                        				{
                        					$(this).blur();
                        					event.stopPropagation();//通过使用 stopPropagation() 方法只阻止一个事件起泡。 
                        					return false;//通过返回false来取消默认的行为并阻止事件起泡
                        				}
-                            	   //alert("keyup");
+                        		   
                             	   var A_top = $(this).offset().top + $(this).outerHeight(true); //  1
                            		   var A_left = $(this).offset().left;
                             	   var val = $(this).val().trim();
@@ -265,6 +311,7 @@
                         	   
                            }
                         }
+                        
                     }
 					for(var i=0; i<fields.length; i++){
 						var col = $(this).datagrid('getColumnOption', fields[i]);
@@ -278,6 +325,7 @@
                     var opts = dg.datagrid('options');
                     opts.oldOnClickCell = opts.onClickCell;
                     opts.onClickCell = function(index, field){
+                    	fieldName = field;
                     	maincurRow = index;//点击加入当前行索引
                     	//alert("maincurRow:"+maincurRow);
                     	//alert(opts.editIndex);
@@ -298,7 +346,6 @@
                         
                         opts.editIndex = index;
                         opts.oldOnClickCell.call(this, index, field);
-                        
                     }
                     
                     $(document).click(function(event) {
@@ -334,20 +381,37 @@
                 });
                 
             }
-			
+			,keyCtr : function (jq) {
+				return jq.each(function () { 
+					var grid = $(this); 
+					grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (event) { 
+					switch (event.keyCode) { 
+					case 9: 
+						//alert("9999");
+						
+					break;
+					case 13:
+						//alert("13");
+						//keyTab();
+						break;
+					}
+					});
+				});
+			}
 		});
 		
 		//数量校验不为0
 		$.extend($.fn.validatebox.defaults.rules, {
 			notLing: {
 				validator: function(value, param){
-					console.info("value"+value);
-					console.info("value.length"+value.length);
+					//console.info("value"+value);
+					//console.info("value.length"+value.length);
 					return value != param[0];
 				},
 				message: '不能为 {0}.'
 		    }
 		});
+		
 		
 		function keyCheck(){
 			var d=document.getElementById("selectItem");
@@ -356,6 +420,7 @@
 			if (window.event.keyCode == 38)
 		    {
 				//alert("上");
+				window.event.returnValue = false;//阻止事件的默认行为
 				var tr_top = document.getElementById("table1").rows(rowNo).offsetTop;
 		    	var tr_height = document.getElementById("table1").rows(rowNo).offsetHeight;//行高
 		        for(var k=0;k<sumLength;k++)
@@ -392,6 +457,7 @@
 		    if (window.event.keyCode== 40)
 		    {
 		    	//alert("下");
+		    	window.event.returnValue = false;//阻止事件的默认行为
 		    	var tr_top = document.getElementById("table1").rows(rowNo).offsetTop;
 		    	var tr_height = document.getElementById("table1").rows(rowNo).offsetHeight;//行高
 		    	for(var k=0;k<sumLength;k++)
@@ -427,113 +493,124 @@
 		  	//enter事件
 			if(window.event.keyCode== 13)
 			{
+				//alert($("#selectItem").is(':hidden'));
 				//alert(maincurRow);
-				var flag = false;
-				var rowindex = 0;
-				var inumber = "";//有数据的行数
-				//var tb = document.getElementById("tbody");
-				var rows = $("#mytable").datagrid('getRows');//tb.rows;
-				//alert(rows);
-				for (var i = 0; i < rows.length; i++) 
+				window.event.returnValue = false;//阻止事件的默认行为
+				if($("#selectItem").is(':hidden'))//true 隐藏
 				{
-			       var textval = rows[i]['itemName'];
-			       //alert(textval);
-			       if(textval.trim() != "" && textval.trim() != null)//判断当前页面的物品这列是否有数据
-				 	{
-				 		//alert("i:"+i);
-				 		rowindex = i+1;
-				 	}
-			    }
-				for(var j = 0;j<clickIndex.length;j++)
-				{
-					if(rowNo == clickIndex[j])
-					{
-						flag = true;
-					}
+					//alert('ent');
+					keyTab();
 				}
-				if(flag == false)
+				else
 				{
-					//alert(flag);
-					var matname = $("#table1 tr:eq("+rowNo+")").find("[name='matname']").text().trim();
-					var spec = $("#table1 tr:eq("+rowNo+")").find("[name='spec']").text().trim();
-					var unitname = $("#table1 tr:eq("+rowNo+")").find("[name='unitname']").text().trim();
-					var vendor = $("#table1 tr:eq("+rowNo+")").find("[name='vendor']").text().trim();
-					var drugid = $("#table1 tr:eq("+rowNo+")").find("[name='drugid']").text().trim();
-					if(matname != null && matname != "")
+					var flag = false;
+					var rowindex = 0;
+					var inumber = "";//有数据的行数
+					//var tb = document.getElementById("tbody");
+					var rows = $("#mytable").datagrid('getRows');//tb.rows;
+					//alert(rows);
+					for (var i = 0; i < rows.length; i++) 
 					{
-						selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Vendor:vendor,Drugid:drugid});
-					}
-				}
-				
-				//alert(matname+","+spec+","+unitname);
-				//alert("selectedData.length:::"+selectedData.length);
-				//alert(clickIndex.length);
-				if(selectedData.length > 0)
-				{
-					if(rows[maincurRow].xh != "" && rows[maincurRow].xh != null)//序号不为空 表示要修改
+				       var textval = rows[i]['itemName'];
+				       //alert(textval);
+				       if(textval.trim() != "" && textval.trim() != null)//判断当前页面的物品这列是否有数据
+					 	{
+					 		//alert("i:"+i);
+					 		rowindex = i+1;
+					 	}
+				    }
+					for(var j = 0;j<clickIndex.length;j++)
 					{
-						for(var i = 0;i<selectedData.length;i++)
-   						{
-							//alert(rows[maincurRow].xh.trim());
-							$('#mytable').datagrid('updateRow',{
-   							index: maincurRow,
-   							row: {
-   								itemName: selectedData[i]['Name'],
-   								spec: selectedData[i]['Spec'],
-   								unit: selectedData[i]['UnitName'],
-   								vendor:selectedData[i]['Vendore'],
-   								drugid:selectedData[i]['Drugid'],
-   								}
-   							});
+						if(rowNo == clickIndex[j])
+						{
+							flag = true;
 						}
 					}
-					else
+					if(flag == false)
 					{
-						for(var i = 0;i<selectedData.length;i++)
-   						{
-							if(i+rowindex > rows.length-1)
-   							{
-   								$('#mytable').datagrid('appendRow',{
-   									xh:'',
-   									itemName: '',
-   									spec: '',
-   									unit: '',
-   									vendor:'',
-   									drugid:''
-   									});
-   							}
-								$('#mytable').datagrid('updateRow',{
-   								index: i+rowindex,
-   								row: {
-   									xh:1+i+rowindex,
-   									itemName: selectedData[i]['Name'],
-   									spec: selectedData[i]['Spec'],
-   									unit: selectedData[i]['UnitName'],
-   									vendor:selectedData[i]['Vendore'],
-   									drugid:selectedData[i]['Drugid'],
-   								}
-   							});
-							inumber = i+1+rowindex;
+						//alert(flag);
+						var matname = $("#table1 tr:eq("+rowNo+")").find("[name='matname']").text().trim();
+						var spec = $("#table1 tr:eq("+rowNo+")").find("[name='spec']").text().trim();
+						var unitname = $("#table1 tr:eq("+rowNo+")").find("[name='unitname']").text().trim();
+						var vendor = $("#table1 tr:eq("+rowNo+")").find("[name='vendor']").text().trim();
+						var drugid = $("#table1 tr:eq("+rowNo+")").find("[name='drugid']").text().trim();
+						if(matname != null && matname != "")
+						{
+							selectedData.push({Name:matname,Spec:spec,UnitName:unitname,Vendor:vendor,Drugid:drugid});
 						}
 					}
 					
-			    	if(inumber == rows.length)//有数据的行和添加行后的页面的行相等就在添加一行
-			    	{
-			 			$('#mytable').datagrid('appendRow',{
-								xh:'',
-								itemName: '',
-								spec: '',
-								unit: '',
-								vendor:'',
-								drugid:''
-							});
+					//alert(matname+","+spec+","+unitname);
+					//alert("selectedData.length:::"+selectedData.length);
+					//alert(clickIndex.length);
+					if(selectedData.length > 0)
+					{
+						if(rows[maincurRow].xh != "" && rows[maincurRow].xh != null)//序号不为空 表示要修改
+						{
+							for(var i = 0;i<selectedData.length;i++)
+	   						{
+								//alert(rows[maincurRow].xh.trim());
+								$('#mytable').datagrid('updateRow',{
+	   							index: maincurRow,
+	   							row: {
+	   								itemName: selectedData[i]['Name'],
+	   								spec: selectedData[i]['Spec'],
+	   								unit: selectedData[i]['UnitName'],
+	   								vendor:selectedData[i]['Vendore'],
+	   								drugid:selectedData[i]['Drugid'],
+	   								}
+	   							});
+							}
+						}
+						else
+						{
+							for(var i = 0;i<selectedData.length;i++)
+	   						{
+								if(i+rowindex > rows.length-1)
+	   							{
+	   								$('#mytable').datagrid('appendRow',{
+	   									xh:'',
+	   									itemName: '',
+	   									spec: '',
+	   									unit: '',
+	   									vendor:'',
+	   									drugid:''
+	   									});
+	   							}
+									$('#mytable').datagrid('updateRow',{
+	   								index: i+rowindex,
+	   								row: {
+	   									xh:1+i+rowindex,
+	   									itemName: selectedData[i]['Name'],
+	   									spec: selectedData[i]['Spec'],
+	   									unit: selectedData[i]['UnitName'],
+	   									vendor:selectedData[i]['Vendore'],
+	   									drugid:selectedData[i]['Drugid'],
+	   								}
+	   							});
+								inumber = i+1+rowindex;
+							}
+						}
+						
+				    	if(inumber == rows.length)//有数据的行和添加行后的页面的行相等就在添加一行
+				    	{
+				 			$('#mytable').datagrid('appendRow',{
+									xh:'',
+									itemName: '',
+									spec: '',
+									unit: '',
+									vendor:'',
+									drugid:''
+								});
+				    	}
 			    	}
-		    	}
-				
-		    	selectedData.splice(0,selectedData.length);//清空
-		    	rowNo = 0;
-		    	clickIndex.splice(0,clickIndex.length);
-		    	$("#selectItem").hide();
+					
+			    	selectedData.splice(0,selectedData.length);//清空
+			    	rowNo = 0;
+			    	clickIndex.splice(0,clickIndex.length);
+			    	$("#selectItem").hide();
+			    	keyTab();
+				}
 		 		
 			}
 			//esc事件
@@ -544,11 +621,85 @@
 				clickIndex.splice(0,clickIndex.length);
 				$("#selectItem").hide();
 			}
+			//Tab键盘
+			if(window.event.keyCode== 9)
+			{
+				keyTab();
+			}
 		};
 		
-		String.prototype.trim=function()
+		function keyTab()
 		{
-	    	return this.replace(/(^\s*)|(\s*$)/g,'');
+			var array = ['invoiceNo','itemName','amount','price1'];
+			for(var i = 0;i<array.length;i++)
+			{
+				if(fieldName == array[i])
+				{
+					ai = i+1;
+				}
+			}
+			//alert(ai);
+			console.info(fieldName);
+			console.info(ai);
+			if(ai%(array.length) == 0)
+			 {
+				 //alert("aa");
+				 maincurRow +=1;
+			 }
+			var dg = $('#mytable');
+            var opts = dg.datagrid('options');
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);//再点击一次，获得焦点
+			if(array[ai%(array.length)].trim() == "amount")//输入框在itemName时,模糊查询药品名称,按enter后(即按下enter 后为amount时，再点击一次，获得焦点 ).
+			{
+				opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			}
+			 /*
+			//alert(opts.editIndex);
+			console.info(opts.editIndex);
+			 if (opts.editIndex != undefined){//editIndex为编辑的索引值,这里仅为引用
+                 if ($('#mytable').datagrid('validateRow', opts.editIndex)){
+                	 $('#mytable').datagrid('endEdit', opts.editIndex);
+                     //opts.editIndex = undefined;
+                 } else {
+                     return;
+                 }
+             }
+			 //$('#mytable').datagrid('endEdit', opts.editIndex);
+			 var fields = $('#mytable').datagrid('getColumnFields',true).concat($('#mytable').datagrid('getColumnFields'));
+			 for(var i=0; i<fields.length; i++)
+			 {
+				var col = $('#mytable').datagrid('getColumnOption', fields[i]);//每列的field 
+				col.editor1 = col.editor;//每列的editor
+				if (fields[i] != array[ai%(array.length)])
+				{
+					col.editor = null;
+				}
+			 }
+			 $('#mytable').datagrid('beginEdit', opts.editIndex);
+             var ed = $('#mytable').datagrid('getEditor', {index:opts.editIndex,field:array[ai%(array.length)]});
+             //alert(JSON.stringify($(ed.target)));
+             console.info(opts.editIndex+','+array[ai%(array.length)]);
+             console.info($(ed.target).attr('class'));
+             if (ed)
+             {
+                 if ($(ed.target).hasClass('textbox-f'))
+                 {
+                     $(ed.target).textbox('textbox').focus();//获得焦点
+                 }
+                 else 
+                 {
+                	$(ed.target).focus();
+                 }
+                 
+             }
+             
+			 for(var i=0; i<fields.length; i++)
+			 {
+			 	var col = $('#mytable').datagrid('getColumnOption', fields[i]);
+				col.editor = col.editor1;
+			 }
+			 */
 		}
 		
 		function save(){
@@ -594,9 +745,11 @@
 			    	 objes.drugId = rows[i].drugid;
 			    	 objes.batchNo = rows[i].batchno;
 			    	 objes.amount = rows[i].amount;
-			    	 objes.price1 = rows[i].rice1;
+			    	 objes.price1 = rows[i].price1;
 			    	 objes.price2 = rows[i].price2;
 			    	 objes.validDate = rows[i].validDate;
+			    	 //alert(rows[i].validDate);
+			    	 //alert(typeof(rows[i].validDate));
 				     newArray.push(objes);
 				}
 			 } 
@@ -678,7 +831,7 @@
 			    	 objes.drugId = rows[i].drugid;
 			    	 objes.batchNo = rows[i].batchno;
 			    	 objes.amount = rows[i].amount;
-			    	 objes.price1 = rows[i].rice1;
+			    	 objes.price1 = rows[i].price1;
 			    	 objes.price2 = rows[i].price2;
 			    	 objes.validDate = rows[i].validDate;
 				     newArray.push(objes);
@@ -820,7 +973,7 @@
 		
 		$(function(){
 			$('#mytable').datagrid().datagrid('enableCellEditing');
-			
+			$('#mytable').datagrid().datagrid('keyCtr');
 			$('#mytable').datagrid('options').onSelect = function(index, rowData){selectRow = index;}
 			$.ajax({
 					type : "post",
@@ -936,8 +1089,8 @@
 	<input id="billNo" type="hidden" />
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-combobox" style="width:230px" data-options="
 	"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" precision="2" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<font style="font-size: 12px;font-family: Microsoft YaHei;">零售价总金额：</font><input id="sum2" class="easyui-numberbox" precision="2" style="width:200px;;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<font style="font-size: 12px;font-family: Microsoft YaHei;">零售价总金额：</font><input id="sum2" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:200px;;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<a href="#" id="modifyBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a>
     <a href="#" id="saveBtn" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px" onclick="save()">保存</a>
@@ -956,7 +1109,7 @@
 				<th data-options="field:'vendor',width:200,align:'center'">厂家</th>
 				<th data-options="field:'amount',width:100,align:'center',editor:{type:'numberbox',options:{precision:2,validType:'notLing[0]'}}">数量</th>
 				<th data-options="field:'unit',width:80,align:'center'">单位</th>
-				<th data-options="field:'price1',width:100,align:'center',editor:{type:'numberbox',options:{precision:2}}">进价</th>
+				<th data-options="field:'price1',width:100,align:'center',editor:{type:'numberbox',options:{precision:3}}">进价</th>
 				<th data-options="field:'total1',width:100,align:'center'">进价金额</th>
 				<th data-options="field:'price2',width:100,align:'center'">零售价</th>
 				<th data-options="field:'total2',width:100,align:'center'">零售价金额</th>
