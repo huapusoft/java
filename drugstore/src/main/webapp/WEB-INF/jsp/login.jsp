@@ -255,11 +255,12 @@ body {
 		$.ajax({
 			type : 'POST',
 			url : "validate",
-			data : {
+			data : JSON.stringify({
 				name : $('#name').val(),
 				storeName : $('#storeName').val(),
 				password : $('#password').val()
-			},
+			}),
+			contentType : "application/json;charset=UTF-8",
 			dataType : 'JSON',
 			success : function(data) {
 				if (data && data.code == 200) {
