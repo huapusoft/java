@@ -1,5 +1,4 @@
-
-
+ 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -12,10 +11,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/default/easyui.css"></link>
-		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"></link>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" content="ie=edge"/> 
 		<script type="text/javascript" src="/staticPublic/js/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="/staticPublic/js/jquery.easyui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/default/easyui.css"></link>
+		<link rel="stylesheet" type="text/css" href="/staticPublic/themes/icon.css"></link>
 		<script type="text/javascript" src="/staticPublic/locale/easyui-lang-zh_CN.js"></script> 
 		<script type="text/javascript">
 		String.prototype.trim=function()
@@ -23,6 +23,24 @@
 	    	return this.replace(/(^\s*)|(\s*$)/g,'');
 		}
 		
+		function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
+			
+		    try {
+		       
+		        var dateObj = JSON.parse(jsonDate);
+		        var date = new Date(dateObj);
+		       /*  alert(date.getFullYear()); */
+		        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+		        var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+		       /*  var hours = date.getHours();
+		        var minutes = date.getMinutes();
+		        var seconds = date.getSeconds();
+		        var milliseconds = date.getMilliseconds(); */
+		        return date.getFullYear() + "-" + month + "-" + day; /* + " " + hours + ":" + minutes + ":" + seconds + "." + milliseconds */
+		    } catch (ex) {//出自http://www.cnblogs.com/ahjesus 尊重作者辛苦劳动成果,转载请注明出处,谢谢!
+		        return "";
+		    }
+		}
 		var ai = "";
 		var fieldName = "";//点击的列field
 		var maincurRow = "";//主页面表格行索引
@@ -990,9 +1008,40 @@
 	           });  
 		}
 		
-		function open()
+		function openBillNo()
 		{
-			var billNoText 
+			var billNoText = $('#billNoText').val();
+			//alert(billNoText);
+			var sum1 = 0;
+			var sum2 = 0;
+			$.ajax({
+				type : 'POST',
+				url : "/inStorage/getDetailData",
+				data : {billNo:billNoText},
+				dataType : 'JSON',
+				success: function(data){
+					if (data && data.code == 200)
+					{
+						for(var i=0;i<data.data.detailAndDrugList.length;i++)
+						{
+							data.data.detailAndDrugList[i]["validDate"]=jsonDateFormat(data.data.detailAndDrugList[i]["validDate"]);
+							data.data.detailAndDrugList[i]["total1"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
+							data.data.detailAndDrugList[i]["total2"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
+							sum1 += data.data.detailAndDrugList[i]["total1"];
+							sum2 += data.data.detailAndDrugList[i]["total2"];
+						}
+						$('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+						$('#mytable').datagrid('loadData',{"total" : data.data.detailAndDrugList.length,"rows" : data.data.detailAndDrugList}); 
+						$('#sum1').numberbox('setValue', sum1);
+                    	$('#sum2').numberbox('setValue', sum2);
+                    	$('#typeData').combobox('setValue',data.data.typeData);
+					}
+					else
+					{
+						jQuery.messager.alert('提示:',data.msg,'info');
+					}
+				}
+			});
 		}
 		
 		$(function(){
@@ -1113,7 +1162,7 @@
 	<input id="billNo" type="hidden" />
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">票据号：</font><input id="billNoText" class="easyui-textbox" style="width:230px;height:22px"/>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="#" id="openBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px" onclick="open()">打开</a><br/>
+	<a href="#" id="openBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px" onclick="openBillNo()">打开</a><br/>
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-combobox" style="width:230px" data-options="
 	"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
