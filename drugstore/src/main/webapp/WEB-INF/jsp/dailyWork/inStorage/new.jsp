@@ -1,4 +1,4 @@
-    
+
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -57,7 +57,9 @@
                             	//console.info($(this).val().trim());
                             	var amount = 0;
                             	var price1 = 0;
+                            	var price2 = 0;
                             	var sum1 = 0;
+                            	var sum2 = 0;
                             	var eds = $('#mytable').datagrid('getRows');
                             	if(param.field == "amount")//列名等于名称
                                 {
@@ -84,15 +86,32 @@
        									}
        								});
                             	}
+                            	if(param.field == "price2")
+                            	{
+                            		price2 = $(this).val().trim();
+                            		amount = eds[param.index]['amount'];
+                            		$('#mytable').datagrid('updateRow',{
+       									index: param.index,
+       									row: {
+       										price2:price2,
+       										total2: (price2*amount).toFixed(3)
+       									}
+       								});
+                            	}
                             	for(var i = 0;i<eds.length;i++)
                             	{
                             		if(eds[i]['total1'] != "" && eds[i]['total1'] != null)
                             		{
                             			sum1 += parseFloat(eds[i]['total1']);
                             		}
+                            		if(eds[i]['total2'] != "" && eds[i]['total2'] != null)
+                            		{
+                            			sum2 += parseFloat(eds[i]['total2']);
+                            		}
                             	}
                             	//console.info(sum1);
                             	$('#sum1').numberbox('setValue', sum1);
+                            	$('#sum2').numberbox('setValue', sum2);
                             });
                             /*
                             $(ed.target).textbox('textbox').bind('blur',function(){
@@ -630,7 +649,7 @@
 		
 		function keyTab()
 		{
-			var array = ['invoiceNo','itemName','amount','price1'];
+			var array = ['invoiceNo','itemName','amount','price1','price2','validDate'];
 			for(var i = 0;i<array.length;i++)
 			{
 				if(fieldName == array[i])
@@ -971,6 +990,11 @@
 	           });  
 		}
 		
+		function open()
+		{
+			var billNoText 
+		}
+		
 		$(function(){
 			$('#mytable').datagrid().datagrid('enableCellEditing');
 			$('#mytable').datagrid().datagrid('keyCtr');
@@ -1087,12 +1111,14 @@
 	<div style="margin:20px 0;">
 	</div>
 	<input id="billNo" type="hidden" />
+	<font style="font-size: 12px;font-family: Microsoft YaHei;">票据号：</font><input id="billNoText" class="easyui-textbox" style="width:230px;height:22px"/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="#" id="openBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px" onclick="open()">打开</a><br/>
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">供应商：</font><input id="typeData" class="easyui-combobox" style="width:230px" data-options="
 	"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">进价总金额：</font><input id="sum1" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:200px;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 12px;font-family: Microsoft YaHei;">零售价总金额：</font><input id="sum2" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:200px;;height:22px"></input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="#" id="modifyBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a>
     <a href="#" id="saveBtn" class="easyui-linkbutton" data-options="iconCls:'icon-save'" style="width:80px" onclick="save()">保存</a>
     <a href="#" id="printBtn" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
     <a href="#" id="submitBtn" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="width:80px" onclick="submit()">提交</a>
@@ -1111,10 +1137,10 @@
 				<th data-options="field:'unit',width:80,align:'center'">单位</th>
 				<th data-options="field:'price1',width:100,align:'center',editor:{type:'numberbox',options:{precision:3}}">进价</th>
 				<th data-options="field:'total1',width:100,align:'center'">进价金额</th>
-				<th data-options="field:'price2',width:100,align:'center'">零售价</th>
+				<th data-options="field:'price2',width:100,align:'center',editor:{type:'numberbox',options:{precision:3}}">零售价</th>
 				<th data-options="field:'total2',width:100,align:'center'">零售价金额</th>
 				<th data-options="field:'batchNo',width:100,align:'center'">批号</th>
-				<th data-options="field:'validDate',width:100,align:'center',editor:{ type:'datebox'}">有效期</th>
+				<th data-options="field:'validDate',width:100,align:'center',editor:'text'">有效期</th>
 				<th data-options="field:'drugid',hidden:'true'">drugid</th>
 			</tr>
 		</thead>
