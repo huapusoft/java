@@ -86,6 +86,7 @@
 		}
 		var maincurRow = "";//主页面表格行索引
 		var selectRow = "";//选择行
+		var fieldName = "";//点击的列field
 		var saveclick  = 0;
 		var rowNo= 0;
 		var clickIndex = [];//单击行的索引数组
@@ -380,6 +381,7 @@
                     opts.oldOnClickCell = opts.onClickCell;
                     opts.onClickCell = function(index, field){
                     	maincurRow = index;//点击加入当前行索引
+                    	fieldName = field;
                     	//alert("maincurRow:"+maincurRow);
                     	//alert(opts.editIndex);
                         if (opts.editIndex != undefined){//editIndex为编辑的索引值,这里仅为引用
@@ -528,7 +530,14 @@
 		  	//enter事件
 			if(window.event.keyCode== 13)
 			{
-				//alert(maincurRow);
+				window.event.returnValue = false;//阻止事件的默认行为
+				if($("#selectItem").is(':hidden'))//true 隐藏
+				{
+					//alert('ent');
+					keyTab();
+				}
+				else
+				{
 				var flag = false;
 				var rowindex = 0;
 				var inumber = "";//有数据的行数
@@ -656,7 +665,8 @@
 		    	rowNo = 0;
 		    	clickIndex.splice(0,clickIndex.length);
 		    	$("#selectItem").hide();
-		 		
+		    	keyTab();
+				}
 			}
 			//esc事件
 			if(window.event.keyCode== 27)
@@ -666,6 +676,11 @@
 				clickIndex.splice(0,clickIndex.length);
 				$("#selectItem").hide();
 			}
+			//Tab键盘
+			if(window.event.keyCode== 9)
+			{
+				keyTab();
+			}
 		};
 		
 		String.prototype.trim=function()
@@ -673,7 +688,39 @@
 	    	return this.replace(/(^\s*)|(\s*$)/g,'');
 		}
 		
-		
+		function keyTab()
+		{
+			var array = ['itemName','newprice'];
+			for(var i = 0;i<array.length;i++)
+			{
+				if(fieldName == array[i])
+				{
+					ai = i+1;
+				}
+			}
+			//alert(ai);
+			console.info(fieldName);
+			console.info(ai);
+			if(ai%(array.length) == 0)
+			 {
+				 //alert("aa");
+				 maincurRow +=1;
+			 }
+			var dg = $('#mytable');
+            var opts = dg.datagrid('options');
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);//再点击一次，获得焦点
+			if(array[ai%(array.length)].trim() == "newprice")//输入框在itemName时,模糊查询药品名称,按enter后(即按下enter 后为amount时，再点击一次，获得焦点 ).
+			{
+				opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			}
+			//Tab键盘
+			if(window.event.keyCode== 9)
+			{
+				keyTab();
+			}
+
+		}
 		function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
 			
 		    try {

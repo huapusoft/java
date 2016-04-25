@@ -132,16 +132,16 @@ var toolbar = [{
 <table >
 <tr>
 <td class="fonttitle">票据号：</td>
-<td><input type="text" class="textbox" name="billNos" id="billNos" data-options="prompt:'请选择领药部门'" style="width:115px;height:25px">   </td>
+<td><input type="text" class="easyui-textbox" name="billNos" id="billNos"  style="width:115px;height:25px">   </td>
 <td> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:70px" onclick="doopen();">打开</a> 
 </tr>
 <tr>
 <td class="fonttitle">领药部门：</td>
 <td><input class="easyui-combotree"  name="departmentId" id="departmentId" data-options="prompt:'请选择领药部门'" style="width:115px; height:25px;">   </td>
 <td class="fonttitle">进价金额：</td>
-<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:100px;height:25px"></td>
+<td ><input id="sum1"  name="sum1" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:100px;height:25px"></td>
 <td class="fonttitle">零售价总金额：</td>
-<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:100px;height:25px" ></td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:100px;height:25px" ></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton ipts" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
@@ -303,6 +303,7 @@ $(document).ready(function() {
 		success : function(data) {
 			if (data && data.code == 200) {				
 				var result = fn(data.data,0);
+				//alert(JSON.stringify(result));
 				$('#departmentId').combotree('loadData',result); 
 			} else {
 				jQuery.messager.alert('提示:',data.msg,'info'); 
@@ -337,12 +338,13 @@ function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
 }
 /**将json格式转化成json的树形结构 **/  
 function fn(data, pid) {
-    var result = [], temp;
-    for (var i = 0; i < data.length; i++) {
+    var result = [], temp;    
+    for (var i = 0; i < data.length; i++) {    	
         if (data[i].parentCode == pid) {
+        	//alert(data[i].departmentId);
         	var src=data[i].departmentName.replace(/[ ]/g,"");
             var obj = {"text": data[i].departmentName.replace(/[ ]/g,""),"id": data[i].departmentId};            
-            temp = fn(data, data[i].departmentId);
+            temp = fn(data, data[i].departmentCode);
             if (temp.length > 0) {
                 obj.children = temp;
             }
@@ -462,19 +464,22 @@ $.extend($.fn.datagrid.methods, {
                     	var price2 = 0;
                     	var eds = $('#mytable').datagrid('getRows');
                     	if(param.field == "amount")//列名等于名称
-                        {
-                    		amount = $(this).val().trim();
-                    		price1 = eds[param.index]['inPrice'];
-                    		price2 = eds[param.index]['price']; 
-                    		//console.info(amount*price1);
-                    		$('#mytable').datagrid('updateRow',{
-								index: param.index,
-								row: {
-									amount:amount,
-									total1: (price1*amount).toFixed(2),
-									total2: (price2*amount).toFixed(2)
-								}
-							});
+                        {  
+                    		if(eds[param.index]['itemName']!=''&&$(this).val().trim()!=''){
+                    			amount = $(this).val().trim();
+                        		price1 = eds[param.index]['inPrice'];
+                        		price2 = eds[param.index]['price']; 
+                        		//console.info(amount*price1);
+                        		$('#mytable').datagrid('updateRow',{
+    								index: param.index,
+    								row: {
+    									amount:amount,
+    									total1: (price1*amount).toFixed(3),
+    									total2: (price2*amount).toFixed(3)
+    								}
+    							});
+                    		}
+                    		
                     		
                         }
                     	
@@ -484,7 +489,7 @@ $.extend($.fn.datagrid.methods, {
                   		for (var i = 0; i < eds.length; i++) {			
                   		    var row = eds[i];                           		  
                   		    if(eds[i].itemName!=""&&eds[i].itemName!=null&&eds[i].itemName!="undefined"){
-                  		    	 alert("tt"+amount);   
+                  		    	// alert("tt"+amount);   
                   		    	/* alert(eds[i].inPrice); */
                   		    	var qty = isNumber(eds[i].amount) ? eds[i].amount : 0;
                   		    	/* alert(qty); */
@@ -498,8 +503,11 @@ $.extend($.fn.datagrid.methods, {
                   		    }	  
                   		}
                   		 /* alert(sum1); */
-                  		 $('#sum1').numberbox('setValue', sum1);
-                  		 $('#sum2').numberbox('setValue', sum2);
+                  		 if(sum1!=0||sum2!=0){
+                  			 $('#sum1').numberbox('setValue', sum1);
+                      		 $('#sum2').numberbox('setValue', sum2);
+                  		 }
+                  		
                     });
                 } else {
                    $(ed.target).focus();
@@ -1250,6 +1258,8 @@ function dosubmit(){
 function doopen(){
  var billNo=$('#billNos').val();
  $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
+ var sum1=0;
+ var sum2=0;
 	$.ajax({
 		type : 'POST',
 		url : "/outStorage/getDetailData",
@@ -1264,10 +1274,14 @@ function doopen(){
 					data.data.detailAndDrugList[i]["price"]=data.data.detailAndDrugList[i]["price2"];
 					data.data.detailAndDrugList[i]["total1"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
 					data.data.detailAndDrugList[i]["total2"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
-					
+					sum1+=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
+					sum2+=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
 					data.data.detailAndDrugList[i]["price1"] = undefined;
 					  data.data.detailAndDrugList[i]["price2"] = undefined;
 				}
+				$('#departmentId').combotree('setValue',data.data.typeData);
+				$('#sum1').numberbox('setValue', sum1);
+ 				$('#sum2').numberbox('setValue', sum2); 	
 				   $('#mytable').datagrid('loadData',{"total" : data.data.detailAndDrugList.length,"rows" : data.data.detailAndDrugList});  
 				/*$('#mytable').datagrid({   
 				    url:data.data.detailAndDrugList  

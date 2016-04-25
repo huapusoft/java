@@ -86,6 +86,7 @@
 		}
 		var maincurRow = "";//主页面表格行索引
 		var selectRow = "";//选择行
+		var fieldName = "";//点击的列field
 		var saveclick  = 0;
 		var rowNo= 0;
 		var clickIndex = [];//单击行的索引数组
@@ -123,7 +124,8 @@
                             	var price1 = 0;
                             	var eds = $('#mytable').datagrid('getRows');
                             	if(param.field == "amount")//列名等于名称
-                                {
+                                { 
+                            	if(eds[param.index]['itemName']!=''&&$(this).val().trim()!=''){
                             		amount = $(this).val().trim();                            		
                             		price1 = eds[param.index]['inPrice'];
                             		price2 = eds[param.index]['price']; 
@@ -136,7 +138,7 @@
        										total2: (price2*amount).toFixed(2)
        									}
        								});
-                            	
+                                }
                                 } 
                             	var sum1 = 0;
                        		    var sum2 = 0;
@@ -158,8 +160,11 @@
                           		    }	  
                           		}
                           		 /* alert(sum1); */
-                          		 $('#sum1').numberbox('setValue', sum1);
-                          		 $('#sum2').numberbox('setValue', sum2);
+                          		 if(sum1!=0||sum2!=0){
+                          			 $('#sum1').numberbox('setValue', sum1);
+                              		 $('#sum2').numberbox('setValue', sum2);
+                          		 }
+                          		
                             });
                         } else {
                            $(ed.target).focus();
@@ -380,6 +385,7 @@
                     opts.oldOnClickCell = opts.onClickCell;
                     opts.onClickCell = function(index, field){
                     	maincurRow = index;//点击加入当前行索引
+                    	fieldName = field;
                     	//alert("maincurRow:"+maincurRow);
                     	//alert(opts.editIndex);
                         if (opts.editIndex != undefined){//editIndex为编辑的索引值,这里仅为引用
@@ -656,7 +662,7 @@
 		    	rowNo = 0;
 		    	clickIndex.splice(0,clickIndex.length);
 		    	$("#selectItem").hide();
-		 		
+		    	keyTab();
 			}
 			//esc事件
 			if(window.event.keyCode== 27)
@@ -666,6 +672,11 @@
 				clickIndex.splice(0,clickIndex.length);
 				$("#selectItem").hide();
 			}
+			//Tab键盘
+			if(window.event.keyCode== 9)
+			{
+				keyTab();
+			}
 		};
 		
 		String.prototype.trim=function()
@@ -673,7 +684,39 @@
 	    	return this.replace(/(^\s*)|(\s*$)/g,'');
 		}
 		
-		
+		function keyTab()
+		{
+			var array = ['itemName','amount'];
+			for(var i = 0;i<array.length;i++)
+			{
+				if(fieldName == array[i])
+				{
+					ai = i+1;
+				}
+			}
+			//alert(ai);
+			console.info(fieldName);
+			console.info(ai);
+			if(ai%(array.length) == 0)
+			 {
+				 //alert("aa");
+				 maincurRow +=1;
+			 }
+			var dg = $('#mytable');
+            var opts = dg.datagrid('options');
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			opts.onClickCell(maincurRow, array[ai%(array.length)]);//再点击一次，获得焦点
+			if(array[ai%(array.length)].trim() == "amount")//输入框在itemName时,模糊查询药品名称,按enter后(即按下enter 后为amount时，再点击一次，获得焦点 ).
+			{
+				opts.onClickCell(maincurRow, array[ai%(array.length)]);
+			}
+			//Tab键盘
+			if(window.event.keyCode== 9)
+			{
+				keyTab();
+			}
+
+		}
 		function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
 			
 		    try {
@@ -857,9 +900,9 @@
 <td class="fonttitle">供应商：</td>
 <td><input id="typeData" class="easyui-combobox" style="width:230px;height:25px" data-options="prompt:'请选择供应商'"></input>  </td>
 <td class="fonttitle ipts">进价金额：</td>
-<td ><input id="sum1"  name="sum1" class="easyui-numberbox" precision="2" style="width:120px;height:25px"/></td>
+<td ><input id="sum1"  name="sum1" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:120px;height:25px"/></td>
 <td class="fonttitle ipts">零售价总金额：</td>
-<td> <input  name="sum2" id="sum2" class="easyui-numberbox" precision="2" style="width:120px;height:25px" /></td>
+<td> <input  name="sum2" id="sum2" class="easyui-numberbox" data-options="disabled:true,precision:3" style="width:120px;height:25px" /></td>
 <td> <!-- <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">打开</a> -->
     <a href="#" class="easyui-linkbutton iptes" data-options="iconCls:'icon-save'" style="width:70px; height:25px;" onclick="dosave();">保存</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:70px; height:25px;">打印</a>
@@ -1232,6 +1275,9 @@
 						drugId:''
      					});
      				$('#billNo').val('');
+     				$('#typeData').combobox('setValue','');
+					$('#sum1').numberbox('setValue', '');
+	 				$('#sum2').numberbox('setValue', ''); 
      				 var interval;  
      				 var time=1000;  
      				 var x=2;    //设置时间2s
@@ -1264,6 +1310,8 @@
 	}
 	function doopen(){
 		 var billNo=$('#billNos').val();
+		 var sum1=0;
+		 var sum2=0;
 		 $('#mytable').datagrid('loadData', { total: 0, rows: [] });//清空下方DateGrid 
 			$.ajax({
 				type : 'POST',
@@ -1279,10 +1327,14 @@
 							data.data.detailAndDrugList[i]["price"]=data.data.detailAndDrugList[i]["price2"];
 							data.data.detailAndDrugList[i]["total1"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
 							data.data.detailAndDrugList[i]["total2"]=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];
-							
+							sum1+=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price1"];
+							sum2+=data.data.detailAndDrugList[i]["amount"]*data.data.detailAndDrugList[i]["price2"];							
 							data.data.detailAndDrugList[i]["price1"] = undefined;
 							  data.data.detailAndDrugList[i]["price2"] = undefined;
 						}
+						$('#typeData').combobox('setValue',data.data.typeData);
+						$('#sum1').numberbox('setValue', sum1);
+		 				$('#sum2').numberbox('setValue', sum2); 	
 						   $('#mytable').datagrid('loadData',{"total" : data.data.detailAndDrugList.length,"rows" : data.data.detailAndDrugList});  
 						/*$('#mytable').datagrid({   
 						    url:data.data.detailAndDrugList  
